@@ -1,12 +1,6 @@
 <?php
 
-if (!defined('SLACK_CLI_BIN_DIR')) {
-    throw new \RuntimeException('The constant "SLACK_CLI_BIN_DIR" must be defined before running the application');
-}
-
 $token     = null;
-$inBin     = basename(SLACK_CLI_BIN_DIR) === 'bin';
-$parentDir = dirname(SLACK_CLI_BIN_DIR);
 $vendorDir = is_dir(__DIR__ . '/vendor') ? __DIR__ . '/vendor' : __DIR__ . '/../../../../../vendor';
 $appDir    = getcwd() . '/app';
 

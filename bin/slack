@@ -3,8 +3,6 @@
 
 use CL\SlackCli\Console\Application;
 
-define('SLACK_CLI_BIN_DIR', __DIR__);
-
 require_once __DIR__ . '/../bootstrap.php';
 
 $application = new Application('Slack Console Application', '0.12');
