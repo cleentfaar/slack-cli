@@ -25,6 +25,7 @@ use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableHelper;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -59,12 +60,21 @@ abstract class AbstractCommand extends Command
      */
     protected function configure()
     {
-        $this->addOption(
-            'token',
-            't',
-            InputOption::VALUE_REQUIRED,
-            'Optional token to use during the API-call (defaults to the configured token)'
-        );
+        if (!defined('SLACK_CLI_DEFAULT_TOKEN') || !SLACK_CLI_DEFAULT_TOKEN) {
+            $this->addArgument(
+                'token',
+                InputArgument::REQUIRED,
+                'Token to use during the API-call'
+            );
+        } else {
+            $this->addOption(
+                'token',
+                't',
+                InputOption::VALUE_REQUIRED,
+                'Token to use during the API-call',
+                SLACK_CLI_DEFAULT_TOKEN
+            );
+        }
     }
 
     /**
@@ -89,7 +99,12 @@ abstract class AbstractCommand extends Command
         $this->configureListeners($apiClient, $output);
         $this->configurePayload($payload, $input);
 
-        $token      = $input->getOption('token') ?: $this->getApplication()->getDefaultToken();
+        if ($input->hasArgument('token')) {
+            $token = $input->getArgument('token');
+        } else {
+            $token = $input->getOption('token');
+        }
+
         $response   = $apiClient->send($payload, $token);
         $returnCode = $this->handleResponse($response, $input, $output);
 
