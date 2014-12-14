@@ -1,2 +1,4 @@
+!/bin/slack
+/bin/*
 composer.lock
 vendor/*

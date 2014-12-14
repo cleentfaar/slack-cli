@@ -13,7 +13,7 @@
   ],
   "require": {
     "php": ">=5.4",
-    "cleentfaar/slack": "~0.12",
+    "cleentfaar/slack": "dev-preparing-0.12 as 0.12.x-dev",
     "symfony/console": "~2.2"
   },
   "require-dev": {
