@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('SLACK_CLI_BIN_DIR')) {
+    throw new \RuntimeException('The constant "SLACK_CLI_BIN_DIR" must be defined before running the application');
+}
+
 $token     = null;
 $inBin     = basename(SLACK_CLI_BIN_DIR) === 'bin';
 $parentDir = dirname(SLACK_CLI_BIN_DIR);
@@ -19,7 +23,7 @@ if (file_exists($appDir.'/bootstrap.php.cache')) {
             \Symfony\Component\Debug\Debug::enable();
         }
 
-        $kernel = new AppKernel($env, $debug);
+        $kernel = new \AppKernel($env, $debug);
         $kernel->boot();
 
         $token = $kernel->getContainer()->getParameter('cl_slack.api_token');

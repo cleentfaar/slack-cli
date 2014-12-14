@@ -89,14 +89,15 @@ abstract class AbstractCommand extends Command
         $this->configureListeners($apiClient, $output);
         $this->configurePayload($payload, $input);
 
-        $response   = $apiClient->send($payload, $input->getOption('token'));
+        $token      = $input->getOption('token') ?: $this->getApplication()->getDefaultToken();
+        $response   = $apiClient->send($payload, $token);
         $returnCode = $this->handleResponse($response, $input, $output);
 
         if (null === $returnCode) {
             return 0;
         }
 
-        return (int) $returnCode;
+        return (int)$returnCode;
     }
 
     /**
@@ -105,7 +106,7 @@ abstract class AbstractCommand extends Command
     protected function getApiClient()
     {
         if (!isset($this->apiClient)) {
-            $apiClient = new ApiClient($this->getApplication()->getDefaultToken());
+            $apiClient = new ApiClient();
 
             $this->apiClient = $apiClient;
         }
