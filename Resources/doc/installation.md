@@ -9,7 +9,7 @@ First you need to get a hold of this package. There are two ways to do this:
 Add the following to your ``composer.json`` (see http://getcomposer.org/)
 
     "require" :  {
-        "cleentfaar/slack-cli": "~0.11"
+        "cleentfaar/slack-cli": "~0.12"
     }
 
 
@@ -38,7 +38,7 @@ $loader->registerNamespaces(array(
 ```
 
 
-## Step 4) (Optional) Using the Symfony bundle: configure the API token
+## Step 3) Get yourself an API token
 
 If you don't have an API token yet, follow this link: [https://api.slack.com/web](https://api.slack.com/web).
 It takes you to the Slack API site which (if you are logged in, then scroll down) lets you generate an API token for your account.
