@@ -8,7 +8,7 @@ $token     = null;
 $inBin     = basename(SLACK_CLI_BIN_DIR) === 'bin';
 $parentDir = dirname(SLACK_CLI_BIN_DIR);
 $vendorDir = __DIR__ . '/../../../../../vendor';
-$appDir    = $inBin ? $parentDir . '/app/' : $parentDir . '/../../../../app';
+$appDir    = getcwd() . '/app';
 
 if (file_exists($appDir.'/bootstrap.php.cache')) {
     require_once $appDir.'/bootstrap.php.cache';
