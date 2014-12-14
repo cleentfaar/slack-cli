@@ -7,10 +7,13 @@ if (!defined('SLACK_CLI_BIN_DIR')) {
 $token     = null;
 $inBin     = basename(SLACK_CLI_BIN_DIR) === 'bin';
 $parentDir = dirname(SLACK_CLI_BIN_DIR);
-$vendorDir = __DIR__ . '/../../../../../vendor';
+$vendorDir = is_dir(__DIR__ . '/vendor') ? __DIR__ . '/vendor' : __DIR__ . '/../../../../../vendor';
 $appDir    = getcwd() . '/app';
 
 if (file_exists($appDir.'/bootstrap.php.cache')) {
+    // check if this is accessed within a symfony project, and the SlackBundle has been installed
+    // if it has, we automatically re-use the API token that should be configured at this point
+
     require_once $appDir.'/bootstrap.php.cache';
     require_once $appDir.'/AppKernel.php';
 
@@ -29,6 +32,7 @@ if (file_exists($appDir.'/bootstrap.php.cache')) {
         $token = $kernel->getContainer()->getParameter('cl_slack.api_token');
     }
 } else {
+    // can only seem to require composer's autoloader if we aren't using symfony bootstrapping (re-declares classes)
     require_once $vendorDir . '/autoload.php';
 }
 
