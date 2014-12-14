@@ -32,13 +32,13 @@ class FilesInfoCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('files:info');
+        $this->setName('files.info');
         $this->setDescription('Returns information about a file in your Slack team');
         $this->addArgument('file-id', InputArgument::REQUIRED, 'The ID of the file to get information on');
         $this->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'Number of items to return per page.');
         $this->addOption('page', 'p', InputOption::VALUE_REQUIRED, 'Page number of results to return.');
         $this->setHelp(<<<EOT
-The <info>files:info</info> command returns information about a file in your team.
+The <info>files.info</info> command returns information about a file in your team.
 
 Each comment object in the comments array contains details about a single comment. Comments are returned oldest first.
 

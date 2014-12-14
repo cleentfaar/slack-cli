@@ -31,11 +31,11 @@ class ChannelsArchiveCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('channels:archive');
+        $this->setName('channels.archive');
         $this->setDescription('Archives a given Slack channel');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel to archive');
         $this->setHelp(<<<EOT
-The <info>channels:archive</info> command let's you archive a given Slack channel.
+The <info>channels.archive</info> command let's you archive a given Slack channel.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/channels.archive</comment>

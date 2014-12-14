@@ -30,10 +30,10 @@ class EmojiListCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('emoji:list');
+        $this->setName('emoji.list');
         $this->setDescription('Returns a list of all the custom emoji for your Slack team');
         $this->setHelp(<<<EOT
-The <info>emoji:list</info> command returns a list of all the custom emoji in your Slack team.
+The <info>emoji.list</info> command returns a list of all the custom emoji in your Slack team.
 
 The emoji property contains a map of name/url pairs, one for each custom emoji used by the team.
 

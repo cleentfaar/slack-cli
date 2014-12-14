@@ -31,12 +31,12 @@ class GroupsKickCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('groups:kick');
+        $this->setName('groups.kick');
         $this->setDescription('Removes (kicks) a given user from a group');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'The ID of the group to remove the user from');
         $this->addArgument('user-id', InputArgument::REQUIRED, 'The ID of the user to remove');
         $this->setHelp(<<<EOT
-The <info>groups:kick</info> command allows you to remove another member from a grouo.
+The <info>groups.kick</info> command allows you to remove another member from a grouo.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/groups.kick</comment>

@@ -31,7 +31,7 @@ class FilesUploadCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('files:upload');
+        $this->setName('files.upload');
         $this->setDescription('Create or upload an existing file to Slack');
         $this->addOption('path', 'p', InputOption::VALUE_REQUIRED, 'The path to the file to upload');
         $this->addOption('content', 'c', InputOption::VALUE_REQUIRED, 'The raw content of the file to upload (alternative for `--path`)');
@@ -41,7 +41,7 @@ class FilesUploadCommand extends AbstractCommand
         $this->addOption('initial-comment', null, InputOption::VALUE_REQUIRED, 'Initial comment to add to the file');
         $this->addOption('channels', null, InputOption::VALUE_REQUIRED, 'Comma-separated list of channel IDs to share the file into');
         $this->setHelp(<<<EOT
-The <info>files:upload</info> command allows you to create or upload an existing file.
+The <info>files.upload</info> command allows you to create or upload an existing file.
 
 The type of data in the file will be intuited from the filename and the magic bytes in the file, for supported formats.
 Using the `--filetype` option will override this behavior (if a valid type is given).

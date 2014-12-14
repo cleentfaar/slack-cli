@@ -31,12 +31,12 @@ class ChannelsInviteCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('channels:invite');
+        $this->setName('channels.invite');
         $this->setDescription('Invites a user to a channel. The calling user must be a member of the channel.');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel to invite the user to');
         $this->addArgument('user-id', InputArgument::REQUIRED, 'The ID of the user to invite');
         $this->setHelp(<<<EOT
-The <info>channels:invite</info> command is used to invite a user to a channel.
+The <info>channels.invite</info> command is used to invite a user to a channel.
 The calling user must be a member of the channel.
 
 For more information about the related API method, check out the official documentation:

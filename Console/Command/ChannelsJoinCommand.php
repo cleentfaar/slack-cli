@@ -31,11 +31,11 @@ class ChannelsJoinCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('channels:join');
+        $this->setName('channels.join');
         $this->setDescription('Joins a channel with the token\'s user (creates channel if it doesn\'t exist)');
         $this->addArgument('channel', InputArgument::REQUIRED, 'The name of the channel to join (or create if it doesn\'t exist yet)');
         $this->setHelp(<<<EOT
-The <info>channels:join</info> command is used to join a channel.
+The <info>channels.join</info> command is used to join a channel.
 If the channel does not exist, it is created.
 
 Unlike the other channels-commands, this command requires you to supply the NAME instead of the ID of the channel,

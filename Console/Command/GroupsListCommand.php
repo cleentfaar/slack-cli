@@ -31,7 +31,7 @@ class GroupsListCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('groups:list');
+        $this->setName('groups.list');
         $this->setDescription('Returns a list of all groups in your Slack team');
         $this->addOption('exclude-archived', null, InputOption::VALUE_OPTIONAL, 'Don\'t return archived groups.');
         $this->setHelp(<<<EOT
@@ -90,7 +90,7 @@ EOT
                 $this->writeComment($output, 'No groups to list');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to list groups: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to list groups. %s', $payloadResponse->getErrorExplanation()));
         }
     }
 }

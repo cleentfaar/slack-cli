@@ -31,13 +31,13 @@ class ChatUpdateCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('chat:update');
+        $this->setName('chat.update');
         $this->setDescription('Updates a message from a given channel');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel containing the message to be updated');
         $this->addArgument('timestamp', InputArgument::REQUIRED, 'Timestamp of the message to be updated');
         $this->addArgument('message', InputArgument::REQUIRED, 'New text for the message, using the default formatting rules');
         $this->setHelp(<<<EOT
-The <info>chat:update</info> command updates a message from a given channel.
+The <info>chat.update</info> command updates a message from a given channel.
 
 The new message uses the default formatting rules, which can be found here: <comment>https://api.slack.com/docs/formatting</comment>
 

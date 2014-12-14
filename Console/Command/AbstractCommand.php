@@ -19,7 +19,7 @@ use CL\Slack\Transport\ApiClient;
 use CL\Slack\Transport\Events\RequestEvent;
 use CL\Slack\Transport\Events\ResponseEvent;
 use CL\Slack\Util\PayloadRegistry;
-use CL\SlackCli\Application;
+use CL\SlackCli\Console\Application;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -28,7 +28,6 @@ use Symfony\Component\Console\Helper\TableHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -85,7 +84,7 @@ abstract class AbstractCommand extends Command
     {
         $apiClient       = $this->getApiClient();
         $payloadRegistry = new PayloadRegistry();
-        $payload         = $payloadRegistry->get($this->getMethod());
+        $payload         = $payloadRegistry->get($this->getName());
 
         $this->configureListeners($apiClient, $output);
         $this->configurePayload($payload, $input);
@@ -170,11 +169,9 @@ abstract class AbstractCommand extends Command
      */
     protected function renderTable(OutputInterface $output, array $rows, $headers = null)
     {
-        if (version_compare(Kernel::VERSION, '2.5', '<')) {
-            /** @var TableHelper $table */
-            $table = $this->getHelper('table');
+        if (!class_exists('\Symfony\Component\Console\Helper\Table')) {
+            $table = new TableHelper();
         } else {
-            /** @var Table $table */
             $table = new Table($output);
         }
 
@@ -337,11 +334,6 @@ abstract class AbstractCommand extends Command
             }
         );
     }
-
-    /**
-     * @return string
-     */
-    abstract protected function getMethod();
 
     /**
      * @param PayloadResponseInterface $payloadResponse

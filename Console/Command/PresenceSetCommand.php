@@ -31,11 +31,11 @@ class PresenceSetCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('presence:set');
+        $this->setName('presence.set');
         $this->setDescription('Override the token user\'s presence value');
         $this->addArgument('presence', InputArgument::REQUIRED, 'Either active or away');
         $this->setHelp(<<<EOT
-The <info>presence:set</info> command lets you manually override the token user's presence value.
+The <info>presence.set</info> command lets you manually override the token user's presence value.
 Consult the presence documentation for more details.
 
 For more information about the related API method, check out the official documentation:
@@ -75,7 +75,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully changed presence!');
         } else {
-            $this->writeError($output, sprintf('Failed to change presence: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to change presence. %s', $payloadResponse->getErrorExplanation()));
         }
     }
 }

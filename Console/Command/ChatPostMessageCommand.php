@@ -32,7 +32,7 @@ class ChatPostMessageCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('chat:post-message');
+        $this->setName('chat.postMessage');
         $this->setDescription('Sends a message to a Slack channel of your choice');
         $this->addArgument('channel', InputArgument::REQUIRED, 'The channel to send the text to');
         $this->addArgument('message', InputArgument::REQUIRED, 'The message to send');
@@ -45,7 +45,7 @@ class ChatPostMessageCommand extends AbstractCommand
         $this->addOption('unfurl-media', 'um', InputOption::VALUE_REQUIRED, 'Pass false to disable unfurling of media content');
         $this->addOption('attachments', 'a', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Structured message attachments (as JSON-encoded arrays)');
         $this->setHelp(<<<EOT
-The <info>chat:post-message</info> command posts a message to a given channel.
+The <info>chat.postMessage</info> command posts a message to a given channel.
 
 Messages are formatted as described in the formatting spec (link below). You can specify values for `parse` and `link_names`
 to change formatting behavior.

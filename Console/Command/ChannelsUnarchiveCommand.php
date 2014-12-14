@@ -31,11 +31,11 @@ class ChannelsUnarchiveCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('channels:unarchive');
+        $this->setName('channels.unarchive');
         $this->setDescription('Unarchives a channel. The token\'s user is automatically added to the channel');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel to archive');
         $this->setHelp(<<<EOT
-The <info>channels:unarchive</info> command unarchives a given channel.
+The <info>channels.unarchive</info> command unarchives a given channel.
 The user of the token is automatically added to the channel.
 
 For more information about the related API method, check out the official documentation:

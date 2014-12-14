@@ -32,7 +32,7 @@ class SearchFilesCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('search:files');
+        $this->setName('search.files');
         $this->setDescription('Searches files within your Slack team');
         $this->addArgument('query', InputArgument::REQUIRED, 'Search query. May contains booleans, etc.');
         $this->addOption('sort', null, InputOption::VALUE_REQUIRED, 'Return matches sorted by either score or timestamp');
@@ -41,7 +41,7 @@ class SearchFilesCommand extends AbstractCommand
         $this->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'Number of items to return per page');
         $this->addOption('page', 'p', InputOption::VALUE_REQUIRED, 'Page number of results to return');
         $this->setHelp(<<<EOT
-The <info>search:files</info> command allows you to search for files matching a given query
+The <info>search.files</info> command allows you to search for files matching a given query
 
 If the `--highlight` option is specified, the matching query terms will be marked up in the results so that clients may
 replace them with appropriate highlighting markers (e.g. <span class="highlight"></span>).
@@ -106,7 +106,7 @@ EOT
                 }
             }
         } else {
-            $this->writeError($output, sprintf('Failed to search: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to search. %s', $payloadResponse->getErrorExplanation()));
         }
     }
 }

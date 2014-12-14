@@ -31,11 +31,11 @@ class ChannelsLeaveCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('channels:leave');
+        $this->setName('channels.leave');
         $this->setDescription('Leave a channel (as the user of the token).');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel to leav');
         $this->setHelp(<<<EOT
-The <info>channels:leave</info> command leaves a channel as the user of the token.
+The <info>channels.leave</info> command leaves a channel as the user of the token.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/channels.leave</comment>

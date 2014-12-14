@@ -30,10 +30,10 @@ class AuthTestCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('auth:test');
+        $this->setName('auth.test');
         $this->setDescription('Test authentication with the Slack API and, optionally, tells you who you are (use -v).');
         $this->setHelp(<<<EOT
-The <info>auth:test</info> command lets you test authenticating with the Slack API.
+The <info>auth.test</info> command lets you test authenticating with the Slack API.
 
 Use the verbose option `-v` to also return information about the token's user.
 
@@ -41,14 +41,6 @@ For more information about the related API method, check out the official docume
 <comment>https://api.slack.com/methods/auth.test</comment>
 EOT
         );
-    }
-
-    /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'auth.test';
     }
 
     /**

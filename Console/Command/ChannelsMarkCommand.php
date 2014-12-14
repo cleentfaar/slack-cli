@@ -31,12 +31,12 @@ class ChannelsMarkCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('channels:mark');
+        $this->setName('channels.mark');
         $this->setDescription('Moves the read cursor in a Slack channel');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'ID of the channel to set reading cursor in.');
         $this->addArgument('timestamp', InputArgument::REQUIRED, 'Timestamp of the most recently seen message.');
         $this->setHelp(<<<EOT
-The <info>channels:mark</info> command is used to move the read cursor in a Slack channel.
+The <info>channels.mark</info> command is used to move the read cursor in a Slack channel.
 
 After making this call, the mark is saved to the database and broadcast via the message server to all open connections
 for the calling user.

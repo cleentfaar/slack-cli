@@ -31,12 +31,12 @@ class ChannelsSetPurposeCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('channels:set-purpose');
+        $this->setName('channels.setPurpose');
         $this->setDescription('Change the purpose of a channel. The calling user must be a member of the channel.');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel to change the purpose of');
         $this->addArgument('purpose', InputArgument::REQUIRED, 'The new purpose');
         $this->setHelp(<<<EOT
-The <info>channels:set-purpose</info> command changes the purpose of a channel.
+The <info>channels.setPurpose</info> command changes the purpose of a channel.
 The calling user must be a member of the channel.
 
 For more information about the related API method, check out the official documentation:

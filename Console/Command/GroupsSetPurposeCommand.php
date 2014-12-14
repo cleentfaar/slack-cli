@@ -31,12 +31,12 @@ class GroupsSetPurposeCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('groups:set-purpose');
+        $this->setName('groups.setPurpose');
         $this->setDescription('Change the purpose of a group. The calling user must be a member of the group.');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'The ID of the group to change the purpose of');
         $this->addArgument('purpose', InputArgument::REQUIRED, 'The new purpose');
         $this->setHelp(<<<EOT
-The <info>groups:set-purpose</info> command changes the purpose of a group.
+The <info>groups.setPurpose</info> command changes the purpose of a group.
 The calling user must be a member of the group.
 
 For more information about the related API method, check out the official documentation:

@@ -31,12 +31,12 @@ class GroupsRenameCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('groups:rename');
+        $this->setName('groups.rename');
         $this->setDescription('Leave a group (as the user of the token).');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'The ID of the group to rename');
         $this->addArgument('name', InputArgument::REQUIRED, 'The new name for this group');
         $this->setHelp(<<<EOT
-The <info>groups:rename</info> command renames a team group.
+The <info>groups.rename</info> command renames a team group.
 
 The only people who can rename a group are team admins, or the person that originally created the group.
 Others will receive a "not_authorized" error.

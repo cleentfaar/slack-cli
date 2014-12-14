@@ -31,12 +31,12 @@ class ChannelsRenameCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('channels:rename');
+        $this->setName('channels.rename');
         $this->setDescription('Leave a channel (as the user of the token).');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel to rename');
         $this->addArgument('name', InputArgument::REQUIRED, 'The new name for this channel');
         $this->setHelp(<<<EOT
-The <info>channels:rename</info> command renames a team channel.
+The <info>channels.rename</info> command renames a team channel.
 
 The only people who can rename a channel are team admins, or the person that originally created the channel.
 Others will receive a "not_authorized" error.

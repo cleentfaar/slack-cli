@@ -33,14 +33,14 @@ class GroupsHistoryCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('groups:history');
+        $this->setName('groups.history');
         $this->setDescription('Returns a portion of messages/events from the specified private group (see `--help`)');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'ID of the group to fetch history for');
         $this->addOption('latest', 'l', InputOption::VALUE_REQUIRED, 'Latest message timestamp to include in results');
         $this->addOption('oldest', 'o', InputOption::VALUE_REQUIRED, 'Oldest message timestamp to include in results');
         $this->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'Number of messages to return, between 1 and 1000.');
         $this->setHelp(<<<EOT
-The <info>groups:history</info> command returns a portion of messages/events from the specified private group.
+The <info>groups.history</info> command returns a portion of messages/events from the specified private group.
 To read the entire history for a group, call the method with no latest or oldest arguments, and then continue paging
 using the instructions below.
 
@@ -48,7 +48,7 @@ The messages array up to 100 messages between `--latest` and `--oldest`. If ther
 those two points, then `has_more` will be true.
 
 If a message has the same timestamp as latest or oldest it will not be included in the list. This allows a client to
-fetch all messages in a hole in channel history, by running <info>groups:history</info> with `--latest` set to the
+fetch all messages in a hole in channel history, by running <info>groups.history</info> with `--latest` set to the
 oldest message they have after the hole, and `--oldest` to the latest message they have before the hole.
 If the response includes `has_more` then the client can make another call, using the `ts` value of the final messages as
 the latest param to get the next page of messages.

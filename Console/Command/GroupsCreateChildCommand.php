@@ -31,11 +31,11 @@ class GroupsCreateChildCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('groups:create-child');
+        $this->setName('groups.createChild');
         $this->setDescription('This method creates a child group from an existing group (see `--help`)');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'The name of the channel to create (must not exist already)');
         $this->setHelp(<<<EOT
-The <info>groups:create-child</info> command takes an existing private group and performs the following steps:
+The <info>groups.createChild</info> command takes an existing private group and performs the following steps:
 
 - Renames the existing group (from "example" to "example-archived").
 - Archives the existing group.
@@ -43,7 +43,7 @@ The <info>groups:create-child</info> command takes an existing private group and
 - Adds all members of the existing group to the new group.
 
 This is useful when inviting a new member to an existing group while hiding all previous chat history from them.
-In this scenario you can run <info>groups:create-child</info> followed by <info>groups:invite</info>.
+In this scenario you can run <info>groups.createChild</info> followed by <info>groups.invite</info>.
 
 The new group will have a special `parent_group` property pointing to the original archived group.
 This will only be returned for members of both groups, so will not be visible to any newly invited members.

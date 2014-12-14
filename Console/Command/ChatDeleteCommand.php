@@ -31,12 +31,12 @@ class ChatDeleteCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('chat:delete');
+        $this->setName('chat.delete');
         $this->setDescription('Deletes a message from a given channel');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel containing the message to be deleted');
         $this->addArgument('timestamp', InputArgument::REQUIRED, 'Timestamp of the message to be deleted');
         $this->setHelp(<<<EOT
-The <info>chat:delete</info> command deletes a message from a given channel.
+The <info>chat.delete</info> command deletes a message from a given channel.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/chat.delete</comment>

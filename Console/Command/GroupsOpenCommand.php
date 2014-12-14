@@ -31,11 +31,11 @@ class GroupsOpenCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('groups:open');
+        $this->setName('groups.open');
         $this->setDescription('Opens a given Slack group');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'The ID of a private group to open');
         $this->setHelp(<<<EOT
-The <info>groups:open</info> command let's you open a given Slack group.
+The <info>groups.open</info> command let's you open a given Slack group.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/groups.open</comment>

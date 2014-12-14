@@ -32,14 +32,14 @@ class OauthAccessCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('oauth:access');
+        $this->setName('oauth.access');
         $this->setDescription('Exchange a temporary OAuth code for an API access token');
         $this->addArgument('client-id', InputArgument::REQUIRED, 'Issued when you created your application');
         $this->addArgument('client-secret', InputArgument::REQUIRED, 'Issued when you created your application');
         $this->addArgument('code', InputArgument::REQUIRED, 'The code param returned via the OAuth callback');
         $this->addOption('redirect-uri', null, InputOption::VALUE_REQUIRED, 'This must match the originally submitted URI (if one was sent)');
         $this->setHelp(<<<EOT
-The <info>oauth:access</info> command allows you to exchange a temporary OAuth code for an API access token.
+The <info>oauth.access</info> command allows you to exchange a temporary OAuth code for an API access token.
 This is used as part of the OAuth authentication flow.
 
 For more information about the related API method, check out the official documentation:
@@ -84,7 +84,7 @@ EOT
             $output->writeln('Access token: <comment>%s</comment>', $payloadResponse->getAccessToken());
             $output->writeln('Scope: <comment>%s</comment>', $payloadResponse->getScope());
         } else {
-            $this->writeError($output, sprintf('Failed to be authenticated through oauth: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to be authenticated through oauth. %s', $payloadResponse->getErrorExplanation()));
         }
     }
 }

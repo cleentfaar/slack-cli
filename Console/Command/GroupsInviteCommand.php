@@ -31,16 +31,16 @@ class GroupsInviteCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('groups:invite');
+        $this->setName('groups.invite');
         $this->setDescription('Invites a user to a group. The token\'s user must be a member of the group');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'The ID of the group to invite the user into');
         $this->addArgument('user-id', InputArgument::REQUIRED, 'The ID of the user to invite');
         $this->setHelp(<<<EOT
-The <info>groups:invite</info> command is used to invite a user to a private group.
+The <info>groups.invite</info> command is used to invite a user to a private group.
 The calling user must be a member of the group.
 
 To invite a new member to a group without giving them access to the archives of the group
-run the <info>groups:create-child</info> command before inviting.
+run the <info>groups.createChild</info> command before inviting.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/groups.invite</comment>

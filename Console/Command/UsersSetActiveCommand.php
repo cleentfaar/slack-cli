@@ -30,10 +30,10 @@ class UsersSetActiveCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('users:set-active');
+        $this->setName('users:setActive');
         $this->setDescription('Lets the slack messaging server know that the token\'s user is currently active');
         $this->setHelp(<<<EOT
-The <info>users:set-active</info> command lets the slack messaging server know that the token's
+The <info>users:setActive</info> command lets the slack messaging server know that the token's
 user is currently active. Consult the presence documentation for more details (see link below).
 
 For more information about the related API method, check out the official documentation:

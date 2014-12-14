@@ -31,11 +31,11 @@ class ChannelsCreateCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('channels:create');
+        $this->setName('channels.create');
         $this->setDescription('Creates new Slack channel with the given name');
         $this->addArgument('name', InputArgument::REQUIRED, 'The name of the channel to create (must not exist already)');
         $this->setHelp(<<<EOT
-The <info>channels:create</info> command let's you create a new Slack channel with the given name.
+The <info>channels.create</info> command let's you create a new Slack channel with the given name.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/channels.create</comment>

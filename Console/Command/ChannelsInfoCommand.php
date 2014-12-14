@@ -32,11 +32,11 @@ class ChannelsInfoCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('channels:info');
+        $this->setName('channels.info');
         $this->setDescription('Returns information about a team channel.');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel to get information on');
         $this->setHelp(<<<EOT
-The <info>channels:info</info> command returns information about a given channel.
+The <info>channels.info</info> command returns information about a given channel.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/channels.info</comment>

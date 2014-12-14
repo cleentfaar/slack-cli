@@ -32,7 +32,7 @@ class ChannelsListCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('channels:list');
+        $this->setName('channels.list');
         $this->setDescription('Returns a list of all channels in your Slack team');
         $this->addOption('exclude-archived', null, InputOption::VALUE_OPTIONAL, 'Don\'t return archived channels.');
         $this->setHelp(<<<EOT
@@ -92,7 +92,7 @@ EOT
                 $this->writeError($output, 'No channels seem to be assigned to your team... this is strange...');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to list channels: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to list channels. %s', $payloadResponse->getErrorExplanation()));
         }
     }
 }

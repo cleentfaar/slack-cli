@@ -36,31 +36,23 @@ class ApiTestCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('api:test');
+        $this->setName('api.test');
         $this->setDescription('Tests connecting with the Slack API using the token.');
         $this->addOption('arguments', null, InputOption::VALUE_REQUIRED, 'A query string of arguments to test in key/value format, such as "foo=bar&apple=pear"');
         $this->addOption('error', null, InputOption::VALUE_REQUIRED, 'Optional error message to mock an error response from Slack with');
         $this->setHelp(<<<EOT
-The <info>api:test</info> command lets you connect with the Slack API for testing purposes.
+The <info>api.test</info> command lets you connect with the Slack API for testing purposes.
 
 Testing arguments returned by Slack
-<info>php app/console api:test --args="foo=bar&apple=pie"</info>
+<info>php bin/slack api.test --args="foo=bar&apple=pie"</info>
 
 Testing an error response
-<info>php app/console api:test --error="This is my error"</info>
+<info>php bin/slack api.test --error="This is my error"</info>
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/api.test</comment>
 EOT
         );
-    }
-
-    /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'api.test';
     }
 
     /**

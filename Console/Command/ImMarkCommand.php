@@ -31,7 +31,7 @@ class ImMarkCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('im:mark');
+        $this->setName('im.mark');
         $this->setDescription('Moves the read cursor in a Slack IM channel');
         $this->addArgument('im-id', InputArgument::REQUIRED, 'ID of the IM channel to set reading cursor in.');
         $this->addArgument('timestamp', InputArgument::REQUIRED, 'Timestamp of the most recently seen message.');

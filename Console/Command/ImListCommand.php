@@ -31,7 +31,7 @@ class ImListCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('im:list');
+        $this->setName('im.list');
         $this->setDescription('Returns a list of all IM channels in your Slack team');
         $this->addOption('exclude-archived', null, InputOption::VALUE_OPTIONAL, 'Don\'t return archived IM channels.');
         $this->setHelp(<<<EOT
@@ -79,7 +79,7 @@ EOT
                 $this->writeComment($output, 'No IM channels to list');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to list channels: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to list channels. %s', $payloadResponse->getErrorExplanation()));
         }
     }
 }

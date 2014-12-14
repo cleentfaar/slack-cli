@@ -31,12 +31,12 @@ class GroupsSetTopicCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('groups:set-topic');
+        $this->setName('groups.setTopic');
         $this->setDescription('Change the topic of a group. The calling user must be a member of the group.');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'The ID of the group to change the topic of');
         $this->addArgument('topic', InputArgument::REQUIRED, 'The new topic');
         $this->setHelp(<<<EOT
-The <info>groups:set-topic</info> command changes the topic of a group.
+The <info>groups.setTopic</info> command changes the topic of a group.
 The calling user must be a member of the group.
 
 For more information about the related API method, check out the official documentation:

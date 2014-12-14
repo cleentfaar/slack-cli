@@ -31,12 +31,12 @@ class ChannelsSetTopicCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('channels:set-topic');
+        $this->setName('channels.setTopic');
         $this->setDescription('Change the topic of a channel. The calling user must be a member of the channel.');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel to change the topic of');
         $this->addArgument('topic', InputArgument::REQUIRED, 'The new topic');
         $this->setHelp(<<<EOT
-The <info>channels:set-topic</info> command changes the topic of a channel.
+The <info>channels.setTopic</info> command changes the topic of a channel.
 The calling user must be a member of the channel.
 
 For more information about the related API method, check out the official documentation:

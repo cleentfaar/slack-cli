@@ -31,12 +31,12 @@ class GroupsMarkCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('groups:mark');
+        $this->setName('groups.mark');
         $this->setDescription('Moves the read cursor in a Slack group');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'ID of the group to set reading cursor in.');
         $this->addArgument('timestamp', InputArgument::REQUIRED, 'Timestamp of the most recently seen message.');
         $this->setHelp(<<<EOT
-The <info>groups:mark</info> command is used to move the read cursor in a Slack group.
+The <info>groups.mark</info> command is used to move the read cursor in a Slack group.
 
 After running this command, the mark is saved to the database and broadcast via the message server to all open connections
 for the token's user.

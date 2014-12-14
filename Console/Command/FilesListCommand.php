@@ -32,7 +32,7 @@ class FilesListCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('files:list');
+        $this->setName('files.list');
         $this->setDescription('Returns a list of all files in your Slack team');
         $this->addOption('user-id', 'u', InputOption::VALUE_REQUIRED, 'Filter files created by a single user.');
         $this->addOption('from', null, InputOption::VALUE_REQUIRED, 'Filter files created after this timestamp (inclusive).');
@@ -41,7 +41,7 @@ class FilesListCommand extends AbstractCommand
         $this->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'Number of items to return per page.');
         $this->addOption('page', 'p', InputOption::VALUE_REQUIRED, 'Page number of results to return.');
         $this->setHelp(<<<EOT
-The <info>files:list</info> command returns a list of files within the team.
+The <info>files.list</info> command returns a list of files within the team.
 It can be filtered and sliced in various ways.
 
 The response contains a list of files, followed by some paging information.
@@ -101,7 +101,7 @@ EOT
                 $this->renderKeyValueTable($output, $payloadResponse->getPaging());
             }
         } else {
-            $this->writeError($output, sprintf('Failed to list files: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to list files. %s', $payloadResponse->getErrorExplanation()));
         }
     }
 }
