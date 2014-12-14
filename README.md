@@ -13,23 +13,26 @@ Once installed, the commands are smart enough to use the token you have configur
 [![Latest Unstable Version](https://poser.pugx.org/cleentfaar/slack-cli/v/unstable.svg)](https://packagist.org/packages/cleentfaar/slack-cli)
 
 
-### Quick install
+### Quick install (globally)
 
-Install Composer and issue the following command:
-```$ ./composer.phar global require cleentfaar/slack-cli```
+Install [Composer](https://getcomposer.org/download/) and issue the following command:
+```
+$ ./composer.phar global require cleentfaar/slack-cli
+```
 
 Then, make sure you have `~/.composer/vendor/bin` in your `PATH`, and you're good to go:
-```export PATH="$PATH:$HOME/.composer/vendor/bin"```
-
+```
+export PATH="$PATH:$HOME/.composer/vendor/bin"
+```
 
 For more information on installing the application inside one of your projects, and using the actual commands that this
-package provides, check out the documentation listed below.
+package provides, check out the documentation mentioned below.
 
 
 ### Documentation
 
 - [Getting Started](Resources/doc/getting-started.md) - Before you use this package, you need to generate a token or setup oAuth.
-- [Installation](Resources/doc/installation.md) - Information on installing this library through composer or as a git submodule.
+- [Installation](Resources/doc/installation.md) - Information on installing this package through composer or as a git submodule.
 - [Usage](Resources/doc/usage.md) - A few simple examples on how to use some of the console commands provided by this package
 
 
