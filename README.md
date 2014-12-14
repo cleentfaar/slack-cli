@@ -20,9 +20,14 @@ Install [Composer](https://getcomposer.org/download/) and issue the following co
 $ ./composer.phar global require cleentfaar/slack-cli
 ```
 
-Then, make sure you have `~/.composer/vendor/bin` in your `PATH`, and you're good to go:
+Then, make sure you have `~/.composer/vendor/bin` in your `PATH`...
 ```
 export PATH="$PATH:$HOME/.composer/vendor/bin"
+```
+
+And you're good to go!
+```
+$ slack chat.postMessage general "Hello World!" --token=your-api-token-here
 ```
 
 For more information on installing the application inside one of your projects, and using the actual commands that this
