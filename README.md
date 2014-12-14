@@ -17,7 +17,7 @@ Once installed, the commands are smart enough to use the token you have configur
 
 - [Getting Started](Resources/doc/getting-started.md) - Before you use this package, you need to generate a token or setup oAuth.
 - [Installation](Resources/doc/installation.md) - Information on installing this library through composer or as a git submodule.
-- [Usage](Resources/doc/installation.md) - A few simple examples on how to use some of the console commands provided by this package
+- [Usage](Resources/doc/usage.md) - A few simple examples on how to use some of the console commands provided by this package
 
 #### Detailed documentation
 
