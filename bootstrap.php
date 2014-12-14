@@ -7,7 +7,7 @@ if (!defined('SLACK_CLI_BIN_DIR')) {
 $token     = null;
 $inBin     = basename(SLACK_CLI_BIN_DIR) === 'bin';
 $parentDir = dirname(SLACK_CLI_BIN_DIR);
-$vendorDir = $inBin ? $parentDir . '/vendor/' : $parentDir . '/../../../../vendor';
+$vendorDir = __DIR__ . '/../../../../../vendor';
 $appDir    = $inBin ? $parentDir . '/app/' : $parentDir . '/../../../../app';
 
 if (file_exists($appDir.'/bootstrap.php.cache')) {
