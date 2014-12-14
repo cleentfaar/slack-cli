@@ -69,7 +69,7 @@ Channel ID: C01234567
 Timestamp: 1234567890.123456
 ```
 
-## Testing authentication (`slack:auth:test`)
+## Testing authentication (`auth.test`)
 
 You might want to know who you are authenticated as during authorization.
 
