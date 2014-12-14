@@ -32,9 +32,6 @@ if (file_exists($appDir.'/bootstrap.php.cache')) {
     require_once $vendorDir . '/autoload.php';
 }
 
-\Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace(
-    'JMS\Serializer\Annotation',
-    $vendorDir . "/jms/serializer/src"
-);
+\Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
 
 define('SLACK_CLI_DEFAULT_TOKEN', $token);
