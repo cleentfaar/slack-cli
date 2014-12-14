@@ -1,7 +1,12 @@
 {
   "name": "cleentfaar/slack-cli",
   "description": "Command-line application for interacting with the Slack API.",
-  "keywords": ["slack", "command", "cli", "terminal"],
+  "keywords": [
+    "slack",
+    "command",
+    "cli",
+    "terminal"
+  ],
   "type": "library",
   "license": "MIT",
   "authors": [
@@ -10,6 +15,9 @@
       "homepage": "https://github.com/cleentfaar",
       "email": "info@casleentfaar.com"
     }
+  ],
+  "bin": [
+    "bin/slack"
   ],
   "require": {
     "php": ">=5.4",
