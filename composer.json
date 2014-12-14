@@ -1,0 +1,34 @@
+{
+  "name": "cleentfaar/slack-cli",
+  "description": "Command-line application for interacting with the Slack API.",
+  "keywords": ["slack", "command", "cli", "terminal"],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Cas Leentfaar",
+      "homepage": "https://github.com/cleentfaar",
+      "email": "info@casleentfaar.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4",
+    "cleentfaar/slack": "~0.12",
+    "symfony/console": "~2.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.4"
+  },
+  "suggest": {
+    "cleentfaar/slack-bundle": "For easy integration with your Symfony projects"
+  },
+  "autoload": {
+    "psr-0": {
+      "CL\\SlackCli": ""
+    }
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "target-dir": "CL/SlackCli"
+}

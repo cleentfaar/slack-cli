@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php
+
+use CL\SlackCli\Console\Application;
+
+$token     = null;
+$inBin     = basename(__DIR__) === 'bin';
+$vendorDir = $inBin ? __DIR__ . '/../vendor/' : __DIR__.'/../../../../vendor';
+$appDir    = $inBin ? __DIR__ . '/../app/' : __DIR__.'/../../../../app';
+
+if (file_exists($appDir.'/bootstrap.php.cache')) {
+    require_once $appDir.'/bootstrap.php.cache';
+    require_once $appDir.'/AppKernel.php';
+
+    if (class_exists('CL\Bundle\SlackBundle\CLSlackBundle')) {
+        $input = new \Symfony\Component\Console\Input\ArgvInput();
+        $env   = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
+        $debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(array('--no-debug', '')) && $env !== 'prod';
+
+        if ($debug) {
+            \Symfony\Component\Debug\Debug::enable();
+        }
+
+        $kernel = new AppKernel($env, $debug);
+        $kernel->boot();
+
+        $token = $kernel->getContainer()->getParameter('cl_slack.api_token');
+    }
+} else {
+    require_once $vendorDir . '/autoload.php';
+}
+
+$application = new Application('Slack Console Application', '0.12');
+$application->setDefaultToken($token);
+$application->run();
