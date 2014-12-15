@@ -1,22 +1,24 @@
 {
-  "alias": "slack.phar",
   "output": "slack.phar",
-  "main": "bin/slack",
   "chmod": "0755",
+  "main": "slack",
   "files": [
-    "LICENSE",
-    "bootstrap.php"
+    "LICENSE"
   ],
-  "directories": ["src"],
   "finder": [
     {
+      "name": ["*.php"],
       "exclude": [
         "Tests",
-        "tests",
-        "phpunit"
+        "tests"
       ],
-      "in": "vendor"
+      "in": [
+        "vendor",
+        "CL"
+      ]
     }
   ],
-  "stub": true
+  "git-commit": "git-commit",
+  "stub": true,
+  "web": false
 }

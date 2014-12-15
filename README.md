@@ -13,34 +13,10 @@ Once installed, the commands are smart enough to use the token you have configur
 [![Latest Unstable Version](https://poser.pugx.org/cleentfaar/slack-cli/v/unstable.svg)](https://packagist.org/packages/cleentfaar/slack-cli)
 
 
-### Quick install (globally)
-
-Install [Composer](https://getcomposer.org/download/) and issue the following command:
-```
-$ ./composer.phar global require cleentfaar/slack-cli
-```
-
-Then, make sure you have `~/.composer/vendor/bin` in your `PATH`...
-```
-export PATH="$PATH:$HOME/.composer/vendor/bin"
-```
-
-And you're good to go!
-```
-$ slack chat.postMessage general "Hello World!" --token=your-api-token-here
-```
-
-For more information on installing the application inside one of your projects, and using the actual commands that this
-package provides, check out the documentation mentioned below.
-
-
 ### Documentation
 
-- [Getting Started](Resources/doc/getting-started.md) - Before you use this package, you need to generate a token or setup oAuth.
 - [Installation](Resources/doc/installation.md) - Information on installing this package through composer or as a git submodule.
 - [Usage](Resources/doc/usage.md) - A few simple examples on how to use some of the console commands provided by this package
-
-
 
 #### Detailed documentation
 
@@ -50,9 +26,8 @@ on how to use the payloads and responses in your own application, check out the 
 
 ### Contributing
 
-Got a good idea for this project? Found a nasty bug that needs fixing? That's great!
-Before submitting your PR though, make sure it complies with the [contributing guide](Resources/doc/contributing.md) to
-speed up the merging of your code.
+Got a good idea for this project? Found a nasty bug that needs fixing? That's great! Before submitting your PR however,
+make sure it complies with the [contributing guide](Resources/doc/contributing.md) to speed up the merging of your code.
 
 
 ### Attributions
