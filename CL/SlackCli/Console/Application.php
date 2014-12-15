@@ -11,7 +11,7 @@
 
 namespace CL\SlackCli\Console;
 
-use CL\SlackCli\Config\ConfigManager;
+use CL\SlackCli\Config\Config;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,7 +21,7 @@ class Application extends BaseApplication
     const VERSION = '0.12';
 
     /**
-     * @var ConfigManager[]
+     * @var Config[]
      */
     private $configs = [];
 
@@ -111,12 +111,12 @@ class Application extends BaseApplication
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return ConfigManager
+     * @return Config
      */
     public function getConfig($path, InputInterface $input, OutputInterface $output)
     {
         if (!array_key_exists($path, $this->configs)) {
-            $this->configs[$path] = new ConfigManager($path);
+            $this->configs[$path] = new Config($path);
         }
 
         return $this->configs[$path];

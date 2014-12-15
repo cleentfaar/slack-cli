@@ -12,7 +12,7 @@
 namespace CL\SlackCli\Console\Command;
 
 use CL\SlackCli\Application;
-use CL\SlackCli\Config\ConfigManager;
+use CL\SlackCli\Config\Config;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableHelper;
@@ -26,7 +26,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class AbstractCommand extends Command
 {
     /**
-     * @var ConfigManager|null
+     * @var Config|null
      */
     protected $config;
 
@@ -50,7 +50,7 @@ abstract class AbstractCommand extends Command
             'cp',
             InputOption::VALUE_REQUIRED,
             'Configuration file to use during this command',
-            ConfigManager::getDefaultPath()
+            Config::getDefaultPath()
         );
     }
 

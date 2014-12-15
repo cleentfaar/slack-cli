@@ -13,7 +13,7 @@ namespace CL\SlackCli\Config;
 
 use Symfony\Component\Yaml\Yaml;
 
-class ConfigManager
+class Config
 {
     /**
      * @var string
