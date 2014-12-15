@@ -4,7 +4,8 @@
 
 ### Method 1) Locally
 
-Download the `slack.phar` file and store it somewhere on your computer.
+Just download the `slack.phar` file and store it somewhere on your computer.
+Check out the [manifest](http://cleentfaar.github.io/slack-cli/manifest.json) for an URL to download.
 
 
 ### Method 2) Globally (manual)

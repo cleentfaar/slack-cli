@@ -92,6 +92,14 @@ $ slack.phar auth.test -v
 +----------+------------+
 ```
 
+## Updating the application
+
+Once you have installed the CLI application, you can easily stay up-to-date by running the `self.update` command:
+```bash
+$ slack.phar self.update
+```
+
+
 ## Got it?
 
 That's about it for the documentation.
