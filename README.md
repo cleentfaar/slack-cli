@@ -33,3 +33,5 @@ make sure it complies with the [contributing guide](Resources/doc/contributing.m
 ### Attributions
 
 - The [Slack](https://slack.com/) staff, for making an awesome product and very clean API documentation.
+- [MattKetmo](https://github.com/MattKetmo), for his [awesome article](http://moquet.net/blog/distributing-php-cli/)
+on distributing CLI applications and his `bump-version.sh` script.

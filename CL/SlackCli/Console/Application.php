@@ -32,7 +32,7 @@ class Application extends BaseApplication
     {
         error_reporting(-1);
 
-        parent::__construct('Slack CLI', self::VERSION);
+        parent::__construct('Slack CLI', '@git-version@');
 
         $this->add(new Command\ApiTestCommand());
         $this->add(new Command\AuthTestCommand());
