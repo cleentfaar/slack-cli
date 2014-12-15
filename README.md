@@ -3,7 +3,6 @@
 Command-line application for interacting with the Slack API. Provides commands for all of the API methods currently available.
 
 **NOTE:** If your project is built on top of the Symfony Framework, consider using the bundle I created for it [here](https://github.com/cleentfaar/CLSlackBundle).
-Once installed, the commands are smart enough to use the token you have configured in the bundle, so you don't have to repeat it for every command.
 
 [![Build Status](https://secure.travis-ci.org/cleentfaar/slack-cli.svg)](http://travis-ci.org/cleentfaar/slack-cli)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/?branch=master)
@@ -11,6 +10,21 @@ Once installed, the commands are smart enough to use the token you have configur
 [![Latest Stable Version](https://poser.pugx.org/cleentfaar/slack-cli/v/stable.svg)](https://packagist.org/packages/cleentfaar/slack-cli)
 [![Total Downloads](https://poser.pugx.org/cleentfaar/slack-cli/downloads.svg)](https://packagist.org/packages/cleentfaar/slack-cli)
 [![Latest Unstable Version](https://poser.pugx.org/cleentfaar/slack-cli/v/unstable.svg)](https://packagist.org/packages/cleentfaar/slack-cli)
+
+
+### Quick look
+
+Sending a message to a Slack channel
+```bash
+slack.phar chat.postMessage general "Hello world!"
+```
+
+Update the application
+```bash
+slack.phar self.update
+```
+
+Check out the documentation below for more examples and instructions on how to install the `.phar` file.
 
 
 ### Documentation
