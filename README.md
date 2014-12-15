@@ -7,7 +7,7 @@ Once installed, the commands are smart enough to use the token you have configur
 
 [![Build Status](https://secure.travis-ci.org/cleentfaar/slack-cli.svg)](http://travis-ci.org/cleentfaar/slack-cli)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/?branch=master)<br/>
+[![Code Coverage](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/cleentfaar/slack-cli/v/stable.svg)](https://packagist.org/packages/cleentfaar/slack-cli)
 [![Total Downloads](https://poser.pugx.org/cleentfaar/slack-cli/downloads.svg)](https://packagist.org/packages/cleentfaar/slack-cli)
 [![Latest Unstable Version](https://poser.pugx.org/cleentfaar/slack-cli/v/unstable.svg)](https://packagist.org/packages/cleentfaar/slack-cli)
@@ -15,8 +15,8 @@ Once installed, the commands are smart enough to use the token you have configur
 
 ### Documentation
 
-- [Installation](Resources/doc/installation.md) - Information on installing this package either globally or as a composer dependency.
-- [Usage](Resources/doc/usage.md) - A few simple examples on how to use some of the console commands provided by this package.
+- [Installation](CL/SlackCli/Resources/doc/installation.md) - Information on installing this package either globally or as a composer dependency.
+- [Usage](CL/SlackCli/Resources/doc/usage.md) - A few simple examples on how to use some of the console commands provided by this package.
 
 #### Detailed documentation
 
