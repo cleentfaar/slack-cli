@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
  */
-class ChatPostMessageCommand extends AbstractCommand
+class ChatPostMessageCommand extends AbstractApiCommand
 {
     /**
      * {@inheritDoc}

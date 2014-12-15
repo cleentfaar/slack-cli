@@ -2,7 +2,10 @@
 
 namespace CL\SlackCli;
 
+use CL\SlackCli\Config\ConfigManager;
 use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class Application extends BaseApplication
 {
@@ -10,6 +13,11 @@ class Application extends BaseApplication
      * @var string|null
      */
     private $defaultToken;
+
+    /**
+     * @var ConfigManager[]
+     */
+    private $configs = [];
 
     /**
      * @param string $defaultToken
@@ -25,6 +33,22 @@ class Application extends BaseApplication
     public function getDefaultToken()
     {
         return $this->defaultToken;
+    }
+
+    /**
+     * @param string          $path
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return ConfigManager
+     */
+    public function getConfig($path, InputInterface $input, OutputInterface $output)
+    {
+        if (!array_key_exists($path, $this->configs)) {
+            $this->configs[$path] = new ConfigManager($path);
+        }
+
+        return $this->configs[$path];
     }
 
     /**
@@ -58,6 +82,9 @@ class Application extends BaseApplication
             new Command\ChatDeleteCommand(),
             new Command\ChatPostMessageCommand(),
             new Command\ChatUpdateCommand(),
+            new Command\ConfigGetCommand(),
+            new Command\ConfigListCommand(),
+            new Command\ConfigSetCommand(),
             new Command\EmojiListCommand(),
             new Command\FilesInfoCommand(),
             new Command\FilesListCommand(),

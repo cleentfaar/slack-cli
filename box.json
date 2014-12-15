@@ -10,10 +10,10 @@
   "directories": ["src"],
   "finder": [
     {
-      "name": "*.php",
       "exclude": [
         "Tests",
-        "tests"
+        "tests",
+        "phpunit"
       ],
       "in": "vendor"
     }

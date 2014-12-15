@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
  */
-class EmojiListCommand extends AbstractCommand
+class EmojiListCommand extends AbstractApiCommand
 {
     /**
      * {@inheritDoc}

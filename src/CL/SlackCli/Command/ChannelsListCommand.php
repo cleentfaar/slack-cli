@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
  */
-class ChannelsListCommand extends AbstractCommand
+class ChannelsListCommand extends AbstractApiCommand
 {
     /**
      * {@inheritDoc}

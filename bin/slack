@@ -13,5 +13,4 @@
 require_once __DIR__ . '/../bootstrap.php';
 
 $application = new \CL\SlackCli\Application('Slack Console Application', '0.12');
-$application->setDefaultToken(SLACK_CLI_DEFAULT_TOKEN);
 $application->run();

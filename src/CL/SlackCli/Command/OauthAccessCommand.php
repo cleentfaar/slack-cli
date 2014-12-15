@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
  */
-class OauthAccessCommand extends AbstractCommand
+class OauthAccessCommand extends AbstractApiCommand
 {
     /**
      * {@inheritDoc}

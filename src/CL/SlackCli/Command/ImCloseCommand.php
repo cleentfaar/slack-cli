@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
  */
-class ImCloseCommand extends AbstractCommand
+class ImCloseCommand extends AbstractApiCommand
 {
     /**
      * {@inheritDoc}

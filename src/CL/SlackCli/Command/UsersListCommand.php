@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
  */
-class UsersListCommand extends AbstractCommand
+class UsersListCommand extends AbstractApiCommand
 {
     /**
      * {@inheritDoc}

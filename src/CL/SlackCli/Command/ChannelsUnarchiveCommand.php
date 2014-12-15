@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
  */
-class ChannelsUnarchiveCommand extends AbstractCommand
+class ChannelsUnarchiveCommand extends AbstractApiCommand
 {
     /**
      * {@inheritDoc}

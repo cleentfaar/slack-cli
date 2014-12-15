@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
  */
-class GroupsListCommand extends AbstractCommand
+class GroupsListCommand extends AbstractApiCommand
 {
     /**
      * {@inheritDoc}

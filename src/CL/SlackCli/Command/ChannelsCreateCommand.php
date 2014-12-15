@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
  */
-class ChannelsCreateCommand extends AbstractCommand
+class ChannelsCreateCommand extends AbstractApiCommand
 {
     /**
      * {@inheritDoc}
@@ -75,7 +75,7 @@ EOT
             $this->writeOk($output, 'Successfully created channel!');
             if ($output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
                 $channelData = $this->serializeObjectToArray($payloadResponse->getChannel());
-                $this->renderTableKeyValue($output, $channelData);
+                $this->renderKeyValueTable($output, $channelData);
             }
         } else {
             $this->writeError($output, sprintf('Failed to create channel: %s', $payloadResponse->getErrorExplanation()));

@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
  */
-class ChannelsKickCommand extends AbstractCommand
+class ChannelsKickCommand extends AbstractApiCommand
 {
     /**
      * {@inheritDoc}

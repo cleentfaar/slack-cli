@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Cas Leentfaar <setactive@casleentfaar.com>
  */
-class UsersSetActiveCommand extends AbstractCommand
+class UsersSetActiveCommand extends AbstractApiCommand
 {
     /**
      * {@inheritDoc}

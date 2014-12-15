@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
  */
-class GroupsHistoryCommand extends AbstractCommand
+class GroupsHistoryCommand extends AbstractApiCommand
 {
     /**
      * {@inheritDoc}

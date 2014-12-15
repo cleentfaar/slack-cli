@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
  */
-class GroupsCreateChildCommand extends AbstractCommand
+class GroupsCreateChildCommand extends AbstractApiCommand
 {
     /**
      * {@inheritDoc}
@@ -86,7 +86,7 @@ EOT
             $this->writeOk($output, 'Successfully created child group!');
             if ($output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
                 $data = $this->serializeObjectToArray($payloadResponse->getGroup());
-                $this->renderTableKeyValue($output, $data);
+                $this->renderKeyValueTable($output, $data);
             }
         } else {
             $this->writeError($output, sprintf('Failed to create child group: %s', $payloadResponse->getErrorExplanation()));
