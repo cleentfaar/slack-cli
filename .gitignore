@@ -1,4 +1,4 @@
-/bin/
+bin/*
 composer.lock
 vendor/*
 slack.phar

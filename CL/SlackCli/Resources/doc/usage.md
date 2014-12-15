@@ -39,13 +39,13 @@ Here are some examples of sending a message to a Slack channel, using ther `chat
 
 Simple example (no verbosity):
 ```
-$ php bin/slack chat.postMessage general "This is a test" --username=AcmeBot --icon-emoji=truck
+$ slack.phar chat.postMessage general "This is a test" --username=AcmeBot --icon-emoji=truck
 ✔ Successfully sent message to Slack!
 ```
 
 Detailed example, (using normal verbosity `-v`):
 ```
-$ php bin/slack chat.postMessage general 'This is a test' -v
+$ slack.phar chat.postMessage general 'This is a test' -v
 ✔ Successfully sent message to Slack!
 Channel ID: C01234567
 Timestamp: 1234567890
@@ -53,7 +53,7 @@ Timestamp: 1234567890
 
 Debugging request/response example (using verbose verbosity `-vv`):
 ```
-$ php bin/slack chat.postMessage general 'This is a test' -vv
+$ slack.phar chat.postMessage general 'This is a test' -vv
 Debug: sending payload...
 +----------+----------------------------------------------+
 | channel  | #general                                     |
@@ -76,13 +76,13 @@ Timestamp: 1234567890.123456
 You might want to know who you are authenticated as during authorization.
 
 ```
-$ php bin/slack auth.test -v
+$ slack.phar auth.test -v
 ✔ Successfully authenticated by the Slack API!
 ```
 
 Again, the verbosity option (`-v`) comes in handy:
 ```
-$ php bin/slack auth.test -v
+$ slack.phar auth.test -v
 ✔ Successfully authenticated by the Slack API!
 +----------+------------+
 | User ID  | U01234567  |
