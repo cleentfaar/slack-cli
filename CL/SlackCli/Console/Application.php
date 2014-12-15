@@ -30,7 +30,7 @@ class Application extends BaseApplication
     {
         error_reporting(-1);
 
-        parent::__construct('Slack CLI', '@git-version@');
+        parent::__construct('Slack CLI', $this->getReplacedVersion());
 
         $this->add(new Command\ApiTestCommand());
         $this->add(new Command\AuthTestCommand());
@@ -95,7 +95,18 @@ class Application extends BaseApplication
      */
     public function getLongVersion()
     {
-        $version = parent::getLongVersion().' by <comment>Cas Leentfaar</comment>';
+        return sprintf('%s by <comment>Cas Leentfaar</comment>', parent::getLongVersion());
+    }
+
+    /**
+     * @return null|string
+     */
+    private function getReplacedVersion()
+    {
+        $version = '@git-version@';
+        if ($version === '@' . 'git-version@') {
+            return 'UNKNOWN';
+        }
 
         return $version;
     }
