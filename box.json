@@ -3,7 +3,8 @@
   "chmod": "0755",
   "main": "slack",
   "files": [
-    "LICENSE"
+    "LICENSE",
+    "vendor/herrera-io/phar-update/res/schema.json"
   ],
   "finder": [
     {

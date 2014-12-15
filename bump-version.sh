@@ -54,7 +54,7 @@ git checkout gh-pages
 cp slack.phar downloads/slack-${TAG}.phar
 git add downloads/slack-${TAG}.phar
 
-SHA1=$(openssl sha1 slack.phar)
+SHA1=$(openssl sha1 slack.phar | awk '{ print $2 }')
 
 JSON='name:"slack.phar"'
 JSON="${JSON},sha1:\"${SHA1}\""
