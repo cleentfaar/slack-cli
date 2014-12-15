@@ -51,20 +51,20 @@ box build
 #
 git checkout gh-pages
 
-cp cliph.phar downloads/cliph-${TAG}.phar
-git add downloads/cliph-${TAG}.phar
+cp slack.phar downloads/slack-${TAG}.phar
+git add downloads/slack-${TAG}.phar
 
-SHA1=$(openssl sha1 cliph.phar)
+SHA1=$(openssl sha1 slack.phar)
 
-JSON='name:"cliph.phar"'
+JSON='name:"slack.phar"'
 JSON="${JSON},sha1:\"${SHA1}\""
-JSON="${JSON},url:\"http://mattketmo.github.io/cliph/downloads/cliph-${TAG}.phar\""
+JSON="${JSON},url:\"http://cleentfaar.github.io/slack-cli/downloads/slack-${TAG}.phar\""
 JSON="${JSON},version:\"${TAG}\""
 
 if [ -f cliph.phar.pubkey ]; then
-    cp cliph.phar.pubkey pubkeys/cliph-${TAG}.phar.pubkeys
-    git add pubkeys/cliph-${TAG}.phar.pubkeys
-    JSON="${JSON},publicKey:\"http://mattketmo.github.io/cliph/pubkeys/cliph-${TAG}.phar.pubkey\""
+    cp cliph.phar.pubkey pubkeys/slack-${TAG}.phar.pubkeys
+    git add pubkeys/slack-${TAG}.phar.pubkeys
+    JSON="${JSON},publicKey:\"http://cleentfaar.github.io/slack-cli/pubkeys/slack-${TAG}.phar.pubkey\""
 fi
 
 #
