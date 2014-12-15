@@ -89,9 +89,6 @@ And you're good to go!
 $ slack chat.postMessage general "Hello World!" --token=your-api-token-here
 ```
 
-For more information on installing the application inside one of your projects, and using the actual commands that this
-package provides, check out the documentation mentioned below.
-
 
 ## Step 4) (Optional) Configure the token as the default
 

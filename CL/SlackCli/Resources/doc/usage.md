@@ -15,13 +15,15 @@ but the examples below should help to get you started.
 ### About tokens (`--token`)
 
 All commands require a value for the `--token` option:
-```
-$ php bin/slack some.apiMethod arg1 arg2 --token=my-token
+```bash
+$ slack.phar foo.bar arg1 arg2 --token=my-token
 ```
 
-**TIP:** If you are using the [SlackBundle](https://github.com/cleentfaar/CLSlackBundle), the token defaults to the value
-configured under `cl_slack.api_token`.
-
+**TIP:** If you plan on using the same token, you can store the token in the global configuration by using the `config.set`
+command:
+```bash
+$ slack.phar config.set default_token your-token-here
+```
 
 ### About verbosity (`-v`)
 

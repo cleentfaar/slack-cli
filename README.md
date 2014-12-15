@@ -15,8 +15,8 @@ Once installed, the commands are smart enough to use the token you have configur
 
 ### Documentation
 
-- [Installation](Resources/doc/installation.md) - Information on installing this package through composer or as a git submodule.
-- [Usage](Resources/doc/usage.md) - A few simple examples on how to use some of the console commands provided by this package
+- [Installation](Resources/doc/installation.md) - Information on installing this package either globally or as a composer dependency.
+- [Usage](Resources/doc/usage.md) - A few simple examples on how to use some of the console commands provided by this package.
 
 #### Detailed documentation
 
