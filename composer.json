@@ -31,9 +31,7 @@
     "cleentfaar/slack-bundle": "For easy integration with your Symfony projects"
   },
   "autoload": {
-    "psr-0": {
-      "CL\\SlackCli": ""
-    }
+    "psr-0": {"CL\\SlackCli\\": "src/"}
   },
   "config": {
     "bin-dir": "bin"
