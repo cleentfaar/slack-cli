@@ -18,8 +18,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Application extends BaseApplication
 {
-    const VERSION = '0.12';
-
     /**
      * @var Config[]
      */
@@ -85,6 +83,7 @@ class Application extends BaseApplication
         $this->add(new Command\SearchAllCommand());
         $this->add(new Command\SearchFilesCommand());
         $this->add(new Command\SearchMessagesCommand());
+        $this->add(new Command\SelfUpdateCommand());
         $this->add(new Command\StarsListCommand());
         $this->add(new Command\UsersInfoCommand());
         $this->add(new Command\UsersListCommand());
