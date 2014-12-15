@@ -4,5 +4,11 @@
         "sha1": "SHA1(slack.phar)= d94c40153624d25ecfe1ad2823159050d9afca7b",
         "url": "http://cleentfaar.github.io/slack-cli/downloads/slack-0.1.3.phar",
         "version": "0.1.3"
+    },
+    {
+        "name": "slack.phar",
+        "sha1": "4d8535fed5250e24fd59397d24a55eed3518b2bf",
+        "url": "http://cleentfaar.github.io/slack-cli/downloads/slack-0.12.2.phar",
+        "version": "0.12.2"
     }
 ]
