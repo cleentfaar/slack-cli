@@ -17,23 +17,19 @@
     }
   ],
   "bin": [
-    "bin/slack"
+    "slack"
   ],
   "require": {
     "php": ">=5.4",
     "cleentfaar/slack": "~0.12",
-    "symfony/console": "~2.2"
+    "symfony/console": "~2.6",
+    "herrera-io/phar-update": "~2.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.4"
   },
-  "suggest": {
-    "cleentfaar/slack-bundle": "For easy integration with your Symfony projects"
-  },
   "autoload": {
-    "psr-0": {
-      "CL\\SlackCli": ""
-    }
+    "psr-0": {"CL\\SlackCli\\": ""}
   },
   "config": {
     "bin-dir": "bin"

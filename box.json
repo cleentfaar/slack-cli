@@ -1,0 +1,25 @@
+{
+  "output": "slack.phar",
+  "chmod": "0755",
+  "main": "slack",
+  "files": [
+    "LICENSE"
+  ],
+  "finder": [
+    {
+      "name": ["*.php"],
+      "exclude": [
+        "Tests",
+        "tests"
+      ],
+      "in": [
+        "vendor",
+        "CL"
+      ]
+    }
+  ],
+  "git-version": "git-version",
+  "git-commit": "git-commit",
+  "stub": true,
+  "web": false
+}

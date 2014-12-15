@@ -1,0 +1,31 @@
+#!/usr/bin/env php
+<?php
+
+/*
+ * This file is part of the slack-cli package.
+ *
+ * (c) Cas Leentfaar <info@casleentfaar.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+if (version_compare(phpversion(), '5.4', '<')) {
+    fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.4\n");
+    exit(1);
+}
+
+// installed via composer?
+if (file_exists($a = __DIR__.'/../../autoload.php')) {
+    require_once $a;
+} else {
+    require_once __DIR__.'/vendor/autoload.php';
+}
+
+use CL\SlackCli\Console\Application;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+
+AnnotationRegistry::registerLoader('class_exists');
+
+$application = new Application();
+$application->run();

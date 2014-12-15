@@ -9,11 +9,12 @@
 
     <filter>
         <whitelist>
-            <directory>./</directory>
+            <directory>./CL/SlackCli</directory>
             <exclude>
-                <directory>./Resources</directory>
-                <directory>./Tests</directory>
+                <directory>./bin</directory>
                 <directory>./vendor</directory>
+                <directory>./CL/SlackCli/Resources</directory>
+                <directory>./CL/SlackCli/Tests</directory>
             </exclude>
         </whitelist>
     </filter>
