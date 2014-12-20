@@ -27,10 +27,17 @@ $ slack.phar config.set default_token your-token-here
 
 ### About verbosity (`-v`)
 
-**HINT 1:** If you use the `normal` verbosity option (`-v`), displays more data on the response that are less relevant
-for other (quiet) scenarios.
-**HINT 2:** If you use the `verbose` verbosity option (`-vv`), debugging information is displayed about the data sent
-*to* and *from* the Slack API (including token).
+All commands return the relevant information that can be expected from it's related API method. This means
+you normally don't have to pass any extra options to get the information needed.
+
+Some API methods return some information which may not be very useful to you.
+These can be shown using the `normal` verbosity option (`-v`).
+
+In some scenarios however, you might want to get more information about the request sent to Slack and the response
+returned. For theses cases, you can use the `verbose` verbosity option (`-vv`). This can be especially handy when you
+think there is a bug in this package, or when you are just unsure about what is going wrong.
+
+The examples below show you what difference the verbosity can make for the output of each command.
 
 
 ## Sending a message (`chat.postMessage`)
