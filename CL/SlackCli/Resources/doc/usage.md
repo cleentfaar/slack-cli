@@ -31,11 +31,14 @@ All commands return the relevant information that can be expected from it's rela
 you normally don't have to pass any extra options to get the information needed.
 
 Some API methods return some information which may not be very useful to you.
-These can be shown using the `normal` verbosity option (`-v`).
+These can be shown using the `normal` verbosity option (`-v`). For example, the `chat.postMessage` command
+also returns the `Channel ID` and `timestamp` on which the message was posted. These would only be shown if you used
+this verbosity option (`-v`).
 
-In some scenarios however, you might want to get more information about the request sent to Slack and the response
-returned. For theses cases, you can use the `verbose` verbosity option (`-vv`). This can be especially handy when you
-think there is a bug in this package, or when you are just unsure about what is going wrong.
+In more advanced scenarios, you might want to get more detailed information about the actula request sent to Slack
+and the response returned by it. In those cases you can use the `verbose` verbosity option (`-vv`).
+It can be especially handy when you think there is a bug in this package, or when you are just unsure about what is
+going wrong.
 
 The examples below show you what difference the verbosity can make for the output of each command.
 
