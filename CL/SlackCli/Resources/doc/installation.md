@@ -1,11 +1,11 @@
 # Installation
 
-## Step 1) Install the .phar file
+## Step 1) Installing the .phar file
 
 ### Method 1) Locally
 
 Just download the `slack.phar` file and store it somewhere on your computer.
-Check out the [manifest](http://cleentfaar.github.io/slack-cli/manifest.json) for an URL to download.
+Check out the [manifest](http://cleentfaar.github.io/slack-cli/manifest.json) for the URL of the version you want.
 
 
 ### Method 2) Globally (manual)
@@ -50,7 +50,7 @@ $ slack chat.postMessage general "Hello World!" --token=your-api-token-here
 
 ## Step 2) (Optional) Configure the API token to use by default
 
-All commands require you to supply the API token using the `--token` option.
+All API commands require you to supply the API token using the `--token` option.
 However, if you are planning on using the same token you can easily configure the application to use a token set before-hand:
 
 ```bash

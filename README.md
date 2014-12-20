@@ -2,8 +2,6 @@
 
 Command-line application for interacting with the Slack API. Provides commands for all of the API methods currently available.
 
-**NOTE:** If your project is built on top of the Symfony Framework, consider using the bundle I created for it [here](https://github.com/cleentfaar/CLSlackBundle).
-
 [![Build Status](https://secure.travis-ci.org/cleentfaar/slack-cli.svg)](http://travis-ci.org/cleentfaar/slack-cli)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/?branch=master)
@@ -42,6 +40,12 @@ on how to use the payloads and responses in your own application, check out the 
 
 Got a good idea for this project? Found a nasty bug that needs fixing? That's great! Before submitting your PR however,
 make sure it complies with the [contributing guide](Resources/doc/contributing.md) to speed up the merging of your code.
+
+
+### Related packages
+
+[Slack](https://github.com/cleentfaar/slack) - Main library package consisting of the API client and model classes that adhere to the Slack API specs.
+[SlackBundle](https://github.com/cleentfaar/CLSlackBundle) - Symfony Bundle providing integration with the [Slack library](https://github.com/cleentfaar/slack) above.
 
 
 ### Attributions
