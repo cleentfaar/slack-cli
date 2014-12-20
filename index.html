@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Slack CLI by cleentfaar</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Slack CLI</h1>
+        <p>CLI application for the Slack API. Supports all API methods through easy-to-use commands.</p>
+
+        <p class="view"><a href="https://github.com/cleentfaar/slack-cli">View the Project on GitHub <small>cleentfaar/slack-cli</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/cleentfaar/slack-cli/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/cleentfaar/slack-cli/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/cleentfaar/slack-cli">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="slack-cli-" class="anchor" href="#slack-cli-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Slack CLI <a href="https://packagist.org/packages/cleentfaar/slack-cli"><img src="https://poser.pugx.org/cleentfaar/slack-cli/license.svg" alt="License"></a>
+</h1>
+
+<p>Command-line application for interacting with the Slack API. Provides commands for all of the API methods currently available.</p>
+
+<p><a href="http://travis-ci.org/cleentfaar/slack-cli"><img src="https://secure.travis-ci.org/cleentfaar/slack-cli.svg" alt="Build Status"></a>
+<a href="https://scrutinizer-ci.com/g/cleentfaar/slack-cli/?branch=master"><img src="https://scrutinizer-ci.com/g/cleentfaar/slack-cli/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"></a>
+<a href="https://scrutinizer-ci.com/g/cleentfaar/slack-cli/?branch=master"><img src="https://scrutinizer-ci.com/g/cleentfaar/slack-cli/badges/coverage.png?b=master" alt="Code Coverage"></a>
+<a href="https://packagist.org/packages/cleentfaar/slack-cli"><img src="https://poser.pugx.org/cleentfaar/slack-cli/v/stable.svg" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/cleentfaar/slack-cli"><img src="https://poser.pugx.org/cleentfaar/slack-cli/downloads.svg" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/cleentfaar/slack-cli"><img src="https://poser.pugx.org/cleentfaar/slack-cli/v/unstable.svg" alt="Latest Unstable Version"></a></p>
+
+<h3>
+<a id="quick-look" class="anchor" href="#quick-look" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quick look</h3>
+
+<p>Sending a message to a Slack channel</p>
+
+<div class="highlight highlight-bash"><pre>slack.phar chat.postMessage general <span class="pl-s1"><span class="pl-pds">"</span>Hello world!<span class="pl-pds">"</span></span></pre></div>
+
+<p>Update the application</p>
+
+<div class="highlight highlight-bash"><pre>slack.phar self.update</pre></div>
+
+<p>Check out the documentation below for more examples and instructions on how to install the <code>.phar</code> file.</p>
+
+<h3>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h3>
+
+<ul>
+<li>
+<a href="CL/SlackCli/Resources/doc/installation.md">Installation</a> - Information on installing this package either globally or as a composer dependency.</li>
+<li>
+<a href="CL/SlackCli/Resources/doc/usage.md">Usage</a> - A few simple examples on how to use some of the console commands provided by this package.</li>
+</ul>
+
+<h4>
+<a id="detailed-documentation" class="anchor" href="#detailed-documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Detailed documentation</h4>
+
+<p>This package only provides a command-line interface to access the Slack API methods; if you want to get your hands dirty
+on how to use the payloads and responses in your own application, check out the library that this package implements: <a href="https://github.com/cleentfaar/slack-cli">Slack API library</a>.</p>
+
+<h3>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h3>
+
+<p>Got a good idea for this project? Found a nasty bug that needs fixing? That's great! Before submitting your PR however,
+make sure it complies with the <a href="Resources/doc/contributing.md">contributing guide</a> to speed up the merging of your code.</p>
+
+<h3>
+<a id="related-packages" class="anchor" href="#related-packages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Related packages</h3>
+
+<ul>
+<li>
+<a href="https://github.com/cleentfaar/slack">Slack</a> - Main library package consisting of the API client and model classes that adhere to the Slack API specs.</li>
+<li>
+<a href="https://github.com/cleentfaar/CLSlackBundle">SlackBundle</a> - Symfony Bundle providing integration with the <a href="https://github.com/cleentfaar/slack">Slack library</a> above.</li>
+</ul>
+
+<h3>
+<a id="attributions" class="anchor" href="#attributions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Attributions</h3>
+
+<ul>
+<li>The <a href="https://slack.com/">Slack</a> staff, for making an awesome product and very clean API documentation.</li>
+<li>
+<a href="https://github.com/MattKetmo">MattKetmo</a>, for his <a href="http://moquet.net/blog/distributing-php-cli/">awesome article</a>
+on distributing CLI applications and his <code>bump-version.sh</code> script.</li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/cleentfaar">cleentfaar</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
