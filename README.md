@@ -44,8 +44,8 @@ make sure it complies with the [contributing guide](Resources/doc/contributing.m
 
 ### Related packages
 
-[Slack](https://github.com/cleentfaar/slack) - Main library package consisting of the API client and model classes that adhere to the Slack API specs.
-[SlackBundle](https://github.com/cleentfaar/CLSlackBundle) - Symfony Bundle providing integration with the [Slack library](https://github.com/cleentfaar/slack) above.
+- [Slack](https://github.com/cleentfaar/slack) - Main library package consisting of the API client and model classes that adhere to the Slack API specs.
+- [SlackBundle](https://github.com/cleentfaar/CLSlackBundle) - Symfony Bundle providing integration with the [Slack library](https://github.com/cleentfaar/slack) above.
 
 
 ### Attributions
