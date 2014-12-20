@@ -39,7 +39,7 @@ on how to use the payloads and responses in your own application, check out the 
 ### Contributing
 
 Got a good idea for this project? Found a nasty bug that needs fixing? That's great! Before submitting your PR however,
-make sure it complies with the [contributing guide](Resources/doc/contributing.md) to speed up the merging of your code.
+make sure it complies with the [contributing guide](CL/SlackCli/Resources/doc/contributing.md) to speed up the merging of your code.
 
 
 ### Related packages
