@@ -42,8 +42,8 @@ TAG=$1
 #
 # Tag & build master branch
 #
-git fetch --all
 git checkout master
+git fetch --all
 git pull
 git tag ${TAG}
 box build
@@ -52,6 +52,7 @@ box build
 # Copy executable file into GH pages
 #
 git checkout gh-pages
+git fetch --all
 git pull
 
 cp slack.phar downloads/slack-${TAG}.phar
