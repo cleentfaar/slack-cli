@@ -71,7 +71,7 @@ function process($argv)
         exit(0);
     }
 
-    $ok = checkPlatform($quiet, $disableTls);
+    $ok = checkPlatform($quiet);
 
     if (false !== $installDir && !is_dir($installDir)) {
         out("The defined install dir ({$installDir}) does not exist.", 'info');
@@ -301,7 +301,7 @@ function installSlackCli($version, $installDir, $filename, $quiet)
             out("Downloading...", 'info');
         }
 
-        $urlPath   = (false !== $version ? "/slack-{$version}.phar" : . "/slack-latest.phar";
+        $urlPath   = false !== $version ? "/slack-{$version}.phar" : "/slack-latest.phar";
         $url       = "http://cleentfaar.github.io/slack-cli/downloads/{$urlPath}";
         $errorHandler = new ErrorHandler();
         set_error_handler(array($errorHandler, 'handleError'));
