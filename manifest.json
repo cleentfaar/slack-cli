@@ -22,5 +22,23 @@
         "sha1": "e20ea165961ec4d1877ac283b62690ed878a42a3",
         "url": "http://cleentfaar.github.io/slack-cli/downloads/slack-0.12.5.phar",
         "version": "0.12.5"
+    },
+    {
+        "name": "slack.phar",
+        "sha1": "c9c670c82b975bdd90720d24d9190810ac276ff7",
+        "url": "http://cleentfaar.github.io/slack-cli/downloads/slack-0.12.6.phar",
+        "version": "0.12.6"
+    },
+    {
+        "name": "slack.phar",
+        "sha1": "f0125b7ec331b0bdb4fb0f422242484cba4e0537",
+        "url": "http://cleentfaar.github.io/slack-cli/downloads/slack-0.12.6.phar",
+        "version": "0.12.6"
+    },
+    {
+        "name": "slack.phar",
+        "sha1": "345a59d93c4dbef4b6996af24a9afb23c65448ba",
+        "url": "http://cleentfaar.github.io/slack-cli/downloads/slack-0.12.6.phar",
+        "version": "0.12.6"
     }
 ]
