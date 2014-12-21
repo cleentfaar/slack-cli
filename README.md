@@ -1,13 +1,12 @@
-# Slack CLI [![License](https://poser.pugx.org/cleentfaar/slack-cli/license.svg)](https://packagist.org/packages/cleentfaar/slack-cli)
+# Slack CLI [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/cleentfaar/slack-cli/tree/master/LICENSE.md)
 
 Command-line application for interacting with the Slack API. Provides commands for all of the API methods currently available.
 
-[![Build Status](https://secure.travis-ci.org/cleentfaar/slack-cli.svg)](http://travis-ci.org/cleentfaar/slack-cli)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/cleentfaar/slack-cli/v/stable.svg)](https://packagist.org/packages/cleentfaar/slack-cli)
-[![Total Downloads](https://poser.pugx.org/cleentfaar/slack-cli/downloads.svg)](https://packagist.org/packages/cleentfaar/slack-cli)
-[![Latest Unstable Version](https://poser.pugx.org/cleentfaar/slack-cli/v/unstable.svg)](https://packagist.org/packages/cleentfaar/slack-cli)
+[![Build Status](https://img.shields.io/travis/cleentfaar/slack-cli/master.svg?style=flat-square)](https://travis-ci.org/cleentfaar/slack-cli)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/cleentfaar/slack-cli.svg?style=flat-square)](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/code-structure)
+[![Quality Score](https://img.shields.io/scrutinizer/g/cleentfaar/slack-cli.svg?style=flat-square)](https://scrutinizer-ci.com/g/cleentfaar/slack-cli)
+[![Latest Version](https://img.shields.io/github/release/cleentfaar/slack-cli.svg?style=flat-square)](https://github.com/cleentfaar/slack-cli/releases)
+[![Total Downloads](https://img.shields.io/packagist/dt/cleentfaar/slack-cli.svg?style=flat-square)](https://packagist.org/packages/cleentfaar/slack-cli)
 
 
 ### Quick look
