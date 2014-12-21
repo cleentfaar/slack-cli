@@ -12,8 +12,8 @@
 namespace CL\SlackCli\Command;
 
 use CL\SlackCli\Config\Config;
+use CL\SlackCli\Config\ConfigFactory;
 use CL\SlackCli\Console\Application;
-use CL\SlackCli\Factory;
 use Composer\Config\JsonConfigSource;
 use Composer\IO\NullIO;
 use Composer\Json\JsonFile;
@@ -78,7 +78,7 @@ abstract class AbstractCommand extends Command
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->config = Factory::createConfig(new NullIO());
+        $this->config = ConfigFactory::createConfig(new NullIO());
 
         // Get the local composer.json, global config.json, or if the user
         // passed in a file to use

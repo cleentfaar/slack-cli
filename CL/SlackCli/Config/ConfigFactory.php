@@ -1,8 +1,7 @@
 <?php
 
-namespace CL\SlackCli;
+namespace CL\SlackCli\Config;
 
-use CL\SlackCli\Config\Config;
 use Composer\Config\JsonConfigSource;
 use Composer\Json\JsonFile;
 use Composer\IO\IOInterface;
@@ -14,13 +13,14 @@ use Composer\IO\IOInterface;
  * @author Nils Adermann <naderman@naderman.de>
  * @author Cas Leentfaar <info@casleentfaar.com>
  */
-class Factory
+class ConfigFactory
 {
     /**
      * @return string
+     * 
      * @throws \RuntimeException
      */
-    protected static function getHomeDir()
+    public static function getHomeDir()
     {
         $home = getenv('SLACK_CLI_HOME');
         if (!$home) {
