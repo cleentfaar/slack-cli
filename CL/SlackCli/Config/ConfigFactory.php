@@ -17,7 +17,7 @@ class ConfigFactory
 {
     /**
      * @return string
-     * 
+     *
      * @throws \RuntimeException
      */
     public static function getHomeDir()
@@ -41,11 +41,9 @@ class ConfigFactory
     }
 
     /**
-     * @param IOInterface|null $io
-     *
      * @return Config
      */
-    public static function createConfig(IOInterface $io = null)
+    public static function createConfig()
     {
         // determine home and cache dirs
         $home = self::getHomeDir();
@@ -68,9 +66,6 @@ class ConfigFactory
         // load global config
         $file = new JsonFile($home . '/config.json');
         if ($file->exists()) {
-            if ($io && $io->isDebug()) {
-                $io->write('Loading config file ' . $file->getPath());
-            }
             $config->merge($file->read());
         }
         $config->setConfigSource(new JsonConfigSource($file));

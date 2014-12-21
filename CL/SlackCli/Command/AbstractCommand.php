@@ -15,11 +15,9 @@ use CL\SlackCli\Config\Config;
 use CL\SlackCli\Config\ConfigFactory;
 use CL\SlackCli\Console\Application;
 use Composer\Config\JsonConfigSource;
-use Composer\IO\NullIO;
 use Composer\Json\JsonFile;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -78,7 +76,7 @@ abstract class AbstractCommand extends Command
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->config = ConfigFactory::createConfig(new NullIO());
+        $this->config = ConfigFactory::createConfig();
 
         // Get the local composer.json, global config.json, or if the user
         // passed in a file to use
@@ -91,7 +89,7 @@ abstract class AbstractCommand extends Command
         // initialize the global file if it's not there
         if (!$this->configFile->exists()) {
             touch($this->configFile->getPath());
-            $this->configFile->write(['config' => new \ArrayObject]);
+            $this->configFile->write(['config' => new \ArrayObject()]);
             @chmod($this->configFile->getPath(), 0600);
         }
 
