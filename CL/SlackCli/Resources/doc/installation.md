@@ -3,10 +3,10 @@
 ## Step 1) Downloading the Slack CLI Executable
 
 There are in short, two ways to install the Slack CLI:
-- [Locally](#Locally); as part of your project, or;
-- [Globally](#Globally); as a system-wide executable
+- [Locally](#locally); as part of your project, or;
+- [Globally](#globally); as a system-wide executable
 
-Windows Users should follow steps [here](#Windows-users).
+Windows Users should follow steps [here](#windows-users).
 
 ### Locally
 
