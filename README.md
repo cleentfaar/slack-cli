@@ -49,6 +49,6 @@ make sure it complies with the [contributing guide](CL/SlackCli/Resources/doc/co
 
 ### Attributions
 
-- The [Slack](https://slack.com/) staff, for making an awesome product and very clean API documentation.
-- [MattKetmo](https://github.com/MattKetmo), for his [awesome article](http://moquet.net/blog/distributing-php-cli/)
+- The [Slack](https://slack.com/) staff, for making a great product and very clean API documentation.
+- [MattKetmo](https://github.com/MattKetmo), for his [very useful article](http://moquet.net/blog/distributing-php-cli/)
 on distributing CLI applications and his `bump-version.sh` script.
