@@ -26,10 +26,10 @@ Check out the documentation below for more examples and instructions on how to i
 
 ### Installation / Usage
 
-1. Download the [`slack.phar`](https://cleentfaar.github.io/slack-cli/downloads/slack-latest.phar) executable or use the installer.
+1. Download the [`slack.phar`](http://cleentfaar.github.io/slack-cli/downloads/slack-latest.phar) executable or use the installer.
 
     ``` sh
-    $ curl -sS https://cleentfaar.github.io/slack-cli/installer | php
+    $ curl -sS http://cleentfaar.github.io/slack-cli/installer | php
     ```
 
 2. Run Slack CLI: `php slack.phar`
