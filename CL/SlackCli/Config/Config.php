@@ -22,7 +22,6 @@ class Config
     ];
 
     private $config;
-    private $repositories;
     private $configSource;
     private $useEnvironment;
 
@@ -65,14 +64,6 @@ class Config
                 $this->config[$key] = $val;
             }
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function getRepositories()
-    {
-        return $this->repositories;
     }
 
     /**
