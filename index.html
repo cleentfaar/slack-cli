@@ -54,6 +54,39 @@
 <p>Check out the documentation below for more examples and instructions on how to install the <code>.phar</code> file.</p>
 
 <h3>
+<a id="installation--usage" class="anchor" href="#installation--usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation / Usage</h3>
+
+<ol>
+<li>
+<p>Download the <a href="https://cleentfaar.github.io/slack-cli/downloads/slack-latest.phar"><code>slack.phar</code></a> executable or use the installer.</p>
+
+<div class="highlight highlight-sh"><pre>$ curl -sS https://cleentfaar.github.io/slack-cli/installer <span class="pl-k">|</span> php</pre></div>
+</li>
+<li><p>Run Slack CLI: <code>php slack.phar</code></p></li>
+</ol>
+
+<h4>
+<a id="installation-from-source" class="anchor" href="#installation-from-source" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation from Source</h4>
+
+<p>To run tests, or develop Slack CLI itself, you must use the sources and not the phar
+file as described above. Before continuing, you should also install <a href="https://getcomposer.org">Composer</a> either globally
+or in the cloned repository below.</p>
+
+<ol>
+<li>Run <code>git clone https://github.com/cleentfaar/slack-cli.git</code>
+</li>
+<li>Run Composer to get the dependencies: <code>cd slack-cli &amp;&amp; composer install</code>
+</li>
+</ol>
+
+<p>You can now run Slack CLI by executing the <code>./slack</code> script: <code>php /path/to/slack-cli/slack</code></p>
+
+<h4>
+<a id="global-installation-manual" class="anchor" href="#global-installation-manual" aria-hidden="true"><span class="octicon octicon-link"></span></a>Global installation (manual)</h4>
+
+<p>Follow instructions <a href="https://github.com/cleentfaar/slack-cli/tree/master/CL/SlackCli/Resources/doc/installation.md">in the documentation</a></p>
+
+<h3>
 <a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h3>
 
 <ul>
@@ -94,7 +127,8 @@ make sure it complies with the <a href="https://github.com/cleentfaar/slack-cli/
 <a href="https://github.com/MattKetmo">MattKetmo</a>, for his <a href="http://moquet.net/blog/distributing-php-cli/">very useful article</a>
 on distributing CLI applications and his <code>bump-version.sh</code> script.</li>
 <li>
-<a href="https://github.com/composer/composer">Composer</a> For the installer script</li>
+<a href="https://github.com/composer/composer">Composer</a>, for a shameless copy of their <a href="https://getcomposer.org/installer">installer script</a>
+and relevant documentation.</li>
 </ul>
       </section>
       <footer>
