@@ -11,6 +11,7 @@
 
 namespace CL\SlackCli\Console;
 
+use CL\SlackCli\Command;
 use CL\SlackCli\Config\Config;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputInterface;
@@ -51,9 +52,11 @@ class Application extends BaseApplication
         $this->add(new Command\ChatDeleteCommand());
         $this->add(new Command\ChatPostMessageCommand());
         $this->add(new Command\ChatUpdateCommand());
+        $this->add(new Command\ConfigEditCommand());
         $this->add(new Command\ConfigGetCommand());
         $this->add(new Command\ConfigListCommand());
         $this->add(new Command\ConfigSetCommand());
+        $this->add(new Command\ConfigUnsetCommand());
         $this->add(new Command\EmojiListCommand());
         $this->add(new Command\FilesInfoCommand());
         $this->add(new Command\FilesListCommand());
