@@ -23,11 +23,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Application extends BaseApplication
 {
     /**
-     * @var Config[]
-     */
-    private $configs = [];
-
-    /**
      * Constructor.
      */
     public function __construct()
@@ -115,21 +110,5 @@ class Application extends BaseApplication
         }
 
         return $version;
-    }
-
-    /**
-     * @param string          $path
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return Config
-     */
-    public function getConfig($path, InputInterface $input, OutputInterface $output)
-    {
-        if (!array_key_exists($path, $this->configs)) {
-            $this->configs[$path] = new Config($path);
-        }
-
-        return $this->configs[$path];
     }
 }
