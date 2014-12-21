@@ -84,8 +84,8 @@ Slack CLI version 0.12.7
 All API commands require you to supply the API token using the `--token` option.
 However, if you are planning on using the same token you can easily configure the application to use a token set before-hand:
 
-```bash
-$ slack.phar config.set default_token your-token-here
+```sh
+$ slack config.set default_token your-token-here
 ```
 
 If you do not have an API token yet, you should generate one on the Slack API website: [https://api.slack.com/web](https://api.slack.com/web)

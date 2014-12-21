@@ -12,12 +12,12 @@ Command-line application for interacting with the Slack API. Provides commands f
 ### Quick look
 
 Sending a message to a Slack channel
-```bash
-slack.phar chat.postMessage general "Hello world!"
+```sh
+$ slack chat.postMessage general "Hello world!"
 ```
 
 Update the application
-```bash
+```sh
 slack.phar self.update
 ```
 

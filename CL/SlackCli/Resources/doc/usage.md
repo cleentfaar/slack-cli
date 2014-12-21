@@ -15,13 +15,13 @@ but the examples below should help to get you started.
 ### About tokens (`--token`)
 
 All commands require a value for the `--token` option:
-```bash
+```sh
 $ slack.phar foo.bar arg1 arg2 --token=my-token
 ```
 
 **TIP:** If you plan on using the same token, you can store the token in the global configuration by using the `config.set`
 command:
-```bash
+```sh
 $ slack.phar config.set default_token your-token-here
 ```
 
@@ -105,7 +105,7 @@ $ slack.phar auth.test -v
 ## Updating the application
 
 Once you have installed the CLI application, you can easily stay up-to-date by running the `self.update` command:
-```bash
+```sh
 $ slack.phar self.update
 ```
 
