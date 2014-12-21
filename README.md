@@ -26,8 +26,8 @@ Check out the documentation below for more examples and instructions on how to i
 
 ### Documentation
 
-- [Installation](CL/SlackCli/Resources/doc/installation.md) - Information on installing this package either globally or as a composer dependency.
-- [Usage](CL/SlackCli/Resources/doc/usage.md) - A few simple examples on how to use some of the console commands provided by this package.
+- [Installation](https://github.com/cleentfaar/slack-cli/tree/master/CL/SlackCli/Resources/doc/installation.md) - Information on installing this package either globally or as a composer dependency.
+- [Usage](https://github.com/cleentfaar/slack-cli/tree/master/CL/SlackCli/Resources/doc/usage.md) - A few simple examples on how to use some of the console commands provided by this package.
 
 #### Detailed documentation
 
@@ -38,7 +38,7 @@ on how to use the payloads and responses in your own application, check out the 
 ### Contributing
 
 Got a good idea for this project? Found a nasty bug that needs fixing? That's great! Before submitting your PR however,
-make sure it complies with the [contributing guide](CL/SlackCli/Resources/doc/contributing.md) to speed up the merging of your code.
+make sure it complies with the [contributing guide](https://github.com/cleentfaar/slack-cli/tree/master/CL/SlackCli/Resources/doc/contributing.md) to speed up the merging of your code.
 
 
 ### Related packages
