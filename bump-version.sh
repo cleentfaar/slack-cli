@@ -53,7 +53,7 @@ git checkout gh-pages
 
 cp slack.phar downloads/slack-${TAG}.phar
 cp -f slack.phar downloads/slack-latest.phar
-echo "${TAG}" > version
+echo -n "${TAG}" > version
 git add downloads/slack-${TAG}.phar
 git add downloads/slack-latest.phar
 git add version
