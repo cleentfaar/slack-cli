@@ -18,7 +18,7 @@ $ slack chat.postMessage general "Hello world!"
 
 Update the application
 ```sh
-slack.phar self.update
+slack self.update
 ```
 
 Check out the documentation below for more examples and instructions on how to install the `.phar` file.
