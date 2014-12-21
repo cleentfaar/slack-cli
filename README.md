@@ -24,6 +24,34 @@ slack.phar self.update
 Check out the documentation below for more examples and instructions on how to install the `.phar` file.
 
 
+### Installation / Usage
+
+1. Download the [`slack.phar`](https://cleentfaar.github.io/slack-cli/downloads/slack-latest.phar) executable or use the installer.
+
+    ``` sh
+    $ curl -sS https://cleentfaar.github.io/slack-cli/installer | php
+    ```
+
+2. Run Slack CLI: `php slack.phar`
+
+
+#### Installation from Source
+
+To run tests, or develop Slack CLI itself, you must use the sources and not the phar
+file as described above. Before continuing, you should also install [Composer](https://getcomposer.org) either globally
+or in the cloned repository below.
+
+1. Run `git clone https://github.com/cleentfaar/slack-cli.git`
+2. Run Composer to get the dependencies: `cd slack-cli && composer install`
+
+You can now run Slack CLI by executing the `./slack` script: `php /path/to/slack-cli/slack`
+
+
+#### Global installation (manual)
+
+Follow instructions [in the documentation](https://github.com/cleentfaar/slack-cli/tree/master/CL/SlackCli/Resources/doc/installation.md)
+
+
 ### Documentation
 
 - [Installation](https://github.com/cleentfaar/slack-cli/tree/master/CL/SlackCli/Resources/doc/installation.md) - Information on installing this package either globally or as a composer dependency.
