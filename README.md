@@ -80,4 +80,5 @@ make sure it complies with the [contributing guide](https://github.com/cleentfaa
 - The [Slack](https://slack.com/) staff, for making a great product and very clean API documentation.
 - [MattKetmo](https://github.com/MattKetmo), for his [very useful article](http://moquet.net/blog/distributing-php-cli/)
 on distributing CLI applications and his `bump-version.sh` script.
-- [Composer](https://github.com/composer/composer) For the installer script
+- [Composer](https://github.com/composer/composer), for a shameless copy of their [installer script](https://getcomposer.org/installer)
+and relevant documentation.
