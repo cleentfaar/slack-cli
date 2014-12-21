@@ -28,7 +28,7 @@ class ConfigFactory
                 if (!getenv('APPDATA')) {
                     throw new \RuntimeException('The APPDATA or SLACK_CLI_HOME environment variable must be set for Slack CLI to run correctly');
                 }
-                $home = strtr(getenv('APPDATA'), '\\', '/') . '/Composer';
+                $home = strtr(getenv('APPDATA'), '\\', '/') . '/SlackCli';
             } else {
                 if (!getenv('HOME')) {
                     throw new \RuntimeException('The HOME or SLACK_CLI_HOME environment variable must be set for Slack CLI to run correctly');
