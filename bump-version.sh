@@ -52,7 +52,9 @@ box build
 git checkout gh-pages
 
 cp slack.phar downloads/slack-${TAG}.phar
+cp -f slack.phar downloads/slack-latest.phar
 git add downloads/slack-${TAG}.phar
+git add downloads/slack-latest.phar
 
 SHA1=$(openssl sha1 slack.phar | awk '{ print $2 }')
 
@@ -82,5 +84,4 @@ git commit -m "Bump version ${TAG}"
 git checkout master
 
 echo "New version created. Now you should run:"
-echo "git push origin gh-pages"
-echo "git push ${TAG}"
+echo "git push origin gh-pages && git push --tags"
