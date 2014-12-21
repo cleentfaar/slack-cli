@@ -1,52 +1,83 @@
 # Installation
 
-## Step 1) Installing the .phar file
+## Step 1) Downloading the Slack CLI Executable
 
-### Method 1) Locally
+There are in short, two ways to install the Slack CLI:
+- [Locally](#Locally); as part of your project, or;
+- [Globally](#Globally); as a system-wide executable
 
-Just download the `slack.phar` file and store it somewhere on your computer.
-Check out the [manifest](http://cleentfaar.github.io/slack-cli/manifest.json) for the URL of the version you want.
+Windows Users should follow steps [here](#Windows-users).
 
+### Locally
 
-### Method 2) Globally (manual)
+Installing Slack CLI locally is a matter of just running the installer in your
+project directory:
 
-You can run the commands below to easily access ``slack`` from anywhere on your system.
-Take care to replace the `[VERSION]` placeholder with the version number you would like to use (see [releases](https://github.com/cleentfaar/slack-cli/releases/))
-```bash
-$ wget http://cleentfaar.github.io/slack-cli/downloads/slack-[VERSION].phar -O slack
+```sh
+curl -sS http://cleentfaar.github.io/slack-cli/installer | php
 ```
 
-or with curl:
-```bash
-$ curl http://cleentfaar.github.io/slack-cli/downloads/slack-[VERSION].phar -o slack
+> **Note:** If the above fails for some reason, you can download the installer
+> with `php` instead:
+
+```sh
+php -r "readfile('http://cleentfaar.github.io/slack-cli/installer');" | php
 ```
 
-then:
-```bash
-$ sudo chmod a+x slack
-$ sudo mv php-cs-fixer /usr/local/bin/slack
+The installer will just check a few PHP settings and then download the latest `slack.phar`
+to your working directory. This file is the Slack CLI binary. It is a PHAR (PHP
+archive), which is an archive format for PHP which can be run on the command
+line, amongst other things.
+
+You can install Slack CLI to a specific directory by using the `--install-dir`
+option and providing a target directory (it can be an absolute or relative path):
+
+```sh
+curl -sS http://cleentfaar.github.io/slack-cli/installer | php -- --install-dir=bin
 ```
 
-Then, just run ``slack``.
+### Globally
 
+You can place this file anywhere you wish. If you put it in your `PATH`,
+you can access it globally. On unixy systems you can even make it
+executable and invoke it without `php`.
 
-### Method 3) Globally (composer)
+You can run these commands to easily access `slack` from anywhere on your system:
 
-Install [Composer](https://getcomposer.org/download/) and issue the following command:
-```
-$ ./composer.phar global require cleentfaar/slack-cli
-```
-
-Then, make sure you have `~/.composer/vendor/bin` in your `PATH`...
-```
-export PATH="$PATH:$HOME/.composer/vendor/bin"
+```sh
+curl -sS http://cleentfaar.github.io/slack-cli/installer | php
+mv slack.phar /usr/local/bin/slack
 ```
 
-And you're good to go!
-```
-$ slack chat.postMessage general "Hello World!" --token=your-api-token-here
+> **Note:** If the above fails due to permissions, run the `mv` line
+> again with sudo.
+
+Then, just run `slack` in order to run Slack CLI instead of `php slack.phar`.
+
+### Windows users
+
+Change to a directory on your `PATH` and run the install snippet to download
+slack.phar:
+
+```sh
+C:\Users\username>cd C:\bin
+C:\bin>php -r "readfile('http://cleentfaar.github.io/slack-cli/installer');" | php
 ```
 
+> **Note:** If the above fails due to readfile, use the `http` url or enable php_openssl.dll in php.ini
+
+Create a new `slack.bat` file alongside `slack.phar`:
+
+```sh
+C:\bin>echo @php "%~dp0slack.phar" %*>slack.bat
+```
+
+Close your current terminal. Test usage with a new terminal:
+
+```sh
+C:\Users\username>slack -V
+Slack CLI version 0.12.7
+```
 
 ## Step 2) (Optional) Configure the API token to use by default
 
