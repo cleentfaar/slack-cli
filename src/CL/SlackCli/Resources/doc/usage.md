@@ -115,12 +115,12 @@ $ slack.phar self.update
 
 That's about it for the documentation.
 
-If you want more control over how the payloads are sent to Slack, you should check out the [library's documentation](https://github.com/cleentfaar/slack/blob/master/Resources/doc/usage.md),
-specifically the [method reference](https://github.com/cleentfaar/slack/blob/master/Resources/doc/methods/index.md) for
+If you want more control over how the payloads are sent to Slack, you should check out the [library's documentation](https://github.com/cleentfaar/slack/blob/master/src/CL/Slack/Resources/doc/usage.md),
+specifically the [method reference](https://github.com/cleentfaar/slack/blob/master/src/CL/Slack/Resources/doc/methods/index.md) for
 detailed examples on how to access every API method in your own application.
 
 
 ## Contributing
 
 I am also open to PRs if you find things you would like to see changed! Before you do this, check out the documentation
-about contributing to this package [here](https://github.com/cleentfaar/slack/blob/master/Resources/doc/contributing.md).
+about contributing to this package [here](https://github.com/cleentfaar/slack-cli/blob/master/src/CL/SlackCli/Resources/doc/contributing.md).
