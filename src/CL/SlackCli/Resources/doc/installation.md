@@ -64,8 +64,6 @@ C:\Users\username>cd C:\bin
 C:\bin>php -r "readfile('http://cleentfaar.github.io/slack-cli/installer');" | php
 ```
 
-> **Note:** If the above fails due to readfile, use the `http` url or enable php_openssl.dll in php.ini
-
 Create a new `slack.bat` file alongside `slack.phar`:
 
 ```sh
@@ -88,9 +86,9 @@ However, if you are planning on using the same token you can easily configure th
 $ slack config.set default_token your-token-here
 ```
 
-If you do not have an API token yet, you should generate one on the Slack API website: [https://api.slack.com/web](https://api.slack.com/web)
+If you do not have an API token yet, you should generate one on the Slack API website (you need to be logged in first): [https://api.slack.com/web#authentication](https://api.slack.com/web#authentication)
 
 
 # Ready?
 
-Let's start interacting with the Slack API! Check out the [usage documentation](usage.md)!
+Let's start up this puppy! Check out the [usage documentation](https://github.com/cleentfaar/slack-cli/blob/master/src/CL/SlackCli/Resources/doc/usage.md)!

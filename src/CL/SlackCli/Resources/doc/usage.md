@@ -35,8 +35,9 @@ These can be shown using the `normal` verbosity option (`-v`). For example, the 
 also returns the `Channel ID` and `timestamp` on which the message was posted. These would only be shown if you used
 this verbosity option (`-v`).
 
-In more advanced scenarios, you might want to get more detailed information about the actula request sent to Slack
+In more advanced scenarios, you might want to get more detailed information about the actual request sent to Slack
 and the response returned by it. In those cases you can use the `verbose` verbosity option (`-vv`).
+
 It can be especially handy when you think there is a bug in this package, or when you are just unsure about what is
 going wrong.
 
