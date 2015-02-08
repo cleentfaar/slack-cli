@@ -1,6 +1,7 @@
 # Slack CLI [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/cleentfaar/slack-cli/blob/master/LICENSE.md)
 
-Command-line application for interacting with the Slack API. Provides commands for all of the API methods currently available.
+Command-line application for interacting with the [Slack API library](https://github.com/cleentfaar/slack). 
+Provides CLI commands for all of the API methods currently available using a single `phar` executable.
 
 [![Build Status](https://img.shields.io/travis/cleentfaar/slack-cli/master.svg?style=flat-square)](https://travis-ci.org/cleentfaar/slack-cli)
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/cleentfaar/slack-cli.svg?style=flat-square)](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/code-structure)
@@ -72,7 +73,7 @@ make sure it complies with the [contributing guide](https://github.com/cleentfaa
 ### Related packages
 
 - [Slack](https://github.com/cleentfaar/slack) - Main library package consisting of the API client and model classes that adhere to the Slack API specs.
-- [SlackBundle](https://github.com/cleentfaar/CLSlackBundle) - Symfony Bundle providing integration with the [Slack library](https://github.com/cleentfaar/slack) above.
+- [SlackBundle](https://github.com/cleentfaar/CLSlackBundle) - Symfony Bundle providing integration with the [Slack API library](https://github.com/cleentfaar/slack) above.
 
 
 ### Attributions

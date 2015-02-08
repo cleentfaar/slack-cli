@@ -123,4 +123,4 @@ detailed examples on how to access every API method in your own application.
 ## Contributing
 
 I am also open to PRs if you find things you would like to see changed! Before you do this, check out the documentation
-about contributing to this package [here](contributing.md).
+about contributing to this package [here](https://github.com/cleentfaar/slack/blob/master/Resources/doc/contributing.md).
