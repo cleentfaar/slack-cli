@@ -21,7 +21,7 @@
   ],
   "require": {
     "php": ">=5.4",
-    "cleentfaar/slack": "~0.12",
+    "cleentfaar/slack": "~0.13",
     "symfony/console": "~2.6",
     "composer/composer": "1.0.0-alpha9",
     "herrera-io/phar-update": "~2.0"
@@ -30,7 +30,9 @@
     "phpunit/phpunit": "~4.4"
   },
   "autoload": {
-    "psr-0": {"CL\\SlackCli\\": ""}
+    "psr-4": {
+      "CL\\SlackCli\\": "src/CL/SlackCli/"
+    }
   },
   "config": {
     "bin-dir": "bin"

@@ -19,6 +19,7 @@ use CL\Slack\Transport\ApiClient;
 use CL\Slack\Transport\Events\RequestEvent;
 use CL\Slack\Transport\Events\ResponseEvent;
 use CL\Slack\Util\PayloadRegistry;
+use CL\Slack\Util\PayloadSerializer;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Console\Helper\Table;
@@ -35,6 +36,11 @@ abstract class AbstractApiCommand extends AbstractCommand
      * @var ApiClient|null
      */
     private $apiClient;
+
+    /**
+     * @var PayloadRegistry
+     */
+    private $payloadRegistry;
 
     /**
      * @var SerializerInterface|null
@@ -71,9 +77,8 @@ abstract class AbstractApiCommand extends AbstractCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $apiClient       = $this->getApiClient();
-        $payloadRegistry = new PayloadRegistry();
-        $payload         = $payloadRegistry->get($this->getName());
+        $apiClient = $this->getApiClient();
+        $payload   = $this->getPayloadRegistry()->get($this->getName());
 
         $this->configureListeners($apiClient, $output);
         $this->configurePayload($payload, $input);
@@ -85,7 +90,11 @@ abstract class AbstractApiCommand extends AbstractCommand
         }
 
         if (empty($token)) {
-            throw new \RuntimeException('No token provided by `--token` option and no value for `default_token` was found in the global configuration. Use the `--token` option or set the token globally by running `config.set default_token your-token-here`');
+            throw new \RuntimeException(
+                'No token provided by `--token` option and no value for `default_token` was found ' .
+                'in the global configuration. Use the `--token` option or set the token globally ' .
+                'by running `slack.phar config.set default_token your-token-here`'
+            );
         }
 
         $response   = $apiClient->send($payload, $token);
@@ -104,7 +113,8 @@ abstract class AbstractApiCommand extends AbstractCommand
     protected function getApiClient()
     {
         if (!isset($this->apiClient)) {
-            $apiClient = new ApiClient();
+            $payloadSerializer = new PayloadSerializer(SerializerBuilder::create()->build());
+            $apiClient         = new ApiClient(null, $payloadSerializer);
 
             $this->apiClient = $apiClient;
         }
@@ -113,15 +123,15 @@ abstract class AbstractApiCommand extends AbstractCommand
     }
 
     /**
-     * @return SerializerInterface
+     * @return PayloadRegistry
      */
-    protected function getSerializer()
+    protected function getPayloadRegistry()
     {
-        if (!isset($this->serializer)) {
-            $this->serializer = SerializerBuilder::create()->build();
+        if (!isset($this->payloadRegistry)) {
+            $this->payloadRegistry = new PayloadRegistry();
         }
 
-        return $this->serializer;
+        return $this->payloadRegistry;
     }
 
     /**
@@ -278,6 +288,18 @@ abstract class AbstractApiCommand extends AbstractCommand
                 }
             }
         );
+    }
+
+    /**
+     * @return SerializerInterface
+     */
+    private function getSerializer()
+    {
+        if (!isset($this->serializer)) {
+            $this->serializer = SerializerBuilder::create()->build();
+        }
+
+        return $this->serializer;
     }
 
     /**
