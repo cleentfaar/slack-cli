@@ -31,11 +31,11 @@ class GroupsLeaveCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('groups.leave');
+        $this->setName('groups:leave');
         $this->setDescription('Leave a group (as the user of the token).');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'The ID of the group to leave');
         $this->setHelp(<<<EOT
-The <info>groups.leave</info> command leaves a group as the user of the token.
+The <info>groups:leave</info> command leaves a group as the user of the token.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/groups.leave</comment>
@@ -44,22 +44,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'groups.leave';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param GroupsLeavePayload $payload
-     * @param InputInterface     $input
+     * @return GroupsLeavePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new GroupsLeavePayload();
         $payload->setGroupId($input->getArgument('group-id'));
+        
+        return $payload;
     }
 
     /**

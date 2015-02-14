@@ -18,17 +18,17 @@ class ConfigEditCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('config.edit');
+        $this->setName('config:edit');
         $this->setDescription('Edit config options');
 
         $this->setHelp(<<<EOT
-This command allows you to edit the Slack CLI settings using a pre-configured editor.
+The <info>config:edit</info> allows you to edit the Slack CLI settings using a pre-configured editor.
 
 To choose your editor you can set the "EDITOR" env variable.
 
 To get a list of configuration values in the file:
 
-    <comment>slack.phar config.list</comment>
+    <comment>slack.phar config:list</comment>
 EOT
         );
     }

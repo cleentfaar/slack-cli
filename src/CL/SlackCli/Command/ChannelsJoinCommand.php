@@ -31,7 +31,7 @@ class ChannelsJoinCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('channels.join');
+        $this->setName('channels:join');
         $this->setDescription('Joins a channel with the token\'s user (creates channel if it doesn\'t exist)');
         $this->addArgument('channel', InputArgument::REQUIRED, 'The name of the channel to join (or create if it doesn\'t exist yet)');
         $this->setHelp(<<<EOT
@@ -48,22 +48,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'channels.join';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChannelsJoinPayload $payload
-     * @param InputInterface      $input
+     * @return ChannelsJoinPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChannelsJoinPayload();
         $payload->setChannel($input->getArgument('channel'));
+        
+        return $payload;
     }
 
     /**

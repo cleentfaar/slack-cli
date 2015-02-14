@@ -29,10 +29,10 @@ class ConfigListCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('config.list');
+        $this->setName('config:list');
         $this->setDescription('Lists all the keys and values from the global configuration');
         $this->setHelp(<<<EOT
-The <info>config.list</info> command lists all the keys and values from the global configuration.
+The <info>config:list</info> command lists all the keys and values from the global configuration.
 EOT
         );
     }
@@ -43,11 +43,6 @@ EOT
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->listConfiguration($this->config->all(), $this->config->raw(), $output);
-        /*
-        $table  = $this->createKeyValueTable($output, $config->all());
-        $table->setStyle('borderless');
-        $table->render();
-        */
     }
 
     /**

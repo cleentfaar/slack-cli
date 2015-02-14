@@ -31,11 +31,11 @@ class GroupsCloseCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('groups.close');
+        $this->setName('groups:close');
         $this->setDescription('Closes a given Slack group');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'The ID of a private group to close');
         $this->setHelp(<<<EOT
-The <info>groups.close</info> command let's you close a given Slack group.
+The <info>groups:close</info> command let's you close a given Slack group.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/groups.close</comment>
@@ -44,22 +44,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'groups.close';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param GroupsClosePayload $payload
-     * @param InputInterface       $input
+     * @return GroupsClosePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new GroupsClosePayload();
         $payload->setGroupId($input->getArgument('group-id'));
+        
+        return $payload;
     }
 
     /**

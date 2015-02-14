@@ -31,7 +31,7 @@ class GroupsOpenCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('groups.open');
+        $this->setName('groups:open');
         $this->setDescription('Opens a given Slack group');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'The ID of a private group to open');
         $this->setHelp(<<<EOT
@@ -44,22 +44,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'groups.open';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param GroupsOpenPayload $payload
-     * @param InputInterface       $input
+     * @return GroupsOpenPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new GroupsOpenPayload();
         $payload->setGroupId($input->getArgument('group-id'));
+        
+        return $payload;
     }
 
     /**

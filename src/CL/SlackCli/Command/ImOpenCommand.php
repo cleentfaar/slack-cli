@@ -31,11 +31,11 @@ class ImOpenCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('im.open');
+        $this->setName('im:open');
         $this->setDescription('Opens a Slack IM channel with another user');
         $this->addArgument('user-id', InputArgument::REQUIRED, 'ID of the user to open a direct message channel with');
         $this->setHelp(<<<EOT
-The <info>im.open</info> command let's you open a Slack IM channel.
+The <info>im:open</info> command let's you open a Slack IM channel.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/im.open</comment>
@@ -44,21 +44,13 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'im.open';
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @param ImOpenPayload  $payload
      * @param InputInterface $input
+     *
+     * @return ImOpenPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ImOpenPayload();
         $payload->setUserId($input->getArgument('user-id'));
     }
 

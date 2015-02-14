@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsArchivePayload;
 use CL\Slack\Payload\ChannelsArchivePayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,11 +30,11 @@ class ChannelsArchiveCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('channels.archive');
+        $this->setName('channels:archive');
         $this->setDescription('Archives a given Slack channel');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel to archive');
         $this->setHelp(<<<EOT
-The <info>channels.archive</info> command let's you archive a given Slack channel.
+The <info>channels:archive</info> command let's you archive a given Slack channel.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/channels.archive</comment>
@@ -44,29 +43,23 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'channels.archive';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChannelsArchivePayload $payload
-     * @param InputInterface         $input
+     * @return ChannelsArchivePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChannelsArchivePayload();
         $payload->setChannelId($input->getArgument('channel-id'));
+
+        return $payload;
     }
 
     /**
      * {@inheritdoc}
      *
      * @param ChannelsArchivePayloadResponse $payloadResponse
-     * @param InputInterface          $input
+     * @param InputInterface                 $input
      * @param OutputInterface                $output
      */
     protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)

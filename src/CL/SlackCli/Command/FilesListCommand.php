@@ -11,7 +11,6 @@
 
 namespace CL\SlackCli\Command;
 
-use CL\Slack\Model\file;
 use CL\Slack\Payload\FilesListPayload;
 use CL\Slack\Payload\FilesListPayloadResponse;
 use CL\Slack\Payload\PayloadInterface;
@@ -32,7 +31,7 @@ class FilesListCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('files.list');
+        $this->setName('files:list');
         $this->setDescription('Returns a list of all files in your Slack team');
         $this->addOption('user-id', 'u', InputOption::VALUE_REQUIRED, 'Filter files created by a single user.');
         $this->addOption('from', null, InputOption::VALUE_REQUIRED, 'Filter files created after this timestamp (inclusive).');
@@ -41,7 +40,7 @@ class FilesListCommand extends AbstractApiCommand
         $this->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'Number of items to return per page.');
         $this->addOption('page', 'p', InputOption::VALUE_REQUIRED, 'Page number of results to return.');
         $this->setHelp(<<<EOT
-The <info>files.list</info> command returns a list of files within the team.
+The <info>files:list</info> command returns a list of files within the team.
 It can be filtered and sliced in various ways.
 
 The response contains a list of files, followed by some paging information.
@@ -57,19 +56,21 @@ EOT
     }
 
     /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param FilesListPayload $payload
-     * @param InputInterface   $input
+     * @return FilesListPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new FilesListPayload();
         $payload->setUserId($input->getOption('user-id'));
         $payload->setCount($input->getOption('count'));
         $payload->setPage($input->getOption('page'));
         $payload->setTimestampFrom($input->getOption('from'));
         $payload->setTimestampTo($input->getOption('to'));
         $payload->setTypes($input->getOption('types'));
+        
+        return $payload;
     }
 
     /**

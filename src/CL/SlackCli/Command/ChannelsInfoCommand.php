@@ -11,7 +11,6 @@
 
 namespace CL\SlackCli\Command;
 
-use CL\Slack\Payload\ChannelsArchivePayloadResponse;
 use CL\Slack\Payload\ChannelsInfoPayload;
 use CL\Slack\Payload\ChannelsInfoPayloadResponse;
 use CL\Slack\Payload\PayloadInterface;
@@ -32,11 +31,11 @@ class ChannelsInfoCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('channels.info');
+        $this->setName('channels:info');
         $this->setDescription('Returns information about a team channel.');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel to get information on');
         $this->setHelp(<<<EOT
-The <info>channels.info</info> command returns information about a given channel.
+The <info>channels:info</info> command returns information about a given channel.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/channels.info</comment>
@@ -45,30 +44,24 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'channels.info';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChannelsInfoPayload $payload
-     * @param InputInterface      $input
+     * @return ChannelsInfoPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChannelsInfoPayload();
         $payload->setChannelId($input->getArgument('channel-id'));
+        
+        return $payload;
     }
 
     /**
      * {@inheritdoc}
      *
      * @param ChannelsInfoPayloadResponse $payloadResponse
-     * @param InputInterface                 $input
-     * @param OutputInterface                $output
+     * @param InputInterface              $input
+     * @param OutputInterface             $output
      */
     protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
     {

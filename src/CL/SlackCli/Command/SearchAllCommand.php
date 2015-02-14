@@ -32,7 +32,7 @@ class SearchAllCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('search.all');
+        $this->setName('search:all');
         $this->setDescription('Searches messages and files within your Slack team');
         $this->addArgument('query', InputArgument::REQUIRED, 'Search query. May contains booleans, etc.');
         $this->addOption('sort', null, InputOption::VALUE_REQUIRED, 'Return matches sorted by either score or timestamp');
@@ -41,7 +41,7 @@ class SearchAllCommand extends AbstractApiCommand
         $this->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'Number of items to return per page');
         $this->addOption('page', 'p', InputOption::VALUE_REQUIRED, 'Page number of results to return');
         $this->setHelp(<<<EOT
-The <info>search.all</info> command allows you to search both messages and files with a single query.
+The <info>search:all</info> command allows you to search both messages and files with a single query.
 
 The response returns matches broken down by their type of content, similar to the facebook/gmail auto-completed search widgets.
 
@@ -52,27 +52,21 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'search.all';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param SearchAllPayload $payload
-     * @param InputInterface         $input
+     * @return SearchAllPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new SearchAllPayload();
         $payload->setQuery($input->getArgument('query'));
         $payload->setSort($input->getOption('sort'));
         $payload->setSortDir($input->getOption('sort-dir'));
         $payload->setPage($input->getOption('page'));
         $payload->setCount($input->getOption('count'));
         $payload->setHighlight($input->getOption('highlight'));
+        
+        return $payload;
     }
 
     /**

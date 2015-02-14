@@ -31,11 +31,11 @@ class GroupsCreateCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('groups.create');
+        $this->setName('groups:create');
         $this->setDescription('Creates a new Slack group with the given name');
         $this->addArgument('name', InputArgument::REQUIRED, 'The name of the private group to create');
         $this->setHelp(<<<EOT
-The <info>groups.create</info> command let's you create a new Slack group.
+The <info>groups:create</info> command let's you create a new Slack group.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/groups.create</comment>
@@ -44,22 +44,16 @@ EOT
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function getMethod()
-    {
-        return 'groups.create';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param GroupsCreatePayload $payload
-     * @param InputInterface     $input
+     * @return GroupsCreatePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new GroupsCreatePayload();
         $payload->setName($input->getArgument('name'));
+        
+        return $payload;
     }
 
     /**

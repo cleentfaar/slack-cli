@@ -32,7 +32,7 @@ class SearchMessagesCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('search.messages');
+        $this->setName('search:messages');
         $this->setDescription('Searches messages and files within your Slack team');
         $this->addArgument('query', InputArgument::REQUIRED, 'Search query. May contains booleans, etc.');
         $this->addOption('sort', null, InputOption::VALUE_REQUIRED, 'Return matches sorted by either score or timestamp');
@@ -41,7 +41,7 @@ class SearchMessagesCommand extends AbstractApiCommand
         $this->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'Number of items to return per page');
         $this->addOption('page', 'p', InputOption::VALUE_REQUIRED, 'Page number of results to return');
         $this->setHelp(<<<EOT
-The <info>search.messages</info> command allows you to search for messages matching a given query
+The <info>search:messages</info> command allows you to search for messages matching a given query
 
 If the `--highlight` option is specified, the matching query terms will be marked up in the results so that clients may
 replace them with appropriate highlighting markers (e.g. <span class="highlight"></span>).
@@ -57,27 +57,21 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'search.messages';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param SearchMessagesPayload $payload
-     * @param InputInterface   $input
+     * @return SearchMessagesPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new SearchMessagesPayload();
         $payload->setQuery($input->getArgument('query'));
         $payload->setSort($input->getOption('sort'));
         $payload->setSortDir($input->getOption('sort-dir'));
         $payload->setPage($input->getOption('page'));
         $payload->setCount($input->getOption('count'));
         $payload->setHighlight($input->getOption('highlight'));
+        
+        return $payload;
     }
 
     /**

@@ -31,11 +31,11 @@ class ImCloseCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('im.close');
+        $this->setName('im:close');
         $this->setDescription('Closes a given Slack IM channel');
         $this->addArgument('im-id', InputArgument::REQUIRED, 'The ID of an IM channel to close');
         $this->setHelp(<<<EOT
-The <info>im.close</info> command let's you close a IM channel
+The <info>im:close</info> command let's you close a IM channel
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/im.close</comment>
@@ -44,22 +44,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'im.close';
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @param ImClosePayload $payload
      * @param InputInterface $input
+     *
+     * @return ImClosePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ImClosePayload();
         $payload->setImId($input->getArgument('im-id'));
+        
+        return $payload;
     }
 
     /**

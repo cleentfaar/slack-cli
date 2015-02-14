@@ -31,11 +31,11 @@ class GroupsUnarchiveCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('groups.unarchive');
+        $this->setName('groups:unarchive');
         $this->setDescription('Unarchives a group. The token\'s user is automatically added to the group');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'The ID of the group to archive');
         $this->setHelp(<<<EOT
-The <info>groups.unarchive</info> command unarchives a given group.
+The <info>groups:unarchive</info> command unarchives a given group.
 The user of the token is automatically added to the group.
 
 For more information about the related API method, check out the official documentation:
@@ -45,22 +45,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'groups.unarchive';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param GroupsUnarchivePayload $payload
-     * @param InputInterface         $input
+     * @return GroupsUnarchivePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new GroupsUnarchivePayload();
         $payload->setGroupId($input->getArgument('group-id'));
+        
+        return $payload;
     }
 
     /**

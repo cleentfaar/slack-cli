@@ -30,10 +30,10 @@ class EmojiListCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('emoji.list');
+        $this->setName('emoji:list');
         $this->setDescription('Returns a list of all the custom emoji for your Slack team');
         $this->setHelp(<<<EOT
-The <info>emoji.list</info> command returns a list of all the custom emoji in your Slack team.
+The <info>emoji:list</info> command returns a list of all the custom emoji in your Slack team.
 
 The emoji property contains a map of name/url pairs, one for each custom emoji used by the team.
 
@@ -47,22 +47,15 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'emoji.list';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param EmojiListPayload $payload
-     * @param InputInterface   $input
+     * @return EmojiListPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
-        // no configuration needed
+        $payload = new EmojiListPayload();
+        
+        return $payload;
     }
 
     /**

@@ -27,11 +27,11 @@ class ConfigGetCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('config.get');
+        $this->setName('config:get');
         $this->setDescription('Retrieves the value that is set for the given key from the global configuration');
         $this->addArgument('key', InputArgument::REQUIRED, 'The key to use');
         $this->setHelp(<<<EOT
-The <info>config.get</info> command retrieves the value that is set for the given key from the global configuration.
+The <info>config:get</info> command retrieves the value that is set for the given key from the global configuration.
 
 To list all stored keys and values, use the <info>config.list</info> command.
 EOT

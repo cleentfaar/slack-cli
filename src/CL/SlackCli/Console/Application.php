@@ -80,7 +80,6 @@ class Application extends BaseApplication
         $this->add(new Command\ImMarkCommand());
         $this->add(new Command\ImOpenCommand());
         $this->add(new Command\OauthAccessCommand());
-        $this->add(new Command\PresenceSetCommand());
         $this->add(new Command\SearchAllCommand());
         $this->add(new Command\SearchFilesCommand());
         $this->add(new Command\SearchMessagesCommand());
@@ -89,6 +88,7 @@ class Application extends BaseApplication
         $this->add(new Command\UsersInfoCommand());
         $this->add(new Command\UsersListCommand());
         $this->add(new Command\UsersSetActiveCommand());
+        $this->add(new Command\UsersSetPresenceCommand());
     }
 
     /**

@@ -15,11 +15,12 @@ use CL\Slack\Model\AbstractModel;
 use CL\Slack\Model\Customizable;
 use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
+use CL\Slack\Serializer\ModelSerializer;
+use CL\Slack\Serializer\PayloadSerializer;
 use CL\Slack\Transport\ApiClient;
 use CL\Slack\Transport\Events\RequestEvent;
 use CL\Slack\Transport\Events\ResponseEvent;
 use CL\Slack\Util\PayloadRegistry;
-use CL\Slack\Util\PayloadSerializer;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Console\Helper\Table;
@@ -43,9 +44,14 @@ abstract class AbstractApiCommand extends AbstractCommand
     private $payloadRegistry;
 
     /**
-     * @var SerializerInterface|null
+     * @var PayloadSerializer|null
      */
-    private $serializer;
+    private $payloadSerializer;
+
+    /**
+     * @var ModelSerializer|null
+     */
+    private $modelSerializer;
 
     /**
      * @var array
@@ -78,10 +84,18 @@ abstract class AbstractApiCommand extends AbstractCommand
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $apiClient = $this->getApiClient();
-        $payload   = $this->getPayloadRegistry()->get($this->getName());
+        $payload   = $this->createPayload($input);
+        
+        if (!($payload instanceof PayloadInterface)) {
+            throw new \RuntimeException(sprintf(
+                '%s::createPayload() should return an object implementing %s, got: %s',
+                get_class($this),
+                'CL\Slack\Payload\PayloadInterface',
+                var_export($payload, true)
+            ));
+        }
 
         $this->configureListeners($apiClient, $output);
-        $this->configurePayload($payload, $input);
 
         if ($input->getOption('token')) {
             $token = $input->getOption('token');
@@ -113,10 +127,7 @@ abstract class AbstractApiCommand extends AbstractCommand
     protected function getApiClient()
     {
         if (!isset($this->apiClient)) {
-            $payloadSerializer = new PayloadSerializer(SerializerBuilder::create()->build());
-            $apiClient         = new ApiClient(null, $payloadSerializer);
-
-            $this->apiClient = $apiClient;
+            $this->apiClient = new ApiClient();
         }
 
         return $this->apiClient;
@@ -249,7 +260,7 @@ abstract class AbstractApiCommand extends AbstractCommand
      */
     protected function serializeObjectToArray($object)
     {
-        $json = $this->getSerializer()->serialize($object, 'json');
+        $json = $this->getPayloadSerializer()->serialize($object);
         $data = json_decode($json, true);
 
         if (!empty($data)) {
@@ -291,17 +302,36 @@ abstract class AbstractApiCommand extends AbstractCommand
     }
 
     /**
-     * @return SerializerInterface
+     * @return PayloadSerializer
      */
-    private function getSerializer()
+    private function getPayloadSerializer()
     {
-        if (!isset($this->serializer)) {
-            $this->serializer = SerializerBuilder::create()->build();
+        if (!isset($this->payloadSerializer)) {
+            $this->payloadSerializer = SerializerBuilder::create()->build();
         }
 
-        return $this->serializer;
+        return $this->payloadSerializer;
+    }
+    
+    /**
+     * @return ModelSerializer
+     */
+    protected function getModelSerializer()
+    {
+        if (!isset($this->modelSerializer)) {
+            $this->modelSerializer = SerializerBuilder::create()->build();
+        }
+        
+        return $this->modelSerializer;
     }
 
+    /**
+     * @param InputInterface $input
+     *
+     * @return PayloadInterface
+     */
+    abstract protected function createPayload(InputInterface $input);
+    
     /**
      * @param PayloadResponseInterface $payloadResponse
      * @param InputInterface           $input
@@ -310,10 +340,4 @@ abstract class AbstractApiCommand extends AbstractCommand
      * @return int
      */
     abstract protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output);
-
-    /**
-     * @param PayloadInterface $payload
-     * @param InputInterface   $input
-     */
-    abstract protected function configurePayload(PayloadInterface $payload, InputInterface $input);
 }

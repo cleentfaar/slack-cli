@@ -33,14 +33,14 @@ class GroupsHistoryCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('groups.history');
+        $this->setName('groups:history');
         $this->setDescription('Returns a portion of messages/events from the specified private group (see `--help`)');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'ID of the group to fetch history for');
         $this->addOption('latest', 'l', InputOption::VALUE_REQUIRED, 'Latest message timestamp to include in results');
         $this->addOption('oldest', 'o', InputOption::VALUE_REQUIRED, 'Oldest message timestamp to include in results');
         $this->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'Number of messages to return, between 1 and 1000.');
         $this->setHelp(<<<EOT
-The <info>groups.history</info> command returns a portion of messages/events from the specified private group.
+The <info>groups:history</info> command returns a portion of messages/events from the specified private group.
 To read the entire history for a group, call the method with no latest or oldest arguments, and then continue paging
 using the instructions below.
 
@@ -77,25 +77,19 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'groups.history';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param GroupsHistoryPayload $payload
-     * @param InputInterface         $input
+     * @return GroupsHistoryPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new GroupsHistoryPayload();
         $payload->setGroupId($input->getArgument('group-id'));
         $payload->setLatest($input->getOption('latest'));
         $payload->setOldest($input->getOption('oldest'));
         $payload->setCount($input->getOption('count'));
+        
+        return $payload;
     }
 
     /**

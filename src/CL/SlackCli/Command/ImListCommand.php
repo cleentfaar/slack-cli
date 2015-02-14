@@ -31,11 +31,11 @@ class ImListCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('im.list');
+        $this->setName('im:list');
         $this->setDescription('Returns a list of all IM channels in your Slack team');
         $this->addOption('exclude-archived', null, InputOption::VALUE_OPTIONAL, 'Don\'t return archived IM channels.');
         $this->setHelp(<<<EOT
-This command returns a list of all IM channels in your Slack team.
+The <info>im:list</info> command returns a list of all IM channels in your Slack team.
 This includes channels the caller is in, channels they are not currently in, and archived channels.
 The number of (non-deactivated) members in each channel is also returned.
 EOT
@@ -43,22 +43,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'im.list';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ImListPayload $payload
-     * @param InputInterface      $input
+     * @return ImListPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ImListPayload();
         $payload->setExcludeArchived($input->getOption('exclude-archived'));
+        
+        return $payload;
     }
 
     /**

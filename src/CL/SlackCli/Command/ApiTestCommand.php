@@ -36,12 +36,12 @@ class ApiTestCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('api.test');
+        $this->setName('api:test');
         $this->setDescription('Tests connecting with the Slack API using the token.');
         $this->addOption('arguments', null, InputOption::VALUE_REQUIRED, 'A query string of arguments to test in key/value format, such as "foo=bar&apple=pear"');
         $this->addOption('error', null, InputOption::VALUE_REQUIRED, 'Optional error message to mock an error response from Slack with');
         $this->setHelp(<<<EOT
-The <info>api.test</info> command lets you connect with the Slack API for testing purposes.
+The <info>api:test</info> command lets you connect with the Slack API for testing purposes.
 
 Testing arguments returned by Slack
 <info>php bin/slack api.test --args="foo=bar&apple=pie"</info>
@@ -56,13 +56,14 @@ EOT
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @param ApiTestPayload $payload
      * @param InputInterface $input
+     *
+     * @return ApiTestPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ApiTestPayload();
+        
         if ($input->getOption('arguments')) {
             parse_str(urldecode($input->getOption('arguments')), $args);
             $payload->replaceArguments($args);
@@ -72,6 +73,8 @@ EOT
             $this->expectError = true;
             $payload->setError($input->getOption('error'));
         }
+        
+        return $payload;
     }
 
     /**

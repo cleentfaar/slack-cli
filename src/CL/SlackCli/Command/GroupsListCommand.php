@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsListPayload;
 use CL\Slack\Payload\GroupsListPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -31,7 +30,7 @@ class GroupsListCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('groups.list');
+        $this->setName('groups:list');
         $this->setDescription('Returns a list of all groups in your Slack team');
         $this->addOption('exclude-archived', null, InputOption::VALUE_OPTIONAL, 'Don\'t return archived groups.');
         $this->setHelp(<<<EOT
@@ -45,30 +44,24 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'groups.list';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param GroupsListPayload $payload
-     * @param InputInterface      $input
+     * @return GroupsListPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new GroupsListPayload();
         $payload->setExcludeArchived($input->getOption('exclude-archived'));
+
+        return $payload;
     }
 
     /**
      * {@inheritdoc}
      *
      * @param GroupsListPayloadResponse $payloadResponse
-     * @param InputInterface              $input
-     * @param OutputInterface             $output
+     * @param InputInterface            $input
+     * @param OutputInterface           $output
      */
     protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
     {
@@ -78,9 +71,9 @@ EOT
             if (!empty($groups)) {
                 $rows = [];
                 foreach ($payloadResponse->getGroups() as $group) {
-                    $row = $this->serializeObjectToArray($group);
+                    $row            = $this->serializeObjectToArray($group);
                     $row['purpose'] = !$group->getPurpose() ?: $group->getPurpose()->getValue();
-                    $row['topic'] = !$group->getTopic() ?: $group->getTopic()->getValue();
+                    $row['topic']   = !$group->getTopic() ?: $group->getTopic()->getValue();
 
                     $rows[] = $row;
                 }

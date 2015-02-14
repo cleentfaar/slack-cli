@@ -31,12 +31,12 @@ class GroupsInviteCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('groups.invite');
+        $this->setName('groups:invite');
         $this->setDescription('Invites a user to a group. The token\'s user must be a member of the group');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'The ID of the group to invite the user into');
         $this->addArgument('user-id', InputArgument::REQUIRED, 'The ID of the user to invite');
         $this->setHelp(<<<EOT
-The <info>groups.invite</info> command is used to invite a user to a private group.
+The <info>groups:invite</info> command is used to invite a user to a private group.
 The calling user must be a member of the group.
 
 To invite a new member to a group without giving them access to the archives of the group
@@ -49,23 +49,17 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'groups.invite';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param GroupsInvitePayload $payload
-     * @param InputInterface      $input
+     * @return GroupsInvitePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new GroupsInvitePayload();
         $payload->setGroupId($input->getArgument('group-id'));
         $payload->setUserId($input->getArgument('user-id'));
+        
+        return $payload;
     }
 
     /**

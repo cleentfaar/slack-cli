@@ -27,11 +27,11 @@ class ConfigUnsetCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('config.unset');
+        $this->setName('config:unset');
         $this->setDescription('Removes the given key from the global configuration');
         $this->addArgument('key', InputArgument::REQUIRED, 'The key to remove');
         $this->setHelp(<<<EOT
-The <info>config.remove</info> command lets you remove a given key (and it's value) in the global configuration.
+The <info>config.unset</info> command lets you remove a given key (and it's value) in the global configuration.
 
 To list all stored keys and values, use the <info>config.list</info> command.
 EOT

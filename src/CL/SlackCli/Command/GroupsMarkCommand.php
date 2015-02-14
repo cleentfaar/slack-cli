@@ -31,7 +31,7 @@ class GroupsMarkCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('groups.mark');
+        $this->setName('groups:mark');
         $this->setDescription('Moves the read cursor in a Slack group');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'ID of the group to set reading cursor in.');
         $this->addArgument('timestamp', InputArgument::REQUIRED, 'Timestamp of the most recently seen message.');
@@ -55,22 +55,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'groups.mark';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param GroupsMarkPayload $payload
-     * @param InputInterface      $input
+     * @return GroupsMarkPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new GroupsMarkPayload();
         $payload->setGroupId($input->getArgument('group-id'));
+        
+        return $payload;
     }
 
     /**

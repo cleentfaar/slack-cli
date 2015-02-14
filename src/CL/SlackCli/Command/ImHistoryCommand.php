@@ -32,14 +32,14 @@ class ImHistoryCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('im.history');
+        $this->setName('im:history');
         $this->setDescription('Returns a portion of messages/events from the specified im (see `--help`)');
         $this->addArgument('im-id', InputArgument::REQUIRED, 'ID of the IM channel to fetch history for');
         $this->addOption('latest', 'l', InputOption::VALUE_REQUIRED, 'Latest message timestamp to include in results');
         $this->addOption('oldest', 'o', InputOption::VALUE_REQUIRED, 'Oldest message timestamp to include in results');
         $this->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'Number of messages to return, between 1 and 1000.');
         $this->setHelp(<<<EOT
-The <info>im.history</info> command returns a portion of messages/events from the specified im.
+The <info>im:history</info> command returns a portion of messages/events from the specified im.
 To read the entire history for a im, run the command with no `latest` or `oldest` options, and then continue paging
 using the instructions below.
 
@@ -65,25 +65,19 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'im.history';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ImHistoryPayload $payload
-     * @param InputInterface         $input
+     * @return ImHistoryPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ImHistoryPayload();
         $payload->setImId($input->getArgument('im-id'));
         $payload->setLatest($input->getOption('latest'));
         $payload->setOldest($input->getOption('oldest'));
         $payload->setCount($input->getOption('count'));
+        
+        return $payload;
     }
 
     /**

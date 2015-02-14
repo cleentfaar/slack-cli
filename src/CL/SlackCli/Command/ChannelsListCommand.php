@@ -11,7 +11,6 @@
 
 namespace CL\SlackCli\Command;
 
-use CL\Slack\Model\Channel;
 use CL\Slack\Payload\ChannelsListPayload;
 use CL\Slack\Payload\ChannelsListPayloadResponse;
 use CL\Slack\Payload\PayloadInterface;
@@ -32,11 +31,11 @@ class ChannelsListCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('channels.list');
+        $this->setName('channels:list');
         $this->setDescription('Returns a list of all channels in your Slack team');
         $this->addOption('exclude-archived', null, InputOption::VALUE_OPTIONAL, 'Don\'t return archived channels.');
         $this->setHelp(<<<EOT
-This command returns a list of all channels in your Slack team.
+The <info>channels:list</info> command returns a list of all channels in your Slack team.
 This includes channels the caller is in, channels they are not currently in, and archived channels.
 The number of (non-deactivated) members in each channel is also returned.
 
@@ -47,22 +46,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'channels.list';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChannelsListPayload $payload
-     * @param InputInterface      $input
+     * @return ChannelsListPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChannelsListPayload();
         $payload->setExcludeArchived($input->getOption('exclude-archived'));
+        
+        return $payload;
     }
 
     /**

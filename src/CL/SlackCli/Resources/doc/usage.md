@@ -16,13 +16,13 @@ but the examples below should help to get you started.
 
 All commands require a value for the `--token` option:
 ```sh
-$ slack.phar foo.bar arg1 arg2 --token=my-token
+$ slack.phar command:name arg1 arg2 --token=my-token
 ```
 
 **TIP:** If you plan on using the same token, you can store the token in the global configuration by using the `config.set`
 command:
 ```sh
-$ slack.phar config.set default_token your-token-here
+$ slack.phar config:set default_token your-token-here
 ```
 
 ### About verbosity (`-v`)
@@ -50,13 +50,13 @@ Here are some examples of sending a message to a Slack channel, using ther `chat
 
 Simple example (no verbosity):
 ```
-$ slack.phar chat.postMessage general "This is a test" --username=AcmeBot --icon-emoji=truck
+$ slack.phar chat:post-message general "This is a test" --username=AcmeBot --icon-emoji=truck
 ✔ Successfully sent message to Slack!
 ```
 
 Detailed example, (using normal verbosity `-v`):
 ```
-$ slack.phar chat.postMessage general 'This is a test' -v
+$ slack.phar chat:post-message general 'This is a test' -v
 ✔ Successfully sent message to Slack!
 Channel ID: C01234567
 Timestamp: 1234567890
@@ -64,7 +64,7 @@ Timestamp: 1234567890
 
 Debugging request/response example (using verbose verbosity `-vv`):
 ```
-$ slack.phar chat.postMessage general 'This is a test' -vv
+$ slack.phar chat:post-message general 'This is a test' -vv
 Debug: sending payload...
 +----------+----------------------------------------------+
 | channel  | #general                                     |
@@ -87,13 +87,13 @@ Timestamp: 1234567890.123456
 You might want to know who you are authenticated as during authorization.
 
 ```
-$ slack.phar auth.test -v
+$ slack.phar auth:test -v
 ✔ Successfully authenticated by the Slack API!
 ```
 
 Again, the verbosity option (`-v`) comes in handy:
 ```
-$ slack.phar auth.test -v
+$ slack.phar auth:test -v
 ✔ Successfully authenticated by the Slack API!
 +----------+------------+
 | User ID  | U01234567  |
@@ -107,7 +107,7 @@ $ slack.phar auth.test -v
 
 Once you have installed the CLI application, you can easily stay up-to-date by running the `self.update` command:
 ```sh
-$ slack.phar self.update
+$ slack.phar self:update
 ```
 
 

@@ -11,10 +11,9 @@
 
 namespace CL\SlackCli\Command;
 
-use CL\Slack\Payload\PresenceSetPayload;
-use CL\Slack\Payload\PresenceSetPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
+use CL\Slack\Payload\UsersSetPresencePayload;
+use CL\Slack\Payload\UsersSetPresencePayloadResponse;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
  */
-class PresenceSetCommand extends AbstractApiCommand
+class UsersSetPresenceCommand extends AbstractApiCommand
 {
     /**
      * {@inheritDoc}
@@ -31,11 +30,11 @@ class PresenceSetCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('presence.set');
+        $this->setName('users:set-presence');
         $this->setDescription('Override the token user\'s presence value');
-        $this->addArgument('presence', InputArgument::REQUIRED, 'Either active or away');
+        $this->addArgument('presence', InputArgument::REQUIRED, 'Either "active" or "away"');
         $this->setHelp(<<<EOT
-The <info>presence.set</info> command lets you manually override the token user's presence value.
+The <info>users:set-presence</info> command lets you manually override the token user's presence value.
 Consult the presence documentation for more details.
 
 For more information about the related API method, check out the official documentation:
@@ -45,30 +44,24 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'presence.set';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param PresenceSetPayload $payload
-     * @param InputInterface     $input
+     * @return UsersSetPresencePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new UsersSetPresencePayload();
         $payload->setPresence($input->getArgument('presence'));
+
+        return $payload;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param PresenceSetPayloadResponse $payloadResponse
-     * @param InputInterface             $input
-     * @param OutputInterface            $output
+     * @param UsersSetPresencePayloadResponse $payloadResponse
+     * @param InputInterface                  $input
+     * @param OutputInterface                 $output
      */
     protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
     {
