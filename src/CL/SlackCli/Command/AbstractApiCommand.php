@@ -15,8 +15,6 @@ use CL\Slack\Model\AbstractModel;
 use CL\Slack\Model\Customizable;
 use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
-use CL\Slack\Serializer\ModelSerializer;
-use CL\Slack\Serializer\PayloadSerializer;
 use CL\Slack\Transport\ApiClient;
 use CL\Slack\Transport\Events\RequestEvent;
 use CL\Slack\Transport\Events\ResponseEvent;
@@ -44,19 +42,9 @@ abstract class AbstractApiCommand extends AbstractCommand
     private $payloadRegistry;
 
     /**
-     * @var PayloadSerializer|null
+     * @var SerializerInterface|null
      */
-    private $payloadSerializer;
-
-    /**
-     * @var ModelSerializer|null
-     */
-    private $modelSerializer;
-
-    /**
-     * @var array
-     */
-    private $rawRequest = [];
+    private $serializer;
 
     /**
      * @var array
@@ -85,7 +73,7 @@ abstract class AbstractApiCommand extends AbstractCommand
     {
         $apiClient = $this->getApiClient();
         $payload   = $this->createPayload($input);
-        
+
         if (!($payload instanceof PayloadInterface)) {
             throw new \RuntimeException(sprintf(
                 '%s::createPayload() should return an object implementing %s, got: %s',
@@ -143,14 +131,6 @@ abstract class AbstractApiCommand extends AbstractCommand
         }
 
         return $this->payloadRegistry;
-    }
-
-    /**
-     * @param OutputInterface $output
-     */
-    protected function renderPayloadResponse(OutputInterface $output)
-    {
-        $this->renderKeyValueTable($output, $this->rawResponse);
     }
 
     /**
@@ -260,11 +240,10 @@ abstract class AbstractApiCommand extends AbstractCommand
      */
     protected function serializeObjectToArray($object)
     {
-        $json = $this->getPayloadSerializer()->serialize($object);
-        $data = json_decode($json, true);
+        $data = $this->getSerializer()->serialize($object, 'json');
 
         if (!empty($data)) {
-            return $data;
+            return json_decode($data, true);
         }
 
         return [];
@@ -281,10 +260,10 @@ abstract class AbstractApiCommand extends AbstractCommand
         $apiClient->addListener(
             ApiClient::EVENT_REQUEST,
             function (RequestEvent $event) use ($output, $self) {
-                $self->rawRequest = $event->getRawPayload();
+                $rawRequest = $event->getRawPayload();
                 if ($output->getVerbosity() > OutputInterface::VERBOSITY_VERBOSE) {
                     $output->writeln('<comment>Debug: sending payload...</comment>');
-                    $this->renderKeyValueTable($output, $self->rawRequest);
+                    $self->renderKeyValueTable($output, $rawRequest);
                 }
             }
         );
@@ -292,37 +271,25 @@ abstract class AbstractApiCommand extends AbstractCommand
         $apiClient->addListener(
             ApiClient::EVENT_RESPONSE,
             function (ResponseEvent $event) use ($output, $self) {
-                $self->rawResponse = $event->getRawPayloadResponse();
+                $rawResponse = $event->getRawPayloadResponse();
                 if ($output->getVerbosity() > OutputInterface::VERBOSITY_VERBOSE) {
                     $output->writeln('<comment>Debug: received payload response...</comment>');
-                    $this->renderKeyValueTable($output, $self->rawResponse);
+                    $self->renderKeyValueTable($output, $rawResponse);
                 }
             }
         );
     }
 
     /**
-     * @return PayloadSerializer
+     * @return SerializerInterface
      */
-    private function getPayloadSerializer()
+    private function getSerializer()
     {
         if (!isset($this->payloadSerializer)) {
-            $this->payloadSerializer = SerializerBuilder::create()->build();
+            $this->serializer = SerializerBuilder::create()->build();
         }
 
-        return $this->payloadSerializer;
-    }
-    
-    /**
-     * @return ModelSerializer
-     */
-    protected function getModelSerializer()
-    {
-        if (!isset($this->modelSerializer)) {
-            $this->modelSerializer = SerializerBuilder::create()->build();
-        }
-        
-        return $this->modelSerializer;
+        return $this->serializer;
     }
 
     /**
@@ -331,7 +298,7 @@ abstract class AbstractApiCommand extends AbstractCommand
      * @return PayloadInterface
      */
     abstract protected function createPayload(InputInterface $input);
-    
+
     /**
      * @param PayloadResponseInterface $payloadResponse
      * @param InputInterface           $input
