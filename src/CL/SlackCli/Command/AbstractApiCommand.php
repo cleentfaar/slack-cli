@@ -18,7 +18,6 @@ use CL\Slack\Payload\PayloadResponseInterface;
 use CL\Slack\Transport\ApiClient;
 use CL\Slack\Transport\Events\RequestEvent;
 use CL\Slack\Transport\Events\ResponseEvent;
-use CL\Slack\Util\PayloadRegistry;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Console\Helper\Table;
@@ -37,19 +36,9 @@ abstract class AbstractApiCommand extends AbstractCommand
     private $apiClient;
 
     /**
-     * @var PayloadRegistry
-     */
-    private $payloadRegistry;
-
-    /**
      * @var SerializerInterface|null
      */
     private $serializer;
-
-    /**
-     * @var array
-     */
-    private $rawResponse = [];
 
     /**
      * {@inheritDoc}
@@ -71,7 +60,7 @@ abstract class AbstractApiCommand extends AbstractCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $apiClient = $this->getApiClient();
+        $apiClient = new ApiClient();
         $payload   = $this->createPayload($input);
 
         if (!($payload instanceof PayloadInterface)) {
@@ -107,30 +96,6 @@ abstract class AbstractApiCommand extends AbstractCommand
         }
 
         return (int) $returnCode;
-    }
-
-    /**
-     * @return ApiClient
-     */
-    protected function getApiClient()
-    {
-        if (!isset($this->apiClient)) {
-            $this->apiClient = new ApiClient();
-        }
-
-        return $this->apiClient;
-    }
-
-    /**
-     * @return PayloadRegistry
-     */
-    protected function getPayloadRegistry()
-    {
-        if (!isset($this->payloadRegistry)) {
-            $this->payloadRegistry = new PayloadRegistry();
-        }
-
-        return $this->payloadRegistry;
     }
 
     /**

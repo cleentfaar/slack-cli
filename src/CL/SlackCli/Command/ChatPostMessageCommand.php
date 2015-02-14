@@ -11,6 +11,8 @@
 
 namespace CL\SlackCli\Command;
 
+use CL\Slack\Model\Attachment;
+use CL\Slack\Model\AttachmentField;
 use CL\Slack\Payload\ChatPostMessagePayload;
 use CL\Slack\Payload\ChatPostMessagePayloadResponse;
 use CL\Slack\Payload\PayloadResponseInterface;
