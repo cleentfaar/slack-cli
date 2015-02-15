@@ -30,8 +30,8 @@ class SelfUpdateCommand extends AbstractCommand
         $currentVersion = $this->getApplication()->getVersion();
         $manager        = new Manager(Manifest::loadFile(self::MANIFEST_FILE));
         
-        if ($manager->update($currentVersion, true)) {
-            $this->writeOk($output, sprintf(
+        if ($manager->update($currentVersion)) {
+            $output->writeln(sprintf(
                 '<info>Updated Slack CLI from <fg=yellow>%s</fg=yellow> to <fg=yellow>%s</fg=yellow></info>', 
                 $currentVersion, 
                 $this->getApplication()->getVersion()
