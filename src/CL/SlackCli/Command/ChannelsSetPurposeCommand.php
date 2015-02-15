@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsSetPurposePayload;
 use CL\Slack\Payload\ChannelsSetPurposePayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,12 +30,12 @@ class ChannelsSetPurposeCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('channels.setPurpose');
+        $this->setName('channels:set-purpose');
         $this->setDescription('Change the purpose of a channel. The calling user must be a member of the channel.');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel to change the purpose of');
         $this->addArgument('purpose', InputArgument::REQUIRED, 'The new purpose');
         $this->setHelp(<<<EOT
-The <info>channels.setPurpose</info> command changes the purpose of a channel.
+The <info>channels:set-purpose</info> command changes the purpose of a channel.
 The calling user must be a member of the channel.
 
 For more information about the related API method, check out the official documentation:
@@ -46,23 +45,17 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'channels.setPurpose';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChannelsSetPurposePayload $payload
-     * @param InputInterface            $input
+     * @return ChannelsSetPurposePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChannelsSetPurposePayload();
         $payload->setChannelId($input->getArgument('channel-id'));
         $payload->setPurpose($input->getArgument('purpose'));
+
+        return $payload;
     }
 
     /**
@@ -77,7 +70,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, sprintf('Successfully changed purpose of channel to: "%s"', $payloadResponse->getPurpose()));
         } else {
-            $this->writeError($output, sprintf('Failed to change purpose of channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to change purpose of channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

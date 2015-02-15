@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChatDeletePayload;
 use CL\Slack\Payload\ChatDeletePayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,12 +30,12 @@ class ChatDeleteCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('chat.delete');
+        $this->setName('chat:delete');
         $this->setDescription('Deletes a message from a given channel');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel containing the message to be deleted');
         $this->addArgument('timestamp', InputArgument::REQUIRED, 'Timestamp of the message to be deleted');
         $this->setHelp(<<<EOT
-The <info>chat.delete</info> command deletes a message from a given channel.
+The <info>chat:delete</info> command deletes a message from a given channel.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/chat.delete</comment>
@@ -45,23 +44,17 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'chat.delete';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChatDeletePayload $payload
-     * @param InputInterface    $input
+     * @return ChatDeletePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChatDeletePayload();
         $payload->setChannelId($input->getArgument('channel-id'));
         $payload->setTimestamp($input->getArgument('timestamp'));
+
+        return $payload;
     }
 
     /**
@@ -76,7 +69,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully deleted message!');
         } else {
-            $this->writeError($output, sprintf('Failed to delete message: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to delete message: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

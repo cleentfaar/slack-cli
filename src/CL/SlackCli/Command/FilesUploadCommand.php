@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\FilesUploadPayload;
 use CL\Slack\Payload\FilesUploadPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -31,7 +30,7 @@ class FilesUploadCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('files.upload');
+        $this->setName('files:upload');
         $this->setDescription('Create or upload an existing file to Slack');
         $this->addOption('path', 'p', InputOption::VALUE_REQUIRED, 'The path to the file to upload');
         $this->addOption('content', 'c', InputOption::VALUE_REQUIRED, 'The raw content of the file to upload (alternative for `--path`)');
@@ -41,7 +40,7 @@ class FilesUploadCommand extends AbstractApiCommand
         $this->addOption('initial-comment', null, InputOption::VALUE_REQUIRED, 'Initial comment to add to the file');
         $this->addOption('channels', null, InputOption::VALUE_REQUIRED, 'Comma-separated list of channel IDs to share the file into');
         $this->setHelp(<<<EOT
-The <info>files.upload</info> command allows you to create or upload an existing file.
+The <info>files:upload</info> command allows you to create or upload an existing file.
 
 The type of data in the file will be intuited from the filename and the magic bytes in the file, for supported formats.
 Using the `--filetype` option will override this behavior (if a valid type is given).
@@ -56,21 +55,14 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'files.upload';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param FilesUploadPayload $payload
-     * @param InputInterface     $input
+     * @return FilesUploadPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new FilesUploadPayload();
+
         if ($input->getOption('path')) {
             $content = file_get_contents($input->getOption('path'));
         } elseif ($input->getOption('content')) {
@@ -84,6 +76,8 @@ EOT
         $payload->setFilename($input->getOption('filename'));
         $payload->setFileType($input->getOption('filetype'));
         $payload->setTitle($input->getOption('title'));
+
+        return $payload;
     }
 
     /**
@@ -100,7 +94,7 @@ EOT
             $file = $payloadResponse->getFile();
             $this->renderKeyValueTable($output, $file);
         } else {
-            $this->writeError($output, sprintf('Failed to upload file: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to upload file: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

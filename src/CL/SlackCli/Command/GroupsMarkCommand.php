@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsMarkPayload;
 use CL\Slack\Payload\GroupsMarkPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,7 +30,7 @@ class GroupsMarkCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('groups.mark');
+        $this->setName('groups:mark');
         $this->setDescription('Moves the read cursor in a Slack group');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'ID of the group to set reading cursor in.');
         $this->addArgument('timestamp', InputArgument::REQUIRED, 'Timestamp of the most recently seen message.');
@@ -55,37 +54,31 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'groups.mark';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param GroupsMarkPayload $payload
-     * @param InputInterface      $input
+     * @return GroupsMarkPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new GroupsMarkPayload();
         $payload->setGroupId($input->getArgument('group-id'));
+
+        return $payload;
     }
 
     /**
      * {@inheritdoc}
      *
      * @param GroupsMarkPayloadResponse $payloadResponse
-     * @param InputInterface              $input
-     * @param OutputInterface             $output
+     * @param InputInterface            $input
+     * @param OutputInterface           $output
      */
     protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
     {
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully moved the read cursor!');
         } else {
-            $this->writeError($output, sprintf('Failed to move the read cursor in the group: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to move the read cursor in the group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

@@ -12,7 +12,6 @@
 namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChatPostMessagePayload;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\ChatPostMessagePayloadResponse;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -32,10 +31,11 @@ class ChatPostMessageCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('chat.postMessage');
+        $this->setName('chat:post-message');
+        $this->setAliases(['chat.postMessage']);
         $this->setDescription('Sends a message to a Slack channel of your choice');
-        $this->addArgument('channel', InputArgument::REQUIRED, 'The channel to send the text to');
-        $this->addArgument('message', InputArgument::REQUIRED, 'The message to send');
+        $this->addArgument('channel', InputArgument::REQUIRED, 'The channel to send the message to');
+        $this->addArgument('text', InputArgument::REQUIRED, 'The text of the message to send');
         $this->addOption('username', 'u', InputOption::VALUE_REQUIRED, 'The username that will send this text (does not have to exist in your Team)');
         $this->addOption('icon-emoji', 'ie', InputOption::VALUE_REQUIRED, 'Emoji to use as the icon for this message. Overrides `--icon_url`.');
         $this->addOption('icon-url', 'iu', InputOption::VALUE_REQUIRED, 'URL to an image to use as the icon for this message');
@@ -43,9 +43,8 @@ class ChatPostMessageCommand extends AbstractApiCommand
         $this->addOption('link-names', 'l', InputOption::VALUE_REQUIRED, 'Set this flag to `true` to automatically link channel-names and usernames');
         $this->addOption('unfurl-links', 'ul', InputOption::VALUE_REQUIRED, 'Pass true to enable unfurling of primarily text-based content');
         $this->addOption('unfurl-media', 'um', InputOption::VALUE_REQUIRED, 'Pass false to disable unfurling of media content');
-        $this->addOption('attachments', 'a', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Structured message attachments (as JSON-encoded arrays)');
         $this->setHelp(<<<EOT
-The <info>chat.postMessage</info> command posts a message to a given channel.
+The <info>chat:post-message</info> command posts a message to a given channel.
 
 Messages are formatted as described in the formatting spec (link below). You can specify values for `parse` and `link_names`
 to change formatting behavior.
@@ -62,29 +61,24 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'chat.postMessage';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChatPostMessagePayload $payload
-     * @param InputInterface         $input
+     * @return ChatPostMessagePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChatPostMessagePayload();
         $channel = $input->getArgument('channel');
-        if (substr($channel, 0, 1) !== '#' && !is_numeric(substr($channel, 1))) {
-            // help support un-escaped channel names such as 'general' (the hash-sign requires the channel name to be quoted)
-            $channel = '#' . $channel;
+
+        // help support un-escaped channel names such as 'general' (the hash-sign requires the channel name to be quoted)
+        // also making sure to ignore it if a channel ID was given
+        // @todo Reconsider this approach; different channel formats could be allowed that might conflict with this
+        if (substr($channel, 0, 1) !== '#' && !(substr($channel, 0, 1) === 'G' && is_numeric(substr($channel, 1)))) {
+            $channel = '#'.$channel;
         }
 
         $payload->setChannel($channel);
-        $payload->setMessage($input->getArgument('message'));
+        $payload->setText($input->getArgument('text'));
 
         if ($input->getOption('username')) {
             $payload->setUsername($input->getOption('username'));
@@ -114,9 +108,7 @@ EOT
             $payload->setUnfurlMedia($input->getOption('unfurl-media'));
         }
 
-        foreach ($input->getOption('attachments') as $attachment) {
-            $payload->addAttachment($attachment);
-        }
+        return $payload;
     }
 
     /**
@@ -135,7 +127,7 @@ EOT
                 $output->writeln(sprintf('Timestamp: <comment>%s</comment>', $payloadResponse->getTimestamp()));
             }
         } else {
-            $this->writeError($output, sprintf('Failed to send message to Slack: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to send message to Slack: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

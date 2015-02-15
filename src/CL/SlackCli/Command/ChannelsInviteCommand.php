@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsInvitePayload;
 use CL\Slack\Payload\ChannelsInvitePayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,7 +30,7 @@ class ChannelsInviteCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('channels.invite');
+        $this->setName('channels:invite');
         $this->setDescription('Invites a user to a channel. The calling user must be a member of the channel.');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel to invite the user to');
         $this->addArgument('user-id', InputArgument::REQUIRED, 'The ID of the user to invite');
@@ -46,21 +45,13 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'channels.invite';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChannelsInvitePayload $payload
-     * @param InputInterface        $input
+     * @return ChannelsInvitePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChannelsInvitePayload();
         $payload->setChannelId($input->getArgument('channel-id'));
         $payload->setUserId($input->getArgument('user-id'));
     }
@@ -82,7 +73,7 @@ EOT
                 $this->renderKeyValueTable($output, $data);
             }
         } else {
-            $this->writeError($output, sprintf('Failed to invite user to this channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to invite user to this channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

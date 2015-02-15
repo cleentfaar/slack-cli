@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsUnarchivePayload;
 use CL\Slack\Payload\ChannelsUnarchivePayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,11 +30,11 @@ class ChannelsUnarchiveCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('channels.unarchive');
+        $this->setName('channels:unarchive');
         $this->setDescription('Unarchives a channel. The token\'s user is automatically added to the channel');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel to archive');
         $this->setHelp(<<<EOT
-The <info>channels.unarchive</info> command unarchives a given channel.
+The <info>channels:unarchive</info> command unarchives a given channel.
 The user of the token is automatically added to the channel.
 
 For more information about the related API method, check out the official documentation:
@@ -45,22 +44,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'channels.unarchive';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChannelsUnarchivePayload $payload
-     * @param InputInterface           $input
+     * @return ChannelsUnarchivePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChannelsUnarchivePayload();
         $payload->setChannelId($input->getArgument('channel-id'));
+
+        return $payload;
     }
 
     /**
@@ -75,7 +68,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully un-archived channel!');
         } else {
-            $this->writeError($output, sprintf('Failed to un-archive channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to un-archive channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

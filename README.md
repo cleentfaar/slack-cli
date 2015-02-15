@@ -14,12 +14,12 @@ Provides CLI commands for all of the API methods currently available using a sin
 
 Sending a message to a Slack channel
 ```sh
-$ slack.phar chat.postMessage general "Hello world!"
+$ slack.phar chat:post-message general "Hello world!"
 ```
 
 Update the application
 ```sh
-slack.phar self.update
+slack.phar self:update
 ```
 
 Check out the documentation below for more examples and instructions on how to install the `.phar` file.

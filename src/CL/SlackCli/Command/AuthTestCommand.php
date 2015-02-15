@@ -12,7 +12,6 @@
 namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\AuthTestPayload;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\AuthTestPayloadResponse;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,10 +29,10 @@ class AuthTestCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('auth.test');
+        $this->setName('auth:test');
         $this->setDescription('Test authentication with the Slack API and, optionally, tells you who you are (use -v).');
         $this->setHelp(<<<EOT
-The <info>auth.test</info> command lets you test authenticating with the Slack API.
+The <info>auth:test</info> command lets you test authenticating with the Slack API.
 
 Use the verbose option `-v` to also return information about the token's user.
 
@@ -44,14 +43,13 @@ EOT
     }
 
     /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param AuthTestPayload $payloadResponse
-     * @param InputInterface  $input
+     * @return AuthTestPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
-        // no configuration needed
+        return new AuthTestPayload();
     }
 
     /**
@@ -75,7 +73,9 @@ EOT
                 $this->renderKeyValueTable($output, $data);
             }
         } else {
-            $this->writeError($output, sprintf('Failed to be authenticated by the Slack API: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to be authenticated by the Slack API: %s', lcfirst($payloadResponse->getErrorExplanation())));
+
+            return 1;
         }
     }
 }

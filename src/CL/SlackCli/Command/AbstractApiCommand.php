@@ -11,15 +11,15 @@
 
 namespace CL\SlackCli\Command;
 
+use CL\Slack\Exception\SlackException;
 use CL\Slack\Model\AbstractModel;
 use CL\Slack\Model\Customizable;
 use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
+use CL\Slack\Test\Transport\MockApiClient;
 use CL\Slack\Transport\ApiClient;
 use CL\Slack\Transport\Events\RequestEvent;
 use CL\Slack\Transport\Events\ResponseEvent;
-use CL\Slack\Util\PayloadRegistry;
-use CL\Slack\Util\PayloadSerializer;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Console\Helper\Table;
@@ -33,29 +33,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class AbstractApiCommand extends AbstractCommand
 {
     /**
-     * @var ApiClient|null
-     */
-    private $apiClient;
-
-    /**
-     * @var PayloadRegistry
-     */
-    private $payloadRegistry;
-
-    /**
      * @var SerializerInterface|null
      */
     private $serializer;
-
-    /**
-     * @var array
-     */
-    private $rawRequest = [];
-
-    /**
-     * @var array
-     */
-    private $rawResponse = [];
 
     /**
      * {@inheritDoc}
@@ -77,11 +57,16 @@ abstract class AbstractApiCommand extends AbstractCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $apiClient = $this->getApiClient();
-        $payload   = $this->getPayloadRegistry()->get($this->getName());
+        $payload = $this->createPayload($input);
 
-        $this->configureListeners($apiClient, $output);
-        $this->configurePayload($payload, $input);
+        if (!($payload instanceof PayloadInterface)) {
+            throw new \RuntimeException(sprintf(
+                '%s::createPayload() should return an object implementing %s, got: %s',
+                get_class($this),
+                'CL\Slack\Payload\PayloadInterface',
+                var_export($payload, true)
+            ));
+        }
 
         if ($input->getOption('token')) {
             $token = $input->getOption('token');
@@ -91,55 +76,52 @@ abstract class AbstractApiCommand extends AbstractCommand
 
         if (empty($token)) {
             throw new \RuntimeException(
-                'No token provided by `--token` option and no value for `default_token` was found ' .
-                'in the global configuration. Use the `--token` option or set the token globally ' .
+                'No token provided by `--token` option and no value for `default_token` was found '.
+                'in the global configuration. Use the `--token` option or set the token globally '.
                 'by running `slack.phar config.set default_token your-token-here`'
             );
         }
 
-        $response   = $apiClient->send($payload, $token);
+        $response   = $this->sendPayload($payload, $token, $input, $output);
         $returnCode = $this->handleResponse($response, $input, $output);
 
         if (null === $returnCode) {
-            return 0;
+            return $response->isOk() ? 0 : 1;
         }
 
         return (int) $returnCode;
     }
 
     /**
-     * @return ApiClient
+     * @param PayloadInterface $payload
+     * @param string           $token
+     * @param InputInterface   $input
+     * @param OutputInterface  $output
+     *
+     * @return PayloadResponseInterface
+     *
+     * @throws SlackException
      */
-    protected function getApiClient()
+    private function sendPayload(PayloadInterface $payload, $token, InputInterface $input, OutputInterface $output)
     {
-        if (!isset($this->apiClient)) {
-            $payloadSerializer = new PayloadSerializer(SerializerBuilder::create()->build());
-            $apiClient         = new ApiClient(null, $payloadSerializer);
+        $env         = $input->getOption('env');
+        $testSuccess = $env === 'test-success' ? true : false;
+        $testFailure = $env === 'test-failure' ? true : false;
 
-            $this->apiClient = $apiClient;
+        if ($testSuccess || $testFailure) {
+            $apiClient = new MockApiClient();
+
+            if ($testSuccess) {
+                return $apiClient->sendWithSuccess($payload);
+            }
+
+            return $apiClient->sendWithFailure($payload);
         }
 
-        return $this->apiClient;
-    }
+        $apiClient = new ApiClient($token);
+        $this->configureListeners($apiClient, $output);
 
-    /**
-     * @return PayloadRegistry
-     */
-    protected function getPayloadRegistry()
-    {
-        if (!isset($this->payloadRegistry)) {
-            $this->payloadRegistry = new PayloadRegistry();
-        }
-
-        return $this->payloadRegistry;
-    }
-
-    /**
-     * @param OutputInterface $output
-     */
-    protected function renderPayloadResponse(OutputInterface $output)
-    {
-        $this->renderKeyValueTable($output, $this->rawResponse);
+        return $apiClient->send($payload);
     }
 
     /**
@@ -249,11 +231,10 @@ abstract class AbstractApiCommand extends AbstractCommand
      */
     protected function serializeObjectToArray($object)
     {
-        $json = $this->getSerializer()->serialize($object, 'json');
-        $data = json_decode($json, true);
+        $data = $this->getSerializer()->serialize($object, 'json');
 
         if (!empty($data)) {
-            return $data;
+            return json_decode($data, true);
         }
 
         return [];
@@ -270,10 +251,10 @@ abstract class AbstractApiCommand extends AbstractCommand
         $apiClient->addListener(
             ApiClient::EVENT_REQUEST,
             function (RequestEvent $event) use ($output, $self) {
-                $self->rawRequest = $event->getRawPayload();
+                $rawRequest = $event->getRawPayload();
                 if ($output->getVerbosity() > OutputInterface::VERBOSITY_VERBOSE) {
                     $output->writeln('<comment>Debug: sending payload...</comment>');
-                    $this->renderKeyValueTable($output, $self->rawRequest);
+                    $self->renderKeyValueTable($output, $rawRequest);
                 }
             }
         );
@@ -281,10 +262,10 @@ abstract class AbstractApiCommand extends AbstractCommand
         $apiClient->addListener(
             ApiClient::EVENT_RESPONSE,
             function (ResponseEvent $event) use ($output, $self) {
-                $self->rawResponse = $event->getRawPayloadResponse();
+                $rawResponse = $event->getRawPayloadResponse();
                 if ($output->getVerbosity() > OutputInterface::VERBOSITY_VERBOSE) {
                     $output->writeln('<comment>Debug: received payload response...</comment>');
-                    $this->renderKeyValueTable($output, $self->rawResponse);
+                    $self->renderKeyValueTable($output, $rawResponse);
                 }
             }
         );
@@ -295,12 +276,19 @@ abstract class AbstractApiCommand extends AbstractCommand
      */
     private function getSerializer()
     {
-        if (!isset($this->serializer)) {
+        if (!isset($this->payloadSerializer)) {
             $this->serializer = SerializerBuilder::create()->build();
         }
 
         return $this->serializer;
     }
+
+    /**
+     * @param InputInterface $input
+     *
+     * @return PayloadInterface
+     */
+    abstract protected function createPayload(InputInterface $input);
 
     /**
      * @param PayloadResponseInterface $payloadResponse
@@ -310,10 +298,4 @@ abstract class AbstractApiCommand extends AbstractCommand
      * @return int
      */
     abstract protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output);
-
-    /**
-     * @param PayloadInterface $payload
-     * @param InputInterface   $input
-     */
-    abstract protected function configurePayload(PayloadInterface $payload, InputInterface $input);
 }

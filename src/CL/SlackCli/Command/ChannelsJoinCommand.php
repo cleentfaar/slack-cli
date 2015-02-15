@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsJoinPayload;
 use CL\Slack\Payload\ChannelsJoinPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,7 +30,7 @@ class ChannelsJoinCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('channels.join');
+        $this->setName('channels:join');
         $this->setDescription('Joins a channel with the token\'s user (creates channel if it doesn\'t exist)');
         $this->addArgument('channel', InputArgument::REQUIRED, 'The name of the channel to join (or create if it doesn\'t exist yet)');
         $this->setHelp(<<<EOT
@@ -48,22 +47,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'channels.join';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChannelsJoinPayload $payload
-     * @param InputInterface      $input
+     * @return ChannelsJoinPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChannelsJoinPayload();
         $payload->setChannel($input->getArgument('channel'));
+
+        return $payload;
     }
 
     /**
@@ -87,7 +80,7 @@ EOT
                 $this->renderKeyValueTable($output, $data);
             }
         } else {
-            $this->writeError($output, sprintf('Failed to join channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to join channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

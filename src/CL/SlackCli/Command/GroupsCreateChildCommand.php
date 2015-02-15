@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsCreateChildPayload;
 use CL\Slack\Payload\GroupsCreateChildPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,11 +30,11 @@ class GroupsCreateChildCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('groups.createChild');
+        $this->setName('groups:create-child');
         $this->setDescription('This method creates a child group from an existing group (see `--help`)');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'The name of the channel to create (must not exist already)');
         $this->setHelp(<<<EOT
-The <info>groups.createChild</info> command takes an existing private group and performs the following steps:
+The <info>groups:create-child</info> command takes an existing private group and performs the following steps:
 
 - Renames the existing group (from "example" to "example-archived").
 - Archives the existing group.
@@ -55,22 +54,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'groups.createChild';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param GroupsCreateChildPayload $payload
-     * @param InputInterface           $input
+     * @return GroupsCreateChildPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new GroupsCreateChildPayload();
         $payload->setGroupId($input->getArgument('group-id'));
+
+        return $payload;
     }
 
     /**
@@ -89,7 +82,7 @@ EOT
                 $this->renderKeyValueTable($output, $data);
             }
         } else {
-            $this->writeError($output, sprintf('Failed to create child group: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to create child group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

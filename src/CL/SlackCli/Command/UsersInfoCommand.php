@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\UsersInfoPayload;
 use CL\Slack\Payload\UsersInfoPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,7 +34,7 @@ class UsersInfoCommand extends AbstractApiCommand
         $this->setDescription('Returns information about a team member');
         $this->addArgument('user-id', InputArgument::REQUIRED, 'User to get info on');
         $this->setHelp(<<<EOT
-The <info>users:info</info> command returns information about a team member.
+The <info>users.info</info> command returns information about a team member.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/users.info</comment>
@@ -44,22 +43,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'users.info';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param UsersInfoPayload $payload
-     * @param InputInterface   $input
+     * @return UsersInfoPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new UsersInfoPayload();
         $payload->setUserId($input->getArgument('user-id'));
+
+        return $payload;
     }
 
     /**
@@ -74,7 +67,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->renderKeyValueTable($output, $payloadResponse->getUser());
         } else {
-            $this->writeError($output, sprintf('Failed to fetch information about the user: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to fetch information about the user: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

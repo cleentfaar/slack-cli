@@ -11,10 +11,8 @@
 
 namespace CL\SlackCli\Command;
 
-use CL\Slack\Model\SimpleMessage;
 use CL\Slack\Payload\ChannelsHistoryPayload;
 use CL\Slack\Payload\ChannelsHistoryPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,14 +31,14 @@ class ChannelsHistoryCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('channels.history');
+        $this->setName('channels:history');
         $this->setDescription('Returns a portion of messages/events from the specified channel (see `--help`)');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'Channel to fetch history for');
         $this->addOption('latest', 'l', InputOption::VALUE_REQUIRED, 'Latest message timestamp to include in results');
         $this->addOption('oldest', 'o', InputOption::VALUE_REQUIRED, 'Oldest message timestamp to include in results');
         $this->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'Number of messages to return, between 1 and 1000.');
         $this->setHelp(<<<EOT
-The <info>channels.history</info> command returns a portion of messages/events from the specified channel.
+The <info>channels:history</info> command returns a portion of messages/events from the specified channel.
 To read the entire history for a channel, run the command with no `latest` or `oldest` options, and then continue paging
 using the instructions below.
 
@@ -66,25 +64,19 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'channels.history';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChannelsHistoryPayload $payload
-     * @param InputInterface         $input
+     * @return ChannelsHistoryPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChannelsHistoryPayload();
         $payload->setChannelId($input->getArgument('channel-id'));
         $payload->setLatest($input->getOption('latest'));
         $payload->setOldest($input->getOption('oldest'));
         $payload->setCount($input->getOption('count'));
+
+        return $payload;
     }
 
     /**
@@ -106,7 +98,7 @@ EOT
                 $output->writeln(sprintf('Has more: <comment>%s</comment>', $payloadResponse->getHasMore() ? 'yes' : 'no'));
             }
         } else {
-            $this->writeError($output, sprintf('Failed to retrieve history for this channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to retrieve history for this channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

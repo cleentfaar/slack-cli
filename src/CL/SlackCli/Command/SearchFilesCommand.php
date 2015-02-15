@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\SearchFilesPayload;
 use CL\Slack\Payload\SearchFilesPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,7 +31,7 @@ class SearchFilesCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('search.files');
+        $this->setName('search:files');
         $this->setDescription('Searches files within your Slack team');
         $this->addArgument('query', InputArgument::REQUIRED, 'Search query. May contains booleans, etc.');
         $this->addOption('sort', null, InputOption::VALUE_REQUIRED, 'Return matches sorted by either score or timestamp');
@@ -41,7 +40,7 @@ class SearchFilesCommand extends AbstractApiCommand
         $this->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'Number of items to return per page');
         $this->addOption('page', 'p', InputOption::VALUE_REQUIRED, 'Page number of results to return');
         $this->setHelp(<<<EOT
-The <info>search.files</info> command allows you to search for files matching a given query
+The <info>search:files</info> command allows you to search for files matching a given query
 
 If the `--highlight` option is specified, the matching query terms will be marked up in the results so that clients may
 replace them with appropriate highlighting markers (e.g. <span class="highlight"></span>).
@@ -57,35 +56,29 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'search.files';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param SearchFilesPayload $payload
-     * @param InputInterface        $input
+     * @return SearchFilesPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new SearchFilesPayload();
         $payload->setQuery($input->getArgument('query'));
         $payload->setSort($input->getOption('sort'));
         $payload->setSortDir($input->getOption('sort-dir'));
         $payload->setPage($input->getOption('page'));
         $payload->setCount($input->getOption('count'));
         $payload->setHighlight($input->getOption('highlight'));
+
+        return $payload;
     }
 
     /**
      * {@inheritdoc}
      *
      * @param SearchFilesPayloadResponse $payloadResponse
-     * @param InputInterface                $input
-     * @param OutputInterface               $output
+     * @param InputInterface             $input
+     * @param OutputInterface            $output
      */
     protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
     {
@@ -106,7 +99,7 @@ EOT
                 }
             }
         } else {
-            $this->writeError($output, sprintf('Failed to search. %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to search. %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

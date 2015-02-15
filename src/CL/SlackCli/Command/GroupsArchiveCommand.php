@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsArchivePayload;
 use CL\Slack\Payload\GroupsArchivePayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,11 +30,11 @@ class GroupsArchiveCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('groups.archive');
+        $this->setName('groups:archive');
         $this->setDescription('Archives a given Slack group');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'The ID of a private group to archive');
         $this->setHelp(<<<EOT
-The <info>groups.archive</info> command let's you archive a given Slack group.
+The <info>groups:archive</info> command let's you archive a given Slack group.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/groups.archive</comment>
@@ -44,22 +43,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'groups.archive';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param GroupsArchivePayload $payload
-     * @param InputInterface       $input
+     * @return GroupsArchivePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new GroupsArchivePayload();
         $payload->setGroupId($input->getArgument('group-id'));
+
+        return $payload;
     }
 
     /**
@@ -74,7 +67,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully archived group!');
         } else {
-            $this->writeError($output, sprintf('Failed to archive group: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to archive group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

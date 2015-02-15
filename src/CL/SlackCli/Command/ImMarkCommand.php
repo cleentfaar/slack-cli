@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ImMarkPayload;
 use CL\Slack\Payload\ImMarkPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,12 +30,12 @@ class ImMarkCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('im.mark');
+        $this->setName('im:mark');
         $this->setDescription('Moves the read cursor in a Slack IM channel');
         $this->addArgument('im-id', InputArgument::REQUIRED, 'ID of the IM channel to set reading cursor in.');
         $this->addArgument('timestamp', InputArgument::REQUIRED, 'Timestamp of the most recently seen message.');
         $this->setHelp(<<<EOT
-The <info>ims:mark</info> command is used to move the read cursor in a Slack im.
+The <info>im:mark</info> command is used to move the read cursor in a Slack im.
 
 After making this call, the mark is saved to the database and broadcast via the message server to all open connections
 for the calling user.
@@ -54,22 +53,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'im.mark';
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @param ImMarkPayload  $payload
      * @param InputInterface $input
+     *
+     * @return ImMarkPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ImMarkPayload();
         $payload->setImId($input->getArgument('im-id'));
+
+        return $payload;
     }
 
     /**
@@ -84,7 +77,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully moved the read cursor!');
         } else {
-            $this->writeError($output, sprintf('Failed to move the read cursor in the IM channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to move the read cursor in the IM channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

@@ -79,7 +79,7 @@ abstract class AbstractCommand extends Command
         $this->config = ConfigFactory::createConfig();
 
         // Get the global config.json, or if the user passed in a file to use
-        $configFile = $input->getOption('configuration-path') ?: ($this->config->get('home') . '/config.json');
+        $configFile = $input->getOption('configuration-path') ?: ($this->config->get('home').'/config.json');
 
         $this->configPath   = $configFile;
         $this->configFile   = new JsonFile($configFile);

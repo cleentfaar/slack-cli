@@ -11,9 +11,8 @@
 
 namespace CL\SlackCli\Command;
 
-use CL\Slack\Payload\ChannelsInvitePayload;
 use CL\Slack\Payload\ChannelsInvitePayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
+use CL\Slack\Payload\ChannelsKickPayload;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,7 +30,7 @@ class ChannelsKickCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('channels.kick');
+        $this->setName('channels:kick');
         $this->setDescription('Removes (kicks) a given user from a given channel');
         $this->addArgument('user-id', InputArgument::REQUIRED, 'The ID of the user to remove');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel to remove the user from');
@@ -45,23 +44,17 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'channels.kick';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChannelsInvitePayload $payload
-     * @param InputInterface        $input
+     * @return ChannelsKickPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChannelsKickPayload();
         $payload->setChannelId($input->getArgument('channel-id'));
         $payload->setUserId($input->getArgument('user-id'));
+
+        return $payload;
     }
 
     /**
@@ -76,7 +69,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully kicked user from the channel!');
         } else {
-            $this->writeError($output, sprintf('Failed to kick user from the channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to kick user from the channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

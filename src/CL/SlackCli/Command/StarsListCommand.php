@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\StarsListPayload;
 use CL\Slack\Payload\StarsListPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -35,7 +34,7 @@ class StarsListCommand extends AbstractApiCommand
         $this->setDescription('Returns a list of all the items starred by a user');
         $this->addOption('user-id', null, InputOption::VALUE_REQUIRED, 'Show stars by this user. Defaults to the token\'s user.');
         $this->setHelp(<<<EOT
-Returns a list of all the items starred by a user.
+The <info>stars:list</info> returns a list of all the items starred by a user.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/stars.list</comment>
@@ -44,22 +43,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'stars.list';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param StarsListPayload $payload
-     * @param InputInterface   $input
+     * @return StarsListPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new StarsListPayload();
         $payload->setUserId($input->getOption('user-id'));
+
+        return $payload;
     }
 
     /**
@@ -83,7 +76,7 @@ EOT
         } else {
             $this->writeError($output, sprintf(
                 'Failed to list starred items: %s',
-                $payloadResponse->getErrorExplanation()
+                lcfirst($payloadResponse->getErrorExplanation())
             ));
         }
     }

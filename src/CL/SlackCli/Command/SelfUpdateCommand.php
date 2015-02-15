@@ -17,7 +17,7 @@ class SelfUpdateCommand extends Command
      */
     protected function configure()
     {
-        $this->setName('self.update');
+        $this->setName('self:update');
         $this->setDescription('Updates slack.phar to the latest version');
     }
 

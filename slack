@@ -28,4 +28,5 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 AnnotationRegistry::registerLoader('class_exists');
 
 $application = new Application();
+$application->addDefaultCommands();
 $application->run();

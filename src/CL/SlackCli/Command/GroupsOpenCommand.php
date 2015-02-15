@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsOpenPayload;
 use CL\Slack\Payload\GroupsOpenPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,7 +30,7 @@ class GroupsOpenCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('groups.open');
+        $this->setName('groups:open');
         $this->setDescription('Opens a given Slack group');
         $this->addArgument('group-id', InputArgument::REQUIRED, 'The ID of a private group to open');
         $this->setHelp(<<<EOT
@@ -44,22 +43,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'groups.open';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param GroupsOpenPayload $payload
-     * @param InputInterface       $input
+     * @return GroupsOpenPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new GroupsOpenPayload();
         $payload->setGroupId($input->getArgument('group-id'));
+
+        return $payload;
     }
 
     /**
@@ -76,7 +69,7 @@ EOT
                 $this->writeOk($output, 'Successfully opened group!');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to open group: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to open group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

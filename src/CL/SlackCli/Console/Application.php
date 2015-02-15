@@ -15,6 +15,7 @@ use CL\SlackCli\Command;
 use CL\SlackCli\Config\Config;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -23,6 +24,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Application extends BaseApplication
 {
     /**
+     * @var array
+     */
+    private $availableEnvironments = [
+        'prod',
+        'test', // does the same as 'test-success'
+        'test-success', // mocks a successful response
+        'test-failure', // mocks a failed response
+    ];
+
+    /**
+     * @var string
+     */
+    private $defaultEnvironment = 'prod';
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -30,7 +46,10 @@ class Application extends BaseApplication
         error_reporting(-1);
 
         parent::__construct('Slack CLI', $this->getReplacedVersion());
+    }
 
+    public function addDefaultCommands()
+    {
         $this->add(new Command\ApiTestCommand());
         $this->add(new Command\AuthTestCommand());
         $this->add(new Command\ChannelsArchiveCommand());
@@ -80,7 +99,6 @@ class Application extends BaseApplication
         $this->add(new Command\ImMarkCommand());
         $this->add(new Command\ImOpenCommand());
         $this->add(new Command\OauthAccessCommand());
-        $this->add(new Command\PresenceSetCommand());
         $this->add(new Command\SearchAllCommand());
         $this->add(new Command\SearchFilesCommand());
         $this->add(new Command\SearchMessagesCommand());
@@ -89,6 +107,7 @@ class Application extends BaseApplication
         $this->add(new Command\UsersInfoCommand());
         $this->add(new Command\UsersListCommand());
         $this->add(new Command\UsersSetActiveCommand());
+        $this->add(new Command\UsersSetPresenceCommand());
     }
 
     /**
@@ -97,6 +116,23 @@ class Application extends BaseApplication
     public function getLongVersion()
     {
         return sprintf('%s by <comment>Cas Leentfaar</comment>', parent::getLongVersion());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDefaultInputDefinition()
+    {
+        $parentDefinition = parent::getDefaultInputDefinition();
+        $parentDefinition->addOption(new InputOption(
+            '--env',
+            'e',
+            InputOption::VALUE_REQUIRED,
+            sprintf('The environment to run the Slack CLI under (%s)', implode('|', $this->availableEnvironments)),
+            $this->defaultEnvironment
+        ));
+
+        return $parentDefinition;
     }
 
     /**

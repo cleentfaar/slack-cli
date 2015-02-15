@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsSetTopicPayload;
 use CL\Slack\Payload\ChannelsSetTopicPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,7 +30,7 @@ class ChannelsSetTopicCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('channels.setTopic');
+        $this->setName('channels:set-topic');
         $this->setDescription('Change the topic of a channel. The calling user must be a member of the channel.');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel to change the topic of');
         $this->addArgument('topic', InputArgument::REQUIRED, 'The new topic');
@@ -46,38 +45,32 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'channels.setTopic';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChannelsSetTopicPayload $payload
-     * @param InputInterface            $input
+     * @return ChannelsSetTopicPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChannelsSetTopicPayload();
         $payload->setChannelId($input->getArgument('channel-id'));
         $payload->setTopic($input->getArgument('topic'));
+
+        return $payload;
     }
 
     /**
      * {@inheritdoc}
      *
      * @param ChannelsSetTopicPayloadResponse $payloadResponse
-     * @param InputInterface                    $input
-     * @param OutputInterface                   $output
+     * @param InputInterface                  $input
+     * @param OutputInterface                 $output
      */
     protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
     {
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, sprintf('Successfully changed topic of channel to: "%s"', $payloadResponse->getTopic()));
         } else {
-            $this->writeError($output, sprintf('Failed to change topic of channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to change topic of channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

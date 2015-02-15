@@ -74,7 +74,7 @@ Close your current terminal. Test usage with a new terminal:
 
 ```sh
 C:\Users\username>slack -V
-Slack CLI version 0.12.7
+Slack CLI version 0.14.1
 ```
 
 ## Step 2) (Optional) Configure the API token to use by default
@@ -83,7 +83,7 @@ All API commands require you to supply the API token using the `--token` option.
 However, if you are planning on using the same token you can easily configure the application to use a token set before-hand:
 
 ```sh
-$ slack config.set default_token your-token-here
+$ slack.phar config:set default_token your-token-here
 ```
 
 If you do not have an API token yet, you should generate one on the Slack API website (you need to be logged in first): [https://api.slack.com/web#authentication](https://api.slack.com/web#authentication)

@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsMarkPayload;
 use CL\Slack\Payload\ChannelsMarkPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,12 +30,12 @@ class ChannelsMarkCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('channels.mark');
+        $this->setName('channels:mark');
         $this->setDescription('Moves the read cursor in a Slack channel');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'ID of the channel to set reading cursor in.');
         $this->addArgument('timestamp', InputArgument::REQUIRED, 'Timestamp of the most recently seen message.');
         $this->setHelp(<<<EOT
-The <info>channels.mark</info> command is used to move the read cursor in a Slack channel.
+The <info>channels:mark</info> command is used to move the read cursor in a Slack channel.
 
 After making this call, the mark is saved to the database and broadcast via the message server to all open connections
 for the calling user.
@@ -54,22 +53,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'channels.mark';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChannelsMarkPayload $payload
-     * @param InputInterface      $input
+     * @return ChannelsMarkPayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChannelsMarkPayload();
         $payload->setChannelId($input->getArgument('channel-id'));
+
+        return $payload;
     }
 
     /**
@@ -84,7 +77,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully moved the read cursor!');
         } else {
-            $this->writeError($output, sprintf('Failed to move the read cursor in the channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to move the read cursor in the channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

@@ -27,12 +27,12 @@ class ConfigSetCommand extends AbstractCommand
     {
         parent::configure();
 
-        $this->setName('config.set');
+        $this->setName('config:set');
         $this->setDescription('Stores the given key and value in the global configuration');
         $this->addArgument('key', InputArgument::REQUIRED, 'The key to use');
         $this->addArgument('value', InputArgument::REQUIRED, 'The value to set for this key');
         $this->setHelp(<<<EOT
-The <info>config.set</info> command lets you store a given key and value in the global configuration.
+The <info>config:set</info> command lets you store a given key and value in the global configuration.
 
 To list all stored keys and values, use the <info>config.list</info> command.
 EOT
@@ -71,7 +71,7 @@ EOT
 
                 if (true !== $validation = $validator($value)) {
                     throw new \RuntimeException(sprintf(
-                        '"%s" is an invalid value' . ($validation ? ' (' . $validation . ')' : ''),
+                        '"%s" is an invalid value'.($validation ? ' ('.$validation.')' : ''),
                         $value
                     ));
                 }

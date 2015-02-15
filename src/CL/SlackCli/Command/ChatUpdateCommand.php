@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChatUpdatePayload;
 use CL\Slack\Payload\ChatUpdatePayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,13 +30,13 @@ class ChatUpdateCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('chat.update');
+        $this->setName('chat:update');
         $this->setDescription('Updates a message from a given channel');
         $this->addArgument('channel-id', InputArgument::REQUIRED, 'The ID of the channel containing the message to be updated');
         $this->addArgument('timestamp', InputArgument::REQUIRED, 'Timestamp of the message to be updated');
         $this->addArgument('message', InputArgument::REQUIRED, 'New text for the message, using the default formatting rules');
         $this->setHelp(<<<EOT
-The <info>chat.update</info> command updates a message from a given channel.
+The <info>chat:update</info> command updates a message from a given channel.
 
 The new message uses the default formatting rules, which can be found here: <comment>https://api.slack.com/docs/formatting</comment>
 
@@ -48,24 +47,18 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'chat.update';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChatUpdatePayload $payload
-     * @param InputInterface    $input
+     * @return ChatUpdatePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChatUpdatePayload();
         $payload->setChannelId($input->getArgument('channel-id'));
         $payload->setTimestamp($input->getArgument('timestamp'));
         $payload->setMessage($input->getArgument('message'));
+
+        return $payload;
     }
 
     /**
@@ -80,7 +73,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully updated message!');
         } else {
-            $this->writeError($output, sprintf('Failed to update message: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to update message: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

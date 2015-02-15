@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsCreatePayload;
 use CL\Slack\Payload\ChannelsCreatePayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,11 +30,11 @@ class ChannelsCreateCommand extends AbstractApiCommand
     {
         parent::configure();
 
-        $this->setName('channels.create');
+        $this->setName('channels:create');
         $this->setDescription('Creates new Slack channel with the given name');
         $this->addArgument('name', InputArgument::REQUIRED, 'The name of the channel to create (must not exist already)');
         $this->setHelp(<<<EOT
-The <info>channels.create</info> command let's you create a new Slack channel with the given name.
+The <info>channels:create</info> command let's you create a new Slack channel with the given name.
 
 For more information about the related API method, check out the official documentation:
 <comment>https://api.slack.com/methods/channels.create</comment>
@@ -44,22 +43,16 @@ EOT
     }
 
     /**
-     * @return string
-     */
-    protected function getMethod()
-    {
-        return 'channels.create';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param InputInterface $input
      *
-     * @param ChannelsCreatePayload $payload
-     * @param InputInterface        $input
+     * @return ChannelsCreatePayload
      */
-    protected function configurePayload(PayloadInterface $payload, InputInterface $input)
+    protected function createPayload(InputInterface $input)
     {
+        $payload = new ChannelsCreatePayload();
         $payload->setName($input->getArgument('name'));
+
+        return $payload;
     }
 
     /**
@@ -78,7 +71,7 @@ EOT
                 $this->renderKeyValueTable($output, $channelData);
             }
         } else {
-            $this->writeError($output, sprintf('Failed to create channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to create channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }
