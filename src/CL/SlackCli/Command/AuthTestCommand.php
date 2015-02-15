@@ -12,7 +12,6 @@
 namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\AuthTestPayload;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\AuthTestPayloadResponse;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -75,6 +74,7 @@ EOT
             }
         } else {
             $this->writeError($output, sprintf('Failed to be authenticated by the Slack API: %s', $payloadResponse->getErrorExplanation()));
+            return 1;
         }
     }
 }

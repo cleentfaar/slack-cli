@@ -38,7 +38,7 @@ class ApiTestCommand extends AbstractApiCommand
 
         $this->setName('api:test');
         $this->setDescription('Tests connecting with the Slack API using the token.');
-        $this->addOption('arguments', null, InputOption::VALUE_REQUIRED, 'A query string of arguments to test in key/value format, such as "foo=bar&apple=pear"');
+        $this->addOption('arguments', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Arguments to be tested in key:value format, such as "foo:bar"');
         $this->addOption('error', null, InputOption::VALUE_REQUIRED, 'Optional error message to mock an error response from Slack with');
         $this->setHelp(<<<EOT
 The <info>api:test</info> command lets you connect with the Slack API for testing purposes.
@@ -65,7 +65,12 @@ EOT
         $payload = new ApiTestPayload();
         
         if ($input->getOption('arguments')) {
-            parse_str(urldecode($input->getOption('arguments')), $args);
+            $args = [];
+            foreach ($input->getOption('arguments') as $keyValue) {
+                list($key, $value) = explode(':', $keyValue);
+                $args[$key] = $value;
+            }
+            
             $payload->replaceArguments($args);
         }
 
@@ -100,11 +105,15 @@ EOT
                 $data['args'][$key] = $val;
             }
             $this->renderKeyValueTable($output, $data);
+            
+            // force 0 so any error tested here won't trigger a failure
+            return 0;
         } else {
             $this->writeError($output, sprintf(
                 'Slack API did not respond correctly (no error expected): %s',
                 $payloadResponse->getErrorExplanation()
             ));
+            return 1;
         }
     }
 }

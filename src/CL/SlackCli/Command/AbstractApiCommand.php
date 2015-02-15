@@ -11,10 +11,12 @@
 
 namespace CL\SlackCli\Command;
 
+use CL\Slack\Exception\SlackException;
 use CL\Slack\Model\AbstractModel;
 use CL\Slack\Model\Customizable;
 use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
+use CL\Slack\Test\Transport\MockApiClient;
 use CL\Slack\Transport\ApiClient;
 use CL\Slack\Transport\Events\RequestEvent;
 use CL\Slack\Transport\Events\ResponseEvent;
@@ -30,11 +32,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 abstract class AbstractApiCommand extends AbstractCommand
 {
-    /**
-     * @var ApiClient|null
-     */
-    private $apiClient;
-
     /**
      * @var SerializerInterface|null
      */
@@ -60,8 +57,7 @@ abstract class AbstractApiCommand extends AbstractCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $apiClient = new ApiClient();
-        $payload   = $this->createPayload($input);
+        $payload = $this->createPayload($input);
 
         if (!($payload instanceof PayloadInterface)) {
             throw new \RuntimeException(sprintf(
@@ -71,8 +67,6 @@ abstract class AbstractApiCommand extends AbstractCommand
                 var_export($payload, true)
             ));
         }
-
-        $this->configureListeners($apiClient, $output);
 
         if ($input->getOption('token')) {
             $token = $input->getOption('token');
@@ -88,14 +82,46 @@ abstract class AbstractApiCommand extends AbstractCommand
             );
         }
 
-        $response   = $apiClient->send($payload, $token);
+        $response   = $this->sendPayload($payload, $token, $input, $output);
         $returnCode = $this->handleResponse($response, $input, $output);
 
         if (null === $returnCode) {
-            return 0;
+            return $response->isOk() ? 0 : 1;
         }
 
         return (int) $returnCode;
+    }
+
+    /**
+     * @param PayloadInterface $payload
+     * @param string           $token
+     * @param InputInterface   $input
+     * @param OutputInterface  $output
+     *
+     * @return PayloadResponseInterface
+     *
+     * @throws SlackException
+     */
+    private function sendPayload(PayloadInterface $payload, $token, InputInterface $input, OutputInterface $output)
+    {
+        $env         = $input->getOption('env');
+        $testSuccess = $env === 'test-success' ? true : false;
+        $testFailure = $env === 'test-failure' ? true : false;
+
+        if ($testSuccess || $testFailure) {
+            $apiClient = new MockApiClient();
+
+            if ($testSuccess) {
+                return $apiClient->sendWithSuccess($payload);
+            }
+         
+            return $apiClient->sendWithFailure($payload);
+        }
+
+        $apiClient = new ApiClient($token);
+        $this->configureListeners($apiClient, $output);
+
+        return $apiClient->send($payload);
     }
 
     /**
