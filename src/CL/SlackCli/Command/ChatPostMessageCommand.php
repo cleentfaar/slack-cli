@@ -72,7 +72,8 @@ EOT
 
         // help support un-escaped channel names such as 'general' (the hash-sign requires the channel name to be quoted)
         // also making sure to ignore it if a channel ID was given
-        if (substr($channel, 0, 1) !== '#' && !is_numeric(substr($channel, 1))) {
+        // @todo Reconsider this approach; different channel formats could be allowed that might conflict with this
+        if (substr($channel, 0, 1) !== '#' && !(substr($channel, 0, 1) === 'G' && is_numeric(substr($channel, 1)))) {
             $channel = '#'.$channel;
         }
 
