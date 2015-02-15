@@ -11,9 +11,6 @@
 
 namespace CL\SlackCli\Command;
 
-use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableHelper;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -64,12 +61,12 @@ EOT
             $rawVal = isset($rawContents[$key]) ? $rawContents[$key] : null;
 
             if (is_array($value) && (!is_numeric(key($value)))) {
-                $k .= preg_replace('{^config\.}', '', $key . '.');
+                $k .= preg_replace('{^config\.}', '', $key.'.');
                 $this->listConfiguration($value, $rawVal, $output, $k);
 
                 if (substr_count($k, '.') > 1) {
                     $k = str_split($k, strrpos($k, '.', -2));
-                    $k = $k[0] . '.';
+                    $k = $k[0].'.';
                 } else {
                     $k = $origK;
                 }
@@ -82,7 +79,7 @@ EOT
                     return is_array($val) ? json_encode($val) : $val;
                 }, $value);
 
-                $value = '[' . implode(', ', $value) . ']';
+                $value = '['.implode(', ', $value).']';
             }
 
             if (is_bool($value)) {
@@ -90,9 +87,9 @@ EOT
             }
 
             if (is_string($rawVal) && $rawVal != $value) {
-                $output->writeln('[<comment>' . $k . $key . '</comment>] <info>' . $rawVal . ' (' . $value . ')</info>');
+                $output->writeln('[<comment>'.$k.$key.'</comment>] <info>'.$rawVal.' ('.$value.')</info>');
             } else {
-                $output->writeln('[<comment>' . $k . $key . '</comment>] <info>' . $value . '</info>');
+                $output->writeln('[<comment>'.$k.$key.'</comment>] <info>'.$value.'</info>');
             }
         }
     }

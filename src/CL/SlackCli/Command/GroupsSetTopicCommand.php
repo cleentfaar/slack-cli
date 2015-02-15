@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsSetTopicPayload;
 use CL\Slack\Payload\GroupsSetTopicPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -55,7 +54,7 @@ EOT
         $payload = new GroupsSetTopicPayload();
         $payload->setGroupId($input->getArgument('group-id'));
         $payload->setTopic($input->getArgument('topic'));
-        
+
         return $payload;
     }
 
@@ -63,8 +62,8 @@ EOT
      * {@inheritdoc}
      *
      * @param GroupsSetTopicPayloadResponse $payloadResponse
-     * @param InputInterface                  $input
-     * @param OutputInterface                 $output
+     * @param InputInterface                $input
+     * @param OutputInterface               $output
      */
     protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
     {

@@ -14,7 +14,6 @@ namespace CL\SlackCli\Command;
 use CL\Slack\Model\SimpleMessage;
 use CL\Slack\Payload\GroupsHistoryPayload;
 use CL\Slack\Payload\GroupsHistoryPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -88,7 +87,7 @@ EOT
         $payload->setLatest($input->getOption('latest'));
         $payload->setOldest($input->getOption('oldest'));
         $payload->setCount($input->getOption('count'));
-        
+
         return $payload;
     }
 
@@ -96,8 +95,8 @@ EOT
      * {@inheritdoc}
      *
      * @param GroupsHistoryPayloadResponse $payloadResponse
-     * @param InputInterface                 $input
-     * @param OutputInterface                $output
+     * @param InputInterface               $input
+     * @param OutputInterface              $output
      */
     protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
     {

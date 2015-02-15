@@ -76,8 +76,8 @@ abstract class AbstractApiCommand extends AbstractCommand
 
         if (empty($token)) {
             throw new \RuntimeException(
-                'No token provided by `--token` option and no value for `default_token` was found ' .
-                'in the global configuration. Use the `--token` option or set the token globally ' .
+                'No token provided by `--token` option and no value for `default_token` was found '.
+                'in the global configuration. Use the `--token` option or set the token globally '.
                 'by running `slack.phar config.set default_token your-token-here`'
             );
         }
@@ -114,7 +114,7 @@ abstract class AbstractApiCommand extends AbstractCommand
             if ($testSuccess) {
                 return $apiClient->sendWithSuccess($payload);
             }
-         
+
             return $apiClient->sendWithFailure($payload);
         }
 

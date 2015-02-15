@@ -11,8 +11,6 @@
 
 namespace CL\SlackCli\Command;
 
-use CL\Slack\Model\Attachment;
-use CL\Slack\Model\AttachmentField;
 use CL\Slack\Payload\ChatPostMessagePayload;
 use CL\Slack\Payload\ChatPostMessagePayloadResponse;
 use CL\Slack\Payload\PayloadResponseInterface;
@@ -71,11 +69,11 @@ EOT
     {
         $payload = new ChatPostMessagePayload();
         $channel = $input->getArgument('channel');
-        
+
         // help support un-escaped channel names such as 'general' (the hash-sign requires the channel name to be quoted)
         // also making sure to ignore it if a channel ID was given
         if (substr($channel, 0, 1) !== '#' && !is_numeric(substr($channel, 1))) {
-            $channel = '#' . $channel;
+            $channel = '#'.$channel;
         }
 
         $payload->setChannel($channel);
@@ -108,7 +106,7 @@ EOT
         if ($input->getOption('unfurl-media')) {
             $payload->setUnfurlMedia($input->getOption('unfurl-media'));
         }
-        
+
         return $payload;
     }
 

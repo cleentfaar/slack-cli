@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ImHistoryPayload;
 use CL\Slack\Payload\ImHistoryPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -76,7 +75,7 @@ EOT
         $payload->setLatest($input->getOption('latest'));
         $payload->setOldest($input->getOption('oldest'));
         $payload->setCount($input->getOption('count'));
-        
+
         return $payload;
     }
 
@@ -84,8 +83,8 @@ EOT
      * {@inheritdoc}
      *
      * @param ImHistoryPayloadResponse $payloadResponse
-     * @param InputInterface                 $input
-     * @param OutputInterface                $output
+     * @param InputInterface           $input
+     * @param OutputInterface          $output
      */
     protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
     {

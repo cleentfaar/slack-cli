@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChatDeletePayload;
 use CL\Slack\Payload\ChatDeletePayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -54,7 +53,7 @@ EOT
         $payload = new ChatDeletePayload();
         $payload->setChannelId($input->getArgument('channel-id'));
         $payload->setTimestamp($input->getArgument('timestamp'));
-        
+
         return $payload;
     }
 

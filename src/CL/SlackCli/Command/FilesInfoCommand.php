@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\FilesInfoPayload;
 use CL\Slack\Payload\FilesInfoPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -62,7 +61,7 @@ EOT
         $payload->setFileId($input->getArgument('file-id'));
         $payload->setCount($input->getOption('count'));
         $payload->setPage($input->getOption('page'));
-        
+
         return $payload;
     }
 

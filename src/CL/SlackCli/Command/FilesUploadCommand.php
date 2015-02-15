@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\FilesUploadPayload;
 use CL\Slack\Payload\FilesUploadPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -63,7 +62,7 @@ EOT
     protected function createPayload(InputInterface $input)
     {
         $payload = new FilesUploadPayload();
-        
+
         if ($input->getOption('path')) {
             $content = file_get_contents($input->getOption('path'));
         } elseif ($input->getOption('content')) {
@@ -77,7 +76,7 @@ EOT
         $payload->setFilename($input->getOption('filename'));
         $payload->setFileType($input->getOption('filetype'));
         $payload->setTitle($input->getOption('title'));
-        
+
         return $payload;
     }
 

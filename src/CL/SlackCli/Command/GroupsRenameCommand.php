@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsRenamePayload;
 use CL\Slack\Payload\GroupsRenamePayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -57,7 +56,7 @@ EOT
         $payload = new GroupsRenamePayload();
         $payload->setGroupId($input->getArgument('group-id'));
         $payload->setName($input->getArgument('name'));
-        
+
         return $payload;
     }
 
@@ -65,8 +64,8 @@ EOT
      * {@inheritdoc}
      *
      * @param GroupsRenamePayloadResponse $payloadResponse
-     * @param InputInterface                $input
-     * @param OutputInterface               $output
+     * @param InputInterface              $input
+     * @param OutputInterface             $output
      */
     protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
     {

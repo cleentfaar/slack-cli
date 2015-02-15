@@ -11,10 +11,8 @@
 
 namespace CL\SlackCli\Command;
 
-use CL\Slack\Model\SimpleMessage;
 use CL\Slack\Payload\ChannelsHistoryPayload;
 use CL\Slack\Payload\ChannelsHistoryPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -77,7 +75,7 @@ EOT
         $payload->setLatest($input->getOption('latest'));
         $payload->setOldest($input->getOption('oldest'));
         $payload->setCount($input->getOption('count'));
-        
+
         return $payload;
     }
 

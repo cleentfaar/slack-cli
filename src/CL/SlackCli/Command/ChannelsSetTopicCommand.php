@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsSetTopicPayload;
 use CL\Slack\Payload\ChannelsSetTopicPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -55,7 +54,7 @@ EOT
         $payload = new ChannelsSetTopicPayload();
         $payload->setChannelId($input->getArgument('channel-id'));
         $payload->setTopic($input->getArgument('topic'));
-        
+
         return $payload;
     }
 
@@ -63,8 +62,8 @@ EOT
      * {@inheritdoc}
      *
      * @param ChannelsSetTopicPayloadResponse $payloadResponse
-     * @param InputInterface                    $input
-     * @param OutputInterface                   $output
+     * @param InputInterface                  $input
+     * @param OutputInterface                 $output
      */
     protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
     {

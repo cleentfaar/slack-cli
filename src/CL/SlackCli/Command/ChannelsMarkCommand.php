@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsMarkPayload;
 use CL\Slack\Payload\ChannelsMarkPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -62,7 +61,7 @@ EOT
     {
         $payload = new ChannelsMarkPayload();
         $payload->setChannelId($input->getArgument('channel-id'));
-        
+
         return $payload;
     }
 

@@ -45,7 +45,7 @@ EOT
                 $editor = 'notepad';
             } else {
                 foreach (['vim', 'vi', 'nano', 'pico', 'ed'] as $candidate) {
-                    if (exec('which ' . $candidate)) {
+                    if (exec('which '.$candidate)) {
                         $editor = $candidate;
                         break;
                     }
@@ -54,6 +54,6 @@ EOT
         }
 
         $file = $this->configFile->getPath();
-        system($editor . ' ' . $file . (defined('PHP_WINDOWS_VERSION_BUILD') ? '' : ' > `tty`'));
+        system($editor.' '.$file.(defined('PHP_WINDOWS_VERSION_BUILD') ? '' : ' > `tty`'));
     }
 }

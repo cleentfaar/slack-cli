@@ -71,7 +71,7 @@ EOT
 
                 if (true !== $validation = $validator($value)) {
                     throw new \RuntimeException(sprintf(
-                        '"%s" is an invalid value' . ($validation ? ' (' . $validation . ')' : ''),
+                        '"%s" is an invalid value'.($validation ? ' ('.$validation.')' : ''),
                         $value
                     ));
                 }

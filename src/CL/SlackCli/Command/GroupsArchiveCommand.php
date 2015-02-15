@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsArchivePayload;
 use CL\Slack\Payload\GroupsArchivePayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -52,7 +51,7 @@ EOT
     {
         $payload = new GroupsArchivePayload();
         $payload->setGroupId($input->getArgument('group-id'));
-        
+
         return $payload;
     }
 

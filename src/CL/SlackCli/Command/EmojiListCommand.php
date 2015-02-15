@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\EmojiListPayload;
 use CL\Slack\Payload\EmojiListPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -54,7 +53,7 @@ EOT
     protected function createPayload(InputInterface $input)
     {
         $payload = new EmojiListPayload();
-        
+
         return $payload;
     }
 

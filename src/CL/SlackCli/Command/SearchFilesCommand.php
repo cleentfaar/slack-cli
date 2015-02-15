@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\SearchFilesPayload;
 use CL\Slack\Payload\SearchFilesPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -70,7 +69,7 @@ EOT
         $payload->setPage($input->getOption('page'));
         $payload->setCount($input->getOption('count'));
         $payload->setHighlight($input->getOption('highlight'));
-        
+
         return $payload;
     }
 
@@ -78,8 +77,8 @@ EOT
      * {@inheritdoc}
      *
      * @param SearchFilesPayloadResponse $payloadResponse
-     * @param InputInterface                $input
-     * @param OutputInterface               $output
+     * @param InputInterface             $input
+     * @param OutputInterface            $output
      */
     protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
     {

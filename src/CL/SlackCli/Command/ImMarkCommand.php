@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ImMarkPayload;
 use CL\Slack\Payload\ImMarkPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -62,7 +61,7 @@ EOT
     {
         $payload = new ImMarkPayload();
         $payload->setImId($input->getArgument('im-id'));
-        
+
         return $payload;
     }
 

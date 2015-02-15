@@ -74,6 +74,7 @@ EOT
             }
         } else {
             $this->writeError($output, sprintf('Failed to be authenticated by the Slack API: %s', lcfirst($payloadResponse->getErrorExplanation())));
+
             return 1;
         }
     }

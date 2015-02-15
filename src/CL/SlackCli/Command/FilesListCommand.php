@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\FilesListPayload;
 use CL\Slack\Payload\FilesListPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -69,7 +68,7 @@ EOT
         $payload->setTimestampFrom($input->getOption('from'));
         $payload->setTimestampTo($input->getOption('to'));
         $payload->setTypes($input->getOption('types'));
-        
+
         return $payload;
     }
 

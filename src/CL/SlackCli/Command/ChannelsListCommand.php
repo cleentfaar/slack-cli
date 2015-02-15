@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsListPayload;
 use CL\Slack\Payload\ChannelsListPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -54,7 +53,7 @@ EOT
     {
         $payload = new ChannelsListPayload();
         $payload->setExcludeArchived($input->getOption('exclude-archived'));
-        
+
         return $payload;
     }
 

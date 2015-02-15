@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ImListPayload;
 use CL\Slack\Payload\ImListPayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -51,7 +50,7 @@ EOT
     {
         $payload = new ImListPayload();
         $payload->setExcludeArchived($input->getOption('exclude-archived'));
-        
+
         return $payload;
     }
 
@@ -59,8 +58,8 @@ EOT
      * {@inheritdoc}
      *
      * @param ImListPayloadResponse $payloadResponse
-     * @param InputInterface              $input
-     * @param OutputInterface             $output
+     * @param InputInterface        $input
+     * @param OutputInterface       $output
      */
     protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
     {

@@ -12,7 +12,6 @@
 namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ApiTestPayload;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\ApiTestPayloadResponse;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -63,14 +62,14 @@ EOT
     protected function createPayload(InputInterface $input)
     {
         $payload = new ApiTestPayload();
-        
+
         if ($input->getOption('arguments')) {
             $args = [];
             foreach ($input->getOption('arguments') as $keyValue) {
                 list($key, $value) = explode(':', $keyValue);
                 $args[$key] = $value;
             }
-            
+
             $payload->replaceArguments($args);
         }
 
@@ -78,7 +77,7 @@ EOT
             $this->expectError = true;
             $payload->setError($input->getOption('error'));
         }
-        
+
         return $payload;
     }
 
@@ -105,7 +104,7 @@ EOT
                 $data['args'][$key] = $val;
             }
             $this->renderKeyValueTable($output, $data);
-            
+
             // force 0 so any error tested here won't trigger a failure
             return 0;
         } else {
@@ -113,6 +112,7 @@ EOT
                 'Slack API did not respond correctly (no error expected): %s',
                 lcfirst($payloadResponse->getErrorExplanation())
             ));
+
             return 1;
         }
     }

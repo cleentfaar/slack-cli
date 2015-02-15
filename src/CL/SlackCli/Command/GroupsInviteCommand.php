@@ -13,7 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsInvitePayload;
 use CL\Slack\Payload\GroupsInvitePayloadResponse;
-use CL\Slack\Payload\PayloadInterface;
 use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -58,7 +57,7 @@ EOT
         $payload = new GroupsInvitePayload();
         $payload->setGroupId($input->getArgument('group-id'));
         $payload->setUserId($input->getArgument('user-id'));
-        
+
         return $payload;
     }
 
