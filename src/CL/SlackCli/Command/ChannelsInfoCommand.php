@@ -70,7 +70,7 @@ EOT
             $this->renderKeyValueTable($output, $data);
             $this->writeOk($output, 'Successfully retrieved information about the channel!');
         } else {
-            $this->writeError($output, sprintf('Failed to retrieve information about the channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to retrieve information about the channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

@@ -79,7 +79,7 @@ EOT
             $file = $payloadResponse->getFile();
             $this->renderKeyValueTable($output, $file);
         } else {
-            $this->writeError($output, sprintf('Failed to fetch information about the file: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to fetch information about the file: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

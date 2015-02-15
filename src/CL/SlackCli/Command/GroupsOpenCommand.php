@@ -70,7 +70,7 @@ EOT
                 $this->writeOk($output, 'Successfully opened group!');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to open group: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to open group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

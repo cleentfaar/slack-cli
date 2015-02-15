@@ -70,7 +70,7 @@ EOT
                 $this->writeOk($output, 'Successfully closed IM channel!');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to close IM channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to close IM channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

@@ -71,7 +71,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully kicked user from the channel!');
         } else {
-            $this->writeError($output, sprintf('Failed to kick user from the channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to kick user from the channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

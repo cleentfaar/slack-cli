@@ -34,7 +34,7 @@ class ChatPostMessageCommandTest extends AbstractApiCommandTest
             [
                 'Successfully sent message to Slack',
                 'Channel ID: C1234567',
-                'Timestamp: 1234567.1234567',
+                'Timestamp: 12345678.12345678',
             ]
         );
 

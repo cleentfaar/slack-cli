@@ -69,7 +69,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully un-archived channel!');
         } else {
-            $this->writeError($output, sprintf('Failed to un-archive channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to un-archive channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

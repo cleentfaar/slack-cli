@@ -68,7 +68,7 @@ EOT
                 $this->writeOk($output, 'Successfully opened IM channel!');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to open IM channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to open IM channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

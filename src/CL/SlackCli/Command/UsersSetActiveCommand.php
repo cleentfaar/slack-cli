@@ -67,7 +67,7 @@ EOT
         } else {
             $this->writeError($output, sprintf(
                 'Failed to set the user to active: %s',
-                $payloadResponse->getErrorExplanation()
+                lcfirst($payloadResponse->getErrorExplanation())
             ));
         }
     }

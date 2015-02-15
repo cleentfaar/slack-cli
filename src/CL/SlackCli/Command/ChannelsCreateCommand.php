@@ -72,7 +72,7 @@ EOT
                 $this->renderKeyValueTable($output, $channelData);
             }
         } else {
-            $this->writeError($output, sprintf('Failed to create channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to create channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

@@ -73,7 +73,7 @@ EOT
                 $this->renderKeyValueTable($output, $data);
             }
         } else {
-            $this->writeError($output, sprintf('Failed to be authenticated by the Slack API: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to be authenticated by the Slack API: %s', lcfirst($payloadResponse->getErrorExplanation())));
             return 1;
         }
     }

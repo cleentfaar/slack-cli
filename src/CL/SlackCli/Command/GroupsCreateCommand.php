@@ -67,7 +67,7 @@ EOT
             $this->writeOk($output, 'Successfully created group!');
             $this->renderKeyValueTable($output, $payloadResponse->getGroup());
         } else {
-            $this->writeError($output, sprintf('Failed to create group: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to create group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

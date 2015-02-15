@@ -68,7 +68,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully left group!');
         } else {
-            $this->writeError($output, sprintf('Failed to leave group: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to leave group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

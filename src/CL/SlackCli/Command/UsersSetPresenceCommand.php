@@ -68,7 +68,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully changed presence!');
         } else {
-            $this->writeError($output, sprintf('Failed to change presence. %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to change presence. %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

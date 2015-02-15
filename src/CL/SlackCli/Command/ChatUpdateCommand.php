@@ -74,7 +74,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully updated message!');
         } else {
-            $this->writeError($output, sprintf('Failed to update message: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to update message: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

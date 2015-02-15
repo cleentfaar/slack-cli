@@ -99,7 +99,7 @@ EOT
                 $output->writeln(sprintf('Has more: <comment>%s</comment>', $payloadResponse->getHasMore() ? 'yes' : 'no'));
             }
         } else {
-            $this->writeError($output, sprintf('Failed to retrieve history for this IM channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to retrieve history for this IM channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

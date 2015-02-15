@@ -68,7 +68,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully archived group!');
         } else {
-            $this->writeError($output, sprintf('Failed to archive group: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to archive group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

@@ -79,7 +79,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully moved the read cursor!');
         } else {
-            $this->writeError($output, sprintf('Failed to move the read cursor in the group: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to move the read cursor in the group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

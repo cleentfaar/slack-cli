@@ -71,7 +71,7 @@ EOT
                 $this->writeError($output, 'No users seem to be assigned to your team... this is strange...');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to list users: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to list users: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

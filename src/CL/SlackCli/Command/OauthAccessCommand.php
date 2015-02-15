@@ -77,7 +77,7 @@ EOT
             $output->writeln('Access token: <comment>%s</comment>', $payloadResponse->getAccessToken());
             $output->writeln('Scope: <comment>%s</comment>', $payloadResponse->getScope());
         } else {
-            $this->writeError($output, sprintf('Failed to be authenticated through oauth. %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to be authenticated through oauth. %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

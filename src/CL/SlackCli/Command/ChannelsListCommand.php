@@ -85,7 +85,7 @@ EOT
                 $this->writeError($output, 'No channels seem to be assigned to your team... this is strange...');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to list channels. %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to list channels. %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

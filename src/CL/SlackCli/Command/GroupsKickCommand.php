@@ -70,7 +70,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully kicked user from the group!');
         } else {
-            $this->writeError($output, sprintf('Failed to kick user from the group: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to kick user from the group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

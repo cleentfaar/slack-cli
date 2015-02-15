@@ -83,7 +83,7 @@ EOT
                 $this->writeComment($output, 'No groups to list');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to list groups. %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to list groups. %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

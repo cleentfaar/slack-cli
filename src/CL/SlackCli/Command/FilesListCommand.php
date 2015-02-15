@@ -102,7 +102,7 @@ EOT
                 $this->renderKeyValueTable($output, $payloadResponse->getPaging());
             }
         } else {
-            $this->writeError($output, sprintf('Failed to list files. %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to list files. %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

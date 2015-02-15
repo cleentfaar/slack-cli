@@ -83,7 +83,7 @@ EOT
                 }
             }
         } else {
-            $this->writeError($output, sprintf('Failed to invite user: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to invite user: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

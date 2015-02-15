@@ -95,7 +95,7 @@ EOT
             $file = $payloadResponse->getFile();
             $this->renderKeyValueTable($output, $file);
         } else {
-            $this->writeError($output, sprintf('Failed to upload file: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to upload file: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

@@ -76,7 +76,7 @@ EOT
         } else {
             $this->writeError($output, sprintf(
                 'Failed to list starred items: %s',
-                $payloadResponse->getErrorExplanation()
+                lcfirst($payloadResponse->getErrorExplanation())
             ));
         }
     }

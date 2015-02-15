@@ -70,7 +70,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, 'Successfully deleted message!');
         } else {
-            $this->writeError($output, sprintf('Failed to delete message: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to delete message: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

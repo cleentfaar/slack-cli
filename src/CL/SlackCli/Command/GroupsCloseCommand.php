@@ -70,7 +70,7 @@ EOT
                 $this->writeOk($output, 'Successfully closed group!');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to close group: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to close group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

@@ -83,7 +83,7 @@ EOT
                 $this->renderKeyValueTable($output, $data);
             }
         } else {
-            $this->writeError($output, sprintf('Failed to create child group: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to create child group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

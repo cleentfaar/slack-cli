@@ -128,7 +128,7 @@ EOT
                 $output->writeln(sprintf('Timestamp: <comment>%s</comment>', $payloadResponse->getTimestamp()));
             }
         } else {
-            $this->writeError($output, sprintf('Failed to send message to Slack: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to send message to Slack: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

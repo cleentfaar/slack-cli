@@ -71,7 +71,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, sprintf('Successfully changed purpose of channel to: "%s"', $payloadResponse->getPurpose()));
         } else {
-            $this->writeError($output, sprintf('Failed to change purpose of channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to change purpose of channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

@@ -71,7 +71,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, sprintf('Successfully changed topic of channel to: "%s"', $payloadResponse->getTopic()));
         } else {
-            $this->writeError($output, sprintf('Failed to change topic of channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to change topic of channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

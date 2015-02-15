@@ -71,7 +71,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, sprintf('Successfully changed purpose of group to: "%s"', $payloadResponse->getPurpose()));
         } else {
-            $this->writeError($output, sprintf('Failed to change purpose of group: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to change purpose of group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

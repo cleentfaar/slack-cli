@@ -72,7 +72,7 @@ EOT
                 $this->writeOk($output, 'Successfully left channel!');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to leave channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to leave channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

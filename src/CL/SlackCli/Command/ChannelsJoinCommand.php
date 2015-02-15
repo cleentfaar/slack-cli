@@ -81,7 +81,7 @@ EOT
                 $this->renderKeyValueTable($output, $data);
             }
         } else {
-            $this->writeError($output, sprintf('Failed to join channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to join channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

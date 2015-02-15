@@ -67,7 +67,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->renderKeyValueTable($output, $payloadResponse->getUser());
         } else {
-            $this->writeError($output, sprintf('Failed to fetch information about the user: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to fetch information about the user: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

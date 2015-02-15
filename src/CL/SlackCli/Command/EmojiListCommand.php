@@ -74,7 +74,7 @@ EOT
                 $this->renderKeyValueTable($output, $emojis, ['Name', 'URL']);
             }
         } else {
-            $this->writeError($output, sprintf('Failed to fetch emojis: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to fetch emojis: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

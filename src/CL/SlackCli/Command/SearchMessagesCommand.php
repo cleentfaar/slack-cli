@@ -100,7 +100,7 @@ EOT
                 }
             }
         } else {
-            $this->writeError($output, sprintf('Failed to search. %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to search. %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

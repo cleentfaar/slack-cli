@@ -74,7 +74,7 @@ EOT
                 $this->renderKeyValueTable($output, $data);
             }
         } else {
-            $this->writeError($output, sprintf('Failed to invite user to this channel: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to invite user to this channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

@@ -71,7 +71,7 @@ EOT
         if ($payloadResponse->isOk()) {
             $this->writeOk($output, sprintf('Successfully changed topic of group to: "%s"', $payloadResponse->getTopic()));
         } else {
-            $this->writeError($output, sprintf('Failed to change topic of group: %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to change topic of group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

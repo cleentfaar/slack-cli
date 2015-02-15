@@ -111,7 +111,7 @@ EOT
         } else {
             $this->writeError($output, sprintf(
                 'Slack API did not respond correctly (no error expected): %s',
-                $payloadResponse->getErrorExplanation()
+                lcfirst($payloadResponse->getErrorExplanation())
             ));
             return 1;
         }

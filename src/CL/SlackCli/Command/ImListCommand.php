@@ -73,7 +73,7 @@ EOT
                 $this->writeComment($output, 'No IM channels to list');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to list channels. %s', $payloadResponse->getErrorExplanation()));
+            $this->writeError($output, sprintf('Failed to list channels. %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }
