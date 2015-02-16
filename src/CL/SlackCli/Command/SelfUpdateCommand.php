@@ -39,20 +39,7 @@ class SelfUpdateCommand extends AbstractCommand
         }
 
         if ($manager->update($currentVersion, $lockMajor, $allowPreRelease)) {
-            $newVersionObject = $manager->getManifest()->findRecent(
-                Parser::toVersion($currentVersion),
-                $lockMajor,
-                $allowPreRelease
-            )->getVersion();
-
-            $newVersion = sprintf(
-                '%s.%s',
-                $newVersionObject->getMajor(),
-                implode('.', array_filter([
-                    $newVersionObject->getMinor(),
-                    $newVersionObject->getPatch()
-                ]))
-            );
+            $newVersion = $this->getNewVersion($currentVersion, $manager, $lockMajor, $allowPreRelease);
 
             $output->writeln(sprintf(
                 '<info>Updated Slack CLI from <fg=yellow>%s</fg=yellow> to <fg=yellow>%s</fg=yellow></info>',
@@ -65,5 +52,33 @@ class SelfUpdateCommand extends AbstractCommand
                 $currentVersion
             ));
         }
+    }
+
+    /**
+     * @param string  $currentVersion
+     * @param Manager $manager
+     * @param bool    $lockMajor
+     * @param bool    $allowPreRelease
+     *
+     * @return string
+     */
+    private function getNewVersion($currentVersion, Manager $manager, $lockMajor = false, $allowPreRelease = false)
+    {
+        $newVersionObject = $manager->getManifest()->findRecent(
+            Parser::toVersion($currentVersion),
+            $lockMajor,
+            $allowPreRelease
+        )->getVersion();
+
+        $newVersion = sprintf(
+            '%s.%s',
+            $newVersionObject->getMajor(),
+            implode('.', array_filter([
+                $newVersionObject->getMinor(),
+                $newVersionObject->getPatch()
+            ]))
+        );
+
+        return $newVersion;
     }
 }
