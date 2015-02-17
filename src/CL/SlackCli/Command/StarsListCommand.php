@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\StarsListPayload;
 use CL\Slack\Payload\StarsListPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -43,14 +40,12 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return StarsListPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new StarsListPayload();
-        $payload->setUserId($input->getOption('user-id'));
+        $payload->setUserId($this->input->getOption('user-id'));
 
         return $payload;
     }
@@ -59,22 +54,20 @@ EOT
      * {@inheritdoc}
      *
      * @param StarsListPayloadResponse $payloadResponse
-     * @param InputInterface           $input
-     * @param OutputInterface          $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
             $stars = $payloadResponse->getItems();
-            $output->writeln(sprintf('Received <comment>%d</comment> starred items...', count($stars)));
+            $this->output->writeln(sprintf('Received <comment>%d</comment> starred items...', count($stars)));
             if (!empty($stars)) {
-                $this->renderTable($output, $stars, null);
-                $this->writeOk($output, 'Finished listing starred items');
+                $this->renderTable($stars, null);
+                $this->writeOk('Finished listing starred items');
             } else {
-                $this->writeComment($output, 'No starred items to list');
+                $this->writeComment('No starred items to list');
             }
         } else {
-            $this->writeError($output, sprintf(
+            $this->writeError(sprintf(
                 'Failed to list starred items: %s',
                 lcfirst($payloadResponse->getErrorExplanation())
             ));

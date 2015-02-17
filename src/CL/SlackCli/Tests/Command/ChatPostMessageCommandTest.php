@@ -3,20 +3,41 @@
 namespace CL\SlackCli\Tests\Command;
 
 use CL\SlackCli\Command\ChatPostMessageCommand;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class ChatPostMessageCommandTest extends AbstractApiCommandTest
 {
+    public function testExecute()
+    {
+        $args = [
+            'channel' => '#foobar',
+            'text'    => 'Hello world!',
+        ];
+
+        $this->assertExecutionSucceedsWith($args, [
+            'Successfully sent message to Slack',
+            'Channel ID: C1234567',
+            'Timestamp: 12345678.12345678',
+        ]);
+
+        $this->assertExecutionFailsWith($args, 'Failed to send message to Slack');
+    }
+
     protected function createCommand()
     {
         return new ChatPostMessageCommand();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getExpectedName()
     {
         return 'chat:post-message';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getExpectedAliases()
     {
         return [
@@ -24,23 +45,30 @@ class ChatPostMessageCommandTest extends AbstractApiCommandTest
         ];
     }
 
-    public function testExecute()
+    /**
+     * {@inheritdoc}
+     */
+    protected function getExpectedArguments()
     {
-        $this->assertExecutionSucceedsWith(
-            [
-                'channel' => '#foobar',
-                'text'    => 'Hello world!',
-            ],
-            [
-                'Successfully sent message to Slack',
-                'Channel ID: C1234567',
-                'Timestamp: 12345678.12345678',
-            ]
-        );
+        return [
+            'channel',
+            'text',
+        ];
+    }
 
-        $this->assertExecutionFailsWith([
-            'channel' => '#foobar',
-            'text'    => 'Hello world!',
-        ], 'Failed to send message to Slack');
+    /**
+     * {@inheritdoc}
+     */
+    protected function getExpectedOptions()
+    {
+        return [
+            'icon-emoji',
+            'icon-url',
+            'link-names',
+            'parse',
+            'unfurl-links',
+            'unfurl-media',
+            'username',
+        ];
     }
 }

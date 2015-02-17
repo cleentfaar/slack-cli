@@ -13,9 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsInvitePayload;
 use CL\Slack\Payload\ChannelsInvitePayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -45,35 +43,33 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return ChannelsInvitePayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new ChannelsInvitePayload();
-        $payload->setChannelId($input->getArgument('channel-id'));
-        $payload->setUserId($input->getArgument('user-id'));
+        $payload->setChannelId($this->input->getArgument('channel-id'));
+        $payload->setUserId($this->input->getArgument('user-id'));
+
+        return $payload;
     }
 
     /**
      * {@inheritdoc}
      *
      * @param ChannelsInvitePayloadResponse $payloadResponse
-     * @param InputInterface                $input
-     * @param OutputInterface               $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
-            $this->writeOk($output, 'Successfully invited user to the channel!');
-            if ($output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
-                $output->writeln('Channel used:');
+            $this->writeOk('Successfully invited user to the channel!');
+            if ($this->output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
+                $this->output->writeln('Channel used:');
                 $data = $this->serializeObjectToArray($payloadResponse->getChannel());
-                $this->renderKeyValueTable($output, $data);
+                $this->renderKeyValueTable($data);
             }
         } else {
-            $this->writeError($output, sprintf('Failed to invite user to this channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to invite user to this channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

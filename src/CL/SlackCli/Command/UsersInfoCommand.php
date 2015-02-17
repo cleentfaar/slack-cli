@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\UsersInfoPayload;
 use CL\Slack\Payload\UsersInfoPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -43,14 +40,12 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return UsersInfoPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new UsersInfoPayload();
-        $payload->setUserId($input->getArgument('user-id'));
+        $payload->setUserId($this->input->getArgument('user-id'));
 
         return $payload;
     }
@@ -59,15 +54,13 @@ EOT
      * {@inheritdoc}
      *
      * @param UsersInfoPayloadResponse $payloadResponse
-     * @param InputInterface           $input
-     * @param OutputInterface          $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
-            $this->renderKeyValueTable($output, $payloadResponse->getUser());
+            $this->renderKeyValueTable($payloadResponse->getUser());
         } else {
-            $this->writeError($output, sprintf('Failed to fetch information about the user: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to fetch information about the user: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

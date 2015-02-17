@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsArchivePayload;
 use CL\Slack\Payload\ChannelsArchivePayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -43,14 +40,12 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return ChannelsArchivePayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new ChannelsArchivePayload();
-        $payload->setChannelId($input->getArgument('channel-id'));
+        $payload->setChannelId($this->input->getArgument('channel-id'));
 
         return $payload;
     }
@@ -59,15 +54,13 @@ EOT
      * {@inheritdoc}
      *
      * @param ChannelsArchivePayloadResponse $payloadResponse
-     * @param InputInterface                 $input
-     * @param OutputInterface                $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
-            $this->writeOk($output, 'Successfully archived channel!');
+            $this->writeOk('Successfully archived channel!');
         } else {
-            $this->writeError($output, sprintf('Failed to archive channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to archive channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

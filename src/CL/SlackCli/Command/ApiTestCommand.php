@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ApiTestPayload;
 use CL\Slack\Payload\ApiTestPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -55,17 +52,15 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return ApiTestPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new ApiTestPayload();
 
-        if ($input->getOption('arguments')) {
+        if ($this->input->getOption('arguments')) {
             $args = [];
-            foreach ($input->getOption('arguments') as $keyValue) {
+            foreach ($this->input->getOption('arguments') as $keyValue) {
                 list($key, $value) = explode(':', $keyValue);
                 $args[$key] = $value;
             }
@@ -73,9 +68,9 @@ EOT
             $payload->replaceArguments($args);
         }
 
-        if ($input->getOption('error')) {
+        if ($this->input->getOption('error')) {
             $this->expectError = true;
-            $payload->setError($input->getOption('error'));
+            $payload->setError($this->input->getOption('error'));
         }
 
         return $payload;
@@ -85,16 +80,14 @@ EOT
      * {@inheritdoc}
      *
      * @param ApiTestPayloadResponse $payloadResponse
-     * @param InputInterface         $input
-     * @param OutputInterface        $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($this->expectError === true || $payloadResponse->isOk()) {
-            $this->writeOk($output, 'Slack API seems to have responded correctly (no error expected, no error returned)');
+            $this->writeOk('Slack API seems to have responded correctly (no error expected, no error returned)');
             $data = [];
-            if ($payloadResponse->getError()) {
-                $data['error'] = $payloadResponse->getError();
+            if (null !== $error = $payloadResponse->getError()) {
+                $data['error'] = $error;
             }
             foreach ($payloadResponse->getArguments() as $key => $val) {
                 if ($key == 'token') {
@@ -103,12 +96,12 @@ EOT
 
                 $data['args'][$key] = $val;
             }
-            $this->renderKeyValueTable($output, $data);
+            $this->renderKeyValueTable($data);
 
             // force 0 so any error tested here won't trigger a failure
             return 0;
         } else {
-            $this->writeError($output, sprintf(
+            $this->writeError(sprintf(
                 'Slack API did not respond correctly (no error expected): %s',
                 lcfirst($payloadResponse->getErrorExplanation())
             ));

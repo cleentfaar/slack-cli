@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsInvitePayloadResponse;
 use CL\Slack\Payload\ChannelsKickPayload;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -44,15 +41,13 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return ChannelsKickPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new ChannelsKickPayload();
-        $payload->setChannelId($input->getArgument('channel-id'));
-        $payload->setUserId($input->getArgument('user-id'));
+        $payload->setChannelId($this->input->getArgument('channel-id'));
+        $payload->setUserId($this->input->getArgument('user-id'));
 
         return $payload;
     }
@@ -61,15 +56,13 @@ EOT
      * {@inheritdoc}
      *
      * @param ChannelsInvitePayloadResponse $payloadResponse
-     * @param InputInterface                $input
-     * @param OutputInterface               $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
-            $this->writeOk($output, 'Successfully kicked user from the channel!');
+            $this->writeOk('Successfully kicked user from the channel!');
         } else {
-            $this->writeError($output, sprintf('Failed to kick user from the channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to kick user from the channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

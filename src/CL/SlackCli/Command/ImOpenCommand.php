@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ImOpenPayload;
 use CL\Slack\Payload\ImOpenPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -43,14 +40,14 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return ImOpenPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new ImOpenPayload();
-        $payload->setUserId($input->getArgument('user-id'));
+        $payload->setUserId($this->input->getArgument('user-id'));
+
+        return $payload;
     }
 
     /**
@@ -58,16 +55,16 @@ EOT
      *
      * @param ImOpenPayloadResponse $payloadResponse
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
             if ($payloadResponse->isAlreadyOpen()) {
-                $output->writeln('<comment>Couldn\'t open IM channel: the IM has already been opened</comment>');
+                $this->output->writeln('<comment>Couldn\'t open IM channel: the IM has already been opened</comment>');
             } else {
-                $this->writeOk($output, 'Successfully opened IM channel!');
+                $this->writeOk('Successfully opened IM channel!');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to open IM channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to open IM channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

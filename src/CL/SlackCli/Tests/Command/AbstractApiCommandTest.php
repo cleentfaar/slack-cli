@@ -17,17 +17,17 @@ abstract class AbstractApiCommandTest extends AbstractCommandTest
 
     protected function getDefaultSuccessfulInput()
     {
-        return [
+        return array_merge(parent::getDefaultSuccessfulInput(), [
             '--token' => 'testing-token',
             '--env'   => 'test-success',
-        ];
+        ]);
     }
 
     protected function getDefaultFailureInput()
     {
-        return [
+        return array_merge(parent::getDefaultFailureInput(), [
             '--token' => 'testing-token',
             '--env'   => 'test-failure',
-        ];
+        ]);
     }
 }

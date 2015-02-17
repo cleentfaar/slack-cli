@@ -7,6 +7,28 @@ use CL\SlackCli\Command\ApiTestCommand;
 
 class ApiTestCommandTest extends AbstractApiCommandTest
 {
+    public function testExecute()
+    {
+        $this->assertExecutionSucceedsWith(
+            [],
+            'Slack API seems to have responded correctly'
+        );
+
+        $this->assertExecutionSucceedsWith([
+            '--arguments' => [
+                'foo:bar',
+            ],
+        ], 'Slack API seems to have responded correctly');
+        $this->assertExecutionSucceedsWith([
+            '--arguments' => [
+                'foo:bar',
+            ],
+            '--error' => 'some expected error',
+        ], 'Slack API seems to have responded correctly');
+
+        $this->assertExecutionFailsWith([], 'Slack API did not respond correctly (no error expected)');
+    }
+
     /**
      * @return AbstractCommand
      */
@@ -23,25 +45,22 @@ class ApiTestCommandTest extends AbstractApiCommandTest
         return 'api:test';
     }
 
-    public function testExecute()
+    /**
+     * @return array
+     */
+    protected function getExpectedArguments()
     {
-        $this->assertExecutionSucceedsWith(
-            [], 
-            'Slack API seems to have responded correctly'
-        );
-        
-        $this->assertExecutionSucceedsWith([
-            '--arguments' => [
-                'foo:bar'
-            ], 
-        ], 'Slack API seems to have responded correctly');
-        $this->assertExecutionSucceedsWith([
-            '--arguments' => [
-                'foo:bar'
-            ], 
-            '--error' => 'some expected error'
-        ], 'Slack API seems to have responded correctly');
-        
-        $this->assertExecutionFailsWith([], 'Slack API did not respond correctly (no error expected)');
+        return [];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getExpectedOptions()
+    {
+        return [
+            'arguments',
+            'error',
+        ];
     }
 }

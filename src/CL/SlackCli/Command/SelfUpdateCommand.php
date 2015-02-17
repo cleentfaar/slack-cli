@@ -5,7 +5,6 @@ namespace CL\SlackCli\Command;
 use Herrera\Phar\Update\Manager;
 use Herrera\Phar\Update\Manifest;
 use Herrera\Version\Parser;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -41,13 +40,13 @@ class SelfUpdateCommand extends AbstractCommand
         if ($manager->update($currentVersion, $lockMajor, $allowPreRelease)) {
             $newVersion = $this->getNewVersion($currentVersion, $manager, $lockMajor, $allowPreRelease);
 
-            $output->writeln(sprintf(
+            $this->output->writeln(sprintf(
                 '<info>Updated Slack CLI from <fg=yellow>%s</fg=yellow> to <fg=yellow>%s</fg=yellow></info>',
                 $currentVersion,
                 $newVersion
             ));
         } else {
-            $output->writeln(sprintf(
+            $this->output->writeln(sprintf(
                 '<comment>You are already using the latest version (%s)</comment>',
                 $currentVersion
             ));
@@ -75,7 +74,7 @@ class SelfUpdateCommand extends AbstractCommand
             $newVersionObject->getMajor(),
             implode('.', array_filter([
                 $newVersionObject->getMinor(),
-                $newVersionObject->getPatch()
+                $newVersionObject->getPatch(),
             ]))
         );
 

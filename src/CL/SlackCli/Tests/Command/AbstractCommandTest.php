@@ -22,16 +22,8 @@ abstract class AbstractCommandTest extends \PHPUnit_Framework_TestCase
             sprintf('The command does not seem to be registered under the expected name: %s', $commandName)
         );
 
-        $this->assertEmpty(
-            array_diff($this->getExpectedArguments(), array_keys($command->getDefinition()->getArguments())),
-            'There should be no difference between the expected arguments and the actual arguments'
-        );
-
-        $expectedOptions = array_merge($this->getDefaultOptions(), $this->getExpectedOptions());
-        $this->assertEmpty(
-            array_diff($expectedOptions, array_keys($command->getDefinition()->getOptions())),
-            'There should be no difference between the expected options and the actual options'
-        );
+        $this->assertArguments($command);
+        $this->assertOptions($command);
 
         $expectedAliases = $this->getExpectedAliases();
         $this->assertCount(
@@ -55,30 +47,37 @@ abstract class AbstractCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param AbstractCommand $command
+     */
+    private function assertArguments(AbstractCommand $command)
+    {
+        $expected = $this->getExpectedArguments();
+        $actual   = array_keys($command->getDefinition()->getArguments());
+
+        $this->assertEquals([], array_diff($expected, $actual), 'There are less arguments than expected');
+        $this->assertEquals([], array_diff($actual, $expected), 'There are more arguments than expected');
+    }
+
+    /**
+     * @param AbstractCommand $command
+     */
+    private function assertOptions(AbstractCommand $command)
+    {
+        $expected = array_merge($this->getDefaultOptions(), $this->getExpectedOptions());
+        $actual   = array_keys($command->getDefinition()->getOptions());
+
+        $this->assertEquals([], array_diff($expected, $actual), 'There are more options than expected');
+        $this->assertEquals([], array_diff($actual, $expected), 'There are less options than expected');
+    }
+
+    /**
      * @return array
      */
     protected function getDefaultOptions()
     {
         return [
-            'token',
             'configuration-path',
         ];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getExpectedArguments()
-    {
-        return [];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getExpectedOptions()
-    {
-        return [];
     }
 
     /**
@@ -106,10 +105,10 @@ abstract class AbstractCommandTest extends \PHPUnit_Framework_TestCase
                 foreach ($expectedOutput as $output) {
                     $this->assertContains($output, $commandTester->getDisplay());
                 }
-                
+
                 return;
             }
-            
+
             $this->assertContains($expectedOutput, $commandTester->getDisplay());
         }
     }
@@ -140,11 +139,22 @@ abstract class AbstractCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return string
+     */
+    protected function getConfigurationPath()
+    {
+        return __DIR__ . '/../slack.json';
+    }
+
+    /**
      * @return array
      */
     protected function getDefaultSuccessfulInput()
     {
-        return [];
+        return [
+            '--env'                => 'test-success',
+            '--configuration-path' => $this->getConfigurationPath(),
+        ];
     }
 
     /**
@@ -152,7 +162,10 @@ abstract class AbstractCommandTest extends \PHPUnit_Framework_TestCase
      */
     protected function getDefaultFailureInput()
     {
-        return [];
+        return [
+            '--env'                => 'test-failure',
+            '--configuration-path' => $this->getConfigurationPath(),
+        ];
     }
 
     /**
@@ -161,6 +174,18 @@ abstract class AbstractCommandTest extends \PHPUnit_Framework_TestCase
     protected function getExpectedAliases()
     {
         return [];
+    }
+
+    /**
+     * @return CommandTester
+     */
+    private function createCommandTester()
+    {
+        $command     = $this->createCommand();
+        $application = new Application();
+        $application->add($command);
+
+        return new CommandTester($application->get($command->getName()));
     }
 
     abstract public function testExecute();
@@ -176,14 +201,12 @@ abstract class AbstractCommandTest extends \PHPUnit_Framework_TestCase
     abstract protected function getExpectedName();
 
     /**
-     * @return CommandTester
+     * @return array
      */
-    private function createCommandTester()
-    {
-        $command     = $this->createCommand();
-        $application = new Application();
-        $application->add($command);
+    abstract protected function getExpectedArguments();
 
-        return new CommandTester($application->get($command->getName()));
-    }
+    /**
+     * @return array
+     */
+    abstract protected function getExpectedOptions();
 }

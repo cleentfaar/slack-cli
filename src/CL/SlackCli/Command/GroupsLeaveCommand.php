@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsLeavePayload;
 use CL\Slack\Payload\GroupsLeavePayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -43,14 +40,12 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return GroupsLeavePayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new GroupsLeavePayload();
-        $payload->setGroupId($input->getArgument('group-id'));
+        $payload->setGroupId($this->input->getArgument('group-id'));
 
         return $payload;
     }
@@ -59,15 +54,13 @@ EOT
      * {@inheritdoc}
      *
      * @param GroupsLeavePayloadResponse $payloadResponse
-     * @param InputInterface             $input
-     * @param OutputInterface            $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
-            $this->writeOk($output, 'Successfully left group!');
+            $this->writeOk('Successfully left group!');
         } else {
-            $this->writeError($output, sprintf('Failed to leave group: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to leave group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

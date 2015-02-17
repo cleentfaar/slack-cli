@@ -82,7 +82,7 @@ class Config
                 return rtrim($this->process($this->config[$key]), '/\\');
             default:
                 if (!isset($this->config[$key])) {
-                    return null;
+                    return;
                 }
 
                 return $this->process($this->config[$key]);

@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsCreatePayload;
 use CL\Slack\Payload\GroupsCreatePayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -43,14 +40,12 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return GroupsCreatePayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new GroupsCreatePayload();
-        $payload->setName($input->getArgument('name'));
+        $payload->setName($this->input->getArgument('name'));
 
         return $payload;
     }
@@ -60,13 +55,13 @@ EOT
      *
      * @param GroupsCreatePayloadResponse $payloadResponse
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
-            $this->writeOk($output, 'Successfully created group!');
-            $this->renderKeyValueTable($output, $payloadResponse->getGroup());
+            $this->writeOk('Successfully created group!');
+            $this->renderKeyValueTable($payloadResponse->getGroup());
         } else {
-            $this->writeError($output, sprintf('Failed to create group: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to create group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

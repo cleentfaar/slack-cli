@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsUnarchivePayload;
 use CL\Slack\Payload\ChannelsUnarchivePayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -44,14 +41,12 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return ChannelsUnarchivePayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new ChannelsUnarchivePayload();
-        $payload->setChannelId($input->getArgument('channel-id'));
+        $payload->setChannelId($this->input->getArgument('channel-id'));
 
         return $payload;
     }
@@ -60,15 +55,13 @@ EOT
      * {@inheritdoc}
      *
      * @param ChannelsUnarchivePayloadResponse $payloadResponse
-     * @param InputInterface                   $input
-     * @param OutputInterface                  $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
-            $this->writeOk($output, 'Successfully un-archived channel!');
+            $this->writeOk('Successfully un-archived channel!');
         } else {
-            $this->writeError($output, sprintf('Failed to un-archive channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to un-archive channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

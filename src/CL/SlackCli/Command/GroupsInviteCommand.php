@@ -13,9 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsInvitePayload;
 use CL\Slack\Payload\GroupsInvitePayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -48,15 +46,13 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return GroupsInvitePayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new GroupsInvitePayload();
-        $payload->setGroupId($input->getArgument('group-id'));
-        $payload->setUserId($input->getArgument('user-id'));
+        $payload->setGroupId($this->input->getArgument('group-id'));
+        $payload->setUserId($this->input->getArgument('user-id'));
 
         return $payload;
     }
@@ -65,24 +61,22 @@ EOT
      * {@inheritdoc}
      *
      * @param GroupsInvitePayloadResponse $payloadResponse
-     * @param InputInterface              $input
-     * @param OutputInterface             $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
             if ($payloadResponse->getAlreadyInGroup()) {
-                $output->writeln('<comment>The given user is already in this group</comment>');
+                $this->output->writeln('<comment>The given user is already in this group</comment>');
             } else {
-                $this->writeOk($output, 'Successfully invited user to the group!');
-                if ($output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
-                    $output->writeln('Group used:');
+                $this->writeOk('Successfully invited user to the group!');
+                if ($this->output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
+                    $this->output->writeln('Group used:');
                     $data = $this->serializeObjectToArray($payloadResponse->getGroup());
-                    $this->renderKeyValueTable($output, $data);
+                    $this->renderKeyValueTable($data);
                 }
             }
         } else {
-            $this->writeError($output, sprintf('Failed to invite user: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to invite user: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

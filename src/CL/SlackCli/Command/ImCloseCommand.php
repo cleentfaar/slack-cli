@@ -13,10 +13,8 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ImClosePayload;
 use CL\Slack\Payload\ImClosePayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -47,10 +45,10 @@ EOT
      *
      * @return ImClosePayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new ImClosePayload();
-        $payload->setImId($input->getArgument('im-id'));
+        $payload->setImId($this->input->getArgument('im-id'));
 
         return $payload;
     }
@@ -60,16 +58,16 @@ EOT
      *
      * @param ImClosePayloadResponse $payloadResponse
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
             if ($payloadResponse->isAlreadyClosed()) {
-                $output->writeln('<comment>Couldn\'t close IM channel: the channel has already been closed</comment>');
+                $this->output->writeln('<comment>Couldn\'t close IM channel: the channel has already been closed</comment>');
             } else {
-                $this->writeOk($output, 'Successfully closed IM channel!');
+                $this->writeOk('Successfully closed IM channel!');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to close IM channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to close IM channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

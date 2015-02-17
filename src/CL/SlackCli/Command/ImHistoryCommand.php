@@ -13,11 +13,8 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ImHistoryPayload;
 use CL\Slack\Payload\ImHistoryPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -64,17 +61,15 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return ImHistoryPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new ImHistoryPayload();
-        $payload->setImId($input->getArgument('im-id'));
-        $payload->setLatest($input->getOption('latest'));
-        $payload->setOldest($input->getOption('oldest'));
-        $payload->setCount($input->getOption('count'));
+        $payload->setImId($this->input->getArgument('im-id'));
+        $payload->setLatest($this->input->getOption('latest'));
+        $payload->setOldest($this->input->getOption('oldest'));
+        $payload->setCount($this->input->getOption('count'));
 
         return $payload;
     }
@@ -83,22 +78,20 @@ EOT
      * {@inheritdoc}
      *
      * @param ImHistoryPayloadResponse $payloadResponse
-     * @param InputInterface           $input
-     * @param OutputInterface          $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
-            $this->writeOk($output, 'Successfully retrieved history');
-            $this->renderTable($output, $payloadResponse->getMessages());
+            $this->writeOk('Successfully retrieved history');
+            $this->renderTable($payloadResponse->getMessages());
             if ($payloadResponse->getLatest() !== null) {
-                $output->writeln(sprintf('Latest: <comment>%s</comment>', $payloadResponse->getLatest()));
+                $this->output->writeln(sprintf('Latest: <comment>%s</comment>', $payloadResponse->getLatest()));
             }
             if ($payloadResponse->getHasMore() !== null) {
-                $output->writeln(sprintf('Has more: <comment>%s</comment>', $payloadResponse->getHasMore() ? 'yes' : 'no'));
+                $this->output->writeln(sprintf('Has more: <comment>%s</comment>', $payloadResponse->getHasMore() ? 'yes' : 'no'));
             }
         } else {
-            $this->writeError($output, sprintf('Failed to retrieve history for this IM channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to retrieve history for this IM channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

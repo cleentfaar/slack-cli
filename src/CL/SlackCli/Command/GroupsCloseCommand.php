@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsClosePayload;
 use CL\Slack\Payload\GroupsClosePayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -43,14 +40,12 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return GroupsClosePayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new GroupsClosePayload();
-        $payload->setGroupId($input->getArgument('group-id'));
+        $payload->setGroupId($this->input->getArgument('group-id'));
 
         return $payload;
     }
@@ -60,16 +55,16 @@ EOT
      *
      * @param GroupsClosePayloadResponse $payloadResponse
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
             if ($payloadResponse->isAlreadyClosed()) {
-                $output->writeln('<comment>Couldn\'t close group: the group has already been closed</comment>');
+                $this->output->writeln('<comment>Couldn\'t close group: the group has already been closed</comment>');
             } else {
-                $this->writeOk($output, 'Successfully closed group!');
+                $this->writeOk('Successfully closed group!');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to close group: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to close group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

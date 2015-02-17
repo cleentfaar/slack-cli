@@ -28,12 +28,12 @@ class ConfigUnsetCommand extends AbstractCommand
         parent::configure();
 
         $this->setName('config:unset');
-        $this->setDescription('Removes the given key from the global configuration');
-        $this->addArgument('key', InputArgument::REQUIRED, 'The key to remove');
+        $this->setDescription('Removes the given setting from the configuration');
+        $this->addArgument('setting', InputArgument::REQUIRED, 'The setting to remove');
         $this->setHelp(<<<EOT
-The <info>config.unset</info> command lets you remove a given key (and it's value) in the global configuration.
+The <info>config:unset</info> command lets you remove a given setting (and it's value) in the global configuration.
 
-To list all stored keys and values, use the <info>config.list</info> command.
+To list all stored settings and values, use the <info>config.list</info> command.
 EOT
         );
     }
@@ -43,10 +43,14 @@ EOT
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $key = $input->getArgument('key');
+        $setting = $this->input->getArgument('setting');
 
-        $this->configSource->removeConfigSetting($key);
+        if (!$this->config->has($setting)) {
+            $this->writeComment(sprintf('No changes made; there is no setting defined with the name `%s`', $setting));
+        } else {
+            $this->configSource->removeConfigSetting($setting);
 
-        $this->writeOk($output, sprintf('Key <info>%s</info> with value <comment>%s</comment> was saved successfully!', $key, var_export($value, true)));
+            $this->writeOk(sprintf('Setting with name <info>`%s`</info> has been removed from the configuration!', $setting));
+        }
     }
 }

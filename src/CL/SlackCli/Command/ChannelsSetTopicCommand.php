@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsSetTopicPayload;
 use CL\Slack\Payload\ChannelsSetTopicPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -45,15 +42,13 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return ChannelsSetTopicPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new ChannelsSetTopicPayload();
-        $payload->setChannelId($input->getArgument('channel-id'));
-        $payload->setTopic($input->getArgument('topic'));
+        $payload->setChannelId($this->input->getArgument('channel-id'));
+        $payload->setTopic($this->input->getArgument('topic'));
 
         return $payload;
     }
@@ -62,15 +57,13 @@ EOT
      * {@inheritdoc}
      *
      * @param ChannelsSetTopicPayloadResponse $payloadResponse
-     * @param InputInterface                  $input
-     * @param OutputInterface                 $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
-            $this->writeOk($output, sprintf('Successfully changed topic of channel to: "%s"', $payloadResponse->getTopic()));
+            $this->writeOk(sprintf('Successfully changed topic of channel to: "%s"', $payloadResponse->getTopic()));
         } else {
-            $this->writeError($output, sprintf('Failed to change topic of channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to change topic of channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

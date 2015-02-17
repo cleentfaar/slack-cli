@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsLeavePayload;
 use CL\Slack\Payload\ChannelsLeavePayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -43,14 +40,12 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return ChannelsLeavePayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new ChannelsLeavePayload();
-        $payload->setChannelId($input->getArgument('channel-id'));
+        $payload->setChannelId($this->input->getArgument('channel-id'));
 
         return $payload;
     }
@@ -59,19 +54,17 @@ EOT
      * {@inheritdoc}
      *
      * @param ChannelsLeavePayloadResponse $payloadResponse
-     * @param InputInterface               $input
-     * @param OutputInterface              $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
             if ($payloadResponse->isNotInChannel()) {
-                $this->writeError($output, 'Could not leave channel; not in channel');
+                $this->writeError('Could not leave channel; not in channel');
             } else {
-                $this->writeOk($output, 'Successfully left channel!');
+                $this->writeOk('Successfully left channel!');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to leave channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to leave channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }
