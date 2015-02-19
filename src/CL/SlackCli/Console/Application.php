@@ -24,7 +24,6 @@ class Application extends BaseApplication
      */
     private $availableEnvironments = [
         'prod',
-        'test', // does the same as 'test-success'
         'test-success', // mocks a successful response
         'test-failure', // mocks a failed response
     ];
