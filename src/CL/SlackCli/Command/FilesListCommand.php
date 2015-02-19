@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\FilesListPayload;
 use CL\Slack\Payload\FilesListPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -55,21 +52,42 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return FilesListPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new FilesListPayload();
-        $payload->setUserId($input->getOption('user-id'));
-        $payload->setCount($input->getOption('count'));
-        $payload->setPage($input->getOption('page'));
-        $payload->setTimestampFrom($input->getOption('from'));
-        $payload->setTimestampTo($input->getOption('to'));
-        $payload->setTypes($input->getOption('types'));
+        $payload->setUserId($this->input->getOption('user-id'));
+        $payload->setCount($this->input->getOption('count'));
+        $payload->setPage($this->input->getOption('page'));
+        $payload->setTimestampFrom($this->input->getOption('from'));
+        $payload->setTimestampTo($this->input->getOption('to'));
+        $payload->setTypes($this->input->getOption('types'));
 
         return $payload;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param FilesListPayloadResponse $payloadResponse
+     */
+    protected function handleResponse($payloadResponse)
+    {
+        if ($payloadResponse->isOk()) {
+            $files = $payloadResponse->getFiles();
+            $this->writeOk(sprintf('Received <comment>%d</comment> files...', count($files)));
+            if (!empty($files)) {
+                $this->output->writeln('Listing files...');
+                $this->renderTable($files, null);
+            }
+            if ($payloadResponse->getPaging()) {
+                $this->output->writeln('Paging...');
+                $this->renderKeyValueTable($payloadResponse->getPaging());
+            }
+        } else {
+            $this->writeError(sprintf('Failed to list files. %s', lcfirst($payloadResponse->getErrorExplanation())));
+        }
     }
 
     /**
@@ -78,30 +96,5 @@ EOT
     protected function getMethod()
     {
         return 'files.list';
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @param FilesListPayloadResponse $payloadResponse
-     * @param InputInterface           $input
-     * @param OutputInterface          $output
-     */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
-    {
-        if ($payloadResponse->isOk()) {
-            $files = $payloadResponse->getFiles();
-            $this->writeOk($output, sprintf('Received <comment>%d</comment> files...', count($files)));
-            if (!empty($files)) {
-                $output->writeln('Listing files...');
-                $this->renderTable($output, $files, null);
-            }
-            if ($payloadResponse->getPaging()) {
-                $output->writeln('Paging...');
-                $this->renderKeyValueTable($output, $payloadResponse->getPaging());
-            }
-        } else {
-            $this->writeError($output, sprintf('Failed to list files. %s', lcfirst($payloadResponse->getErrorExplanation())));
-        }
     }
 }

@@ -57,7 +57,7 @@ abstract class AbstractApiCommand extends AbstractCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $payload = $this->createPayload($input);
+        $payload = $this->createPayload();
 
         if (!($payload instanceof PayloadInterface)) {
             throw new \RuntimeException(sprintf(
@@ -68,8 +68,37 @@ abstract class AbstractApiCommand extends AbstractCommand
             ));
         }
 
-        if ($input->getOption('token')) {
-            $token = $input->getOption('token');
+        $response   = $this->sendPayload($payload);
+        $returnCode = $this->handleResponse($response);
+
+        if (null === $returnCode) {
+            return $response->isOk() ? 0 : 1;
+        }
+
+        return (int) $returnCode;
+    }
+
+    /**
+     * @param PayloadInterface $payload
+     *
+     * @return PayloadResponseInterface
+     *
+     * @throws SlackException
+     */
+    private function sendPayload(PayloadInterface $payload)
+    {
+        if ($this->isTest()) {
+            $apiClient = new MockApiClient();
+
+            if ($this->isTestSuccess()) {
+                return $apiClient->sendWithSuccess($payload);
+            }
+
+            return $apiClient->sendWithFailure($payload);
+        }
+
+        if ($this->input->getOption('token')) {
+            $token = $this->input->getOption('token');
         } else {
             $token = $this->config->get('default_token');
         }
@@ -82,55 +111,22 @@ abstract class AbstractApiCommand extends AbstractCommand
             );
         }
 
-        $response   = $this->sendPayload($payload, $token, $input, $output);
-        $returnCode = $this->handleResponse($response, $input, $output);
-
-        if (null === $returnCode) {
-            return $response->isOk() ? 0 : 1;
-        }
-
-        return (int) $returnCode;
-    }
-
-    /**
-     * @param PayloadInterface $payload
-     * @param string           $token
-     * @param InputInterface   $input
-     * @param OutputInterface  $output
-     *
-     * @return PayloadResponseInterface
-     *
-     * @throws SlackException
-     */
-    private function sendPayload(PayloadInterface $payload, $token, InputInterface $input, OutputInterface $output)
-    {
-        $env         = $input->getOption('env');
-        $testSuccess = $env === 'test-success' ? true : false;
-        $testFailure = $env === 'test-failure' ? true : false;
-
-        if ($testSuccess || $testFailure) {
-            $apiClient = new MockApiClient();
-
-            if ($testSuccess) {
-                return $apiClient->sendWithSuccess($payload);
-            }
-
-            return $apiClient->sendWithFailure($payload);
-        }
-
         $apiClient = new ApiClient($token);
-        $this->configureListeners($apiClient, $output);
+        $this->configureListeners($apiClient);
 
         return $apiClient->send($payload);
     }
 
     /**
-     * @param OutputInterface $output
-     * @param array|object    $data
-     * @param array           $headers
+     * @param array|object|null $data
+     * @param array             $headers
      */
-    protected function renderKeyValueTable(OutputInterface $output, $data, array $headers = [])
+    protected function renderKeyValueTable($data, array $headers = [])
     {
+        if ($data === null) {
+            return;
+        }
+
         if (is_object($data)) {
             $data = $this->serializeObjectToArray($data);
         }
@@ -140,17 +136,16 @@ abstract class AbstractApiCommand extends AbstractCommand
             $rows[] = [$key, $value];
         }
 
-        $this->renderTable($output, $rows, $headers);
+        $this->renderTable($rows, $headers);
     }
 
     /**
-     * @param OutputInterface $output
-     * @param array           $rows
-     * @param array|null      $headers
+     * @param array      $rows
+     * @param array|null $headers
      */
-    protected function renderTable(OutputInterface $output, array $rows, $headers = null)
+    protected function renderTable(array $rows, $headers = null)
     {
-        $table = new Table($output);
+        $table = new Table($this->output);
 
         if (!empty($headers)) {
             $table->setHeaders($headers);
@@ -225,12 +220,16 @@ abstract class AbstractApiCommand extends AbstractCommand
     }
 
     /**
-     * @param object $object
+     * @param object|null $object
      *
      * @return array
      */
     protected function serializeObjectToArray($object)
     {
+        if ($object === null) {
+            return [];
+        }
+
         $data = $this->getSerializer()->serialize($object, 'json');
 
         if (!empty($data)) {
@@ -241,34 +240,26 @@ abstract class AbstractApiCommand extends AbstractCommand
     }
 
     /**
-     * @param ApiClient       $apiClient
-     * @param OutputInterface $output
+     * @param ApiClient $apiClient
      */
-    private function configureListeners(ApiClient $apiClient, OutputInterface $output)
+    private function configureListeners(ApiClient $apiClient)
     {
-        $self = $this;
+        $output = $this->output;
+        if ($output->getVerbosity() > OutputInterface::VERBOSITY_VERBOSE) {
+            $self = $this;
 
-        $apiClient->addListener(
-            ApiClient::EVENT_REQUEST,
-            function (RequestEvent $event) use ($output, $self) {
+            $apiClient->addRequestListener(function (RequestEvent $event) use ($output, $self) {
                 $rawRequest = $event->getRawPayload();
-                if ($output->getVerbosity() > OutputInterface::VERBOSITY_VERBOSE) {
-                    $output->writeln('<comment>Debug: sending payload...</comment>');
-                    $self->renderKeyValueTable($output, $rawRequest);
-                }
-            }
-        );
+                $output->writeln('<comment>Debug: sending payload...</comment>');
+                $self->renderKeyValueTable($output, $rawRequest);
+            });
 
-        $apiClient->addListener(
-            ApiClient::EVENT_RESPONSE,
-            function (ResponseEvent $event) use ($output, $self) {
+            $apiClient->addResponseListener(function (ResponseEvent $event) use ($output, $self) {
                 $rawResponse = $event->getRawPayloadResponse();
-                if ($output->getVerbosity() > OutputInterface::VERBOSITY_VERBOSE) {
-                    $output->writeln('<comment>Debug: received payload response...</comment>');
-                    $self->renderKeyValueTable($output, $rawResponse);
-                }
-            }
-        );
+                $output->writeln('<comment>Debug: received payload response...</comment>');
+                $self->renderKeyValueTable($output, $rawResponse);
+            });
+        }
     }
 
     /**
@@ -284,18 +275,14 @@ abstract class AbstractApiCommand extends AbstractCommand
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return PayloadInterface
      */
-    abstract protected function createPayload(InputInterface $input);
+    abstract protected function createPayload();
 
     /**
      * @param PayloadResponseInterface $payloadResponse
-     * @param InputInterface           $input
-     * @param OutputInterface          $output
      *
-     * @return int
+     * @return int|null
      */
-    abstract protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output);
+    abstract protected function handleResponse($payloadResponse);
 }

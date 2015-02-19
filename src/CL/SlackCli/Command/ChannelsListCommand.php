@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsListPayload;
 use CL\Slack\Payload\ChannelsListPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -45,14 +42,12 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return ChannelsListPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new ChannelsListPayload();
-        $payload->setExcludeArchived($input->getOption('exclude-archived'));
+        $payload->setExcludeArchived($this->input->getOption('exclude-archived'));
 
         return $payload;
     }
@@ -61,14 +56,12 @@ EOT
      * {@inheritdoc}
      *
      * @param ChannelsListPayloadResponse $payloadResponse
-     * @param InputInterface              $input
-     * @param OutputInterface             $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
             $channels = $payloadResponse->getChannels();
-            $output->writeln(sprintf('Received <comment>%d</comment> channels...', count($channels)));
+            $this->output->writeln(sprintf('Received <comment>%d</comment> channels...', count($channels)));
             if (!empty($channels)) {
                 $rows = [];
                 foreach ($payloadResponse->getChannels() as $channel) {
@@ -78,13 +71,12 @@ EOT
 
                     $rows[] = $row;
                 }
-                $this->renderTable($output, $rows, null);
-                $this->writeOk($output, 'Successfully listed channels');
+                $this->renderTable($rows, null);
             } else {
-                $this->writeError($output, 'No channels seem to be assigned to your team... this is strange...');
+                $this->writeError('No channels seem to be assigned to your team... this is strange...');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to list channels. %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to list channels. %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

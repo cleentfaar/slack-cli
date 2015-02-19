@@ -1,5 +1,6 @@
 bin/*
 composer.lock
+src/CL/SlackCli/Tests/slack.json
 vendor/*
 manifest.phar
 slack.phar

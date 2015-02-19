@@ -10,6 +10,9 @@
  * file that was distributed with this source code.
  */
 
+use CL\SlackCli\Command;
+use CL\SlackCli\Console\Application;
+
 if (version_compare(phpversion(), '5.4', '<')) {
     fwrite(STDERR, "PHP needs to be a minimum version of PHP 5.4\n");
     exit(1);
@@ -22,11 +25,67 @@ if (file_exists($a = __DIR__.'/../../autoload.php')) {
     require_once __DIR__.'/vendor/autoload.php';
 }
 
-use CL\SlackCli\Console\Application;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-
-AnnotationRegistry::registerLoader('class_exists');
+$commands = [
+    new Command\ApiTestCommand(),
+    new Command\AuthTestCommand(),
+    new Command\ChannelsArchiveCommand(),
+    new Command\ChannelsCreateCommand(),
+    new Command\ChannelsHistoryCommand(),
+    new Command\ChannelsInfoCommand(),
+    new Command\ChannelsInviteCommand(),
+    new Command\ChannelsJoinCommand(),
+    new Command\ChannelsKickCommand(),
+    new Command\ChannelsLeaveCommand(),
+    new Command\ChannelsListCommand(),
+    new Command\ChannelsMarkCommand(),
+    new Command\ChannelsRenameCommand(),
+    new Command\ChannelsSetPurposeCommand(),
+    new Command\ChannelsSetTopicCommand(),
+    new Command\ChannelsUnarchiveCommand(),
+    new Command\ChatDeleteCommand(),
+    new Command\ChatPostMessageCommand(),
+    new Command\ChatUpdateCommand(),
+    new Command\ConfigEditCommand(),
+    new Command\ConfigGetCommand(),
+    new Command\ConfigListCommand(),
+    new Command\ConfigSetCommand(),
+    new Command\ConfigUnsetCommand(),
+    new Command\EmojiListCommand(),
+    new Command\FilesInfoCommand(),
+    new Command\FilesListCommand(),
+    new Command\FilesUploadCommand(),
+    new Command\GroupsArchiveCommand(),
+    new Command\GroupsCloseCommand(),
+    new Command\GroupsCreateChildCommand(),
+    new Command\GroupsCreateCommand(),
+    new Command\GroupsHistoryCommand(),
+    new Command\GroupsInviteCommand(),
+    new Command\GroupsKickCommand(),
+    new Command\GroupsLeaveCommand(),
+    new Command\GroupsListCommand(),
+    new Command\GroupsMarkCommand(),
+    new Command\GroupsOpenCommand(),
+    new Command\GroupsRenameCommand(),
+    new Command\GroupsSetPurposeCommand(),
+    new Command\GroupsSetTopicCommand(),
+    new Command\GroupsUnarchiveCommand(),
+    new Command\ImCloseCommand(),
+    new Command\ImHistoryCommand(),
+    new Command\ImListCommand(),
+    new Command\ImMarkCommand(),
+    new Command\ImOpenCommand(),
+    new Command\OauthAccessCommand(),
+    new Command\SearchAllCommand(),
+    new Command\SearchFilesCommand(),
+    new Command\SearchMessagesCommand(),
+    new Command\SelfUpdateCommand(),
+    new Command\StarsListCommand(),
+    new Command\UsersInfoCommand(),
+    new Command\UsersListCommand(),
+    new Command\UsersSetActiveCommand(),
+    new Command\UsersSetPresenceCommand(),
+];
 
 $application = new Application();
-$application->addDefaultCommands();
+$application->addCommands($commands);
 $application->run();

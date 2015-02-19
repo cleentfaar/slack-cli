@@ -28,13 +28,13 @@ class ConfigSetCommand extends AbstractCommand
         parent::configure();
 
         $this->setName('config:set');
-        $this->setDescription('Stores the given key and value in the global configuration');
-        $this->addArgument('key', InputArgument::REQUIRED, 'The key to use');
-        $this->addArgument('value', InputArgument::REQUIRED, 'The value to set for this key');
+        $this->setDescription('Stores the given setting and value in the global configuration');
+        $this->addArgument('setting', InputArgument::REQUIRED, 'The setting to use');
+        $this->addArgument('value', InputArgument::REQUIRED, 'The value to set for this setting');
         $this->setHelp(<<<EOT
-The <info>config:set</info> command lets you store a given key and value in the global configuration.
+The <info>config:set</info> command lets you store a given setting and value in the global configuration.
 
-To list all stored keys and values, use the <info>config.list</info> command.
+To list all stored settings and values, use the <info>config.list</info> command.
 EOT
         );
     }
@@ -44,19 +44,13 @@ EOT
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $key   = $input->getArgument('key');
-        $value = $input->getArgument('value');
+        $setting = $this->input->getArgument('setting');
+        $value   = $this->input->getArgument('value');
 
-        $this->setConfig($key, $value);
-
-        $this->writeOk($output, sprintf(
-            'Key <info>%s</info> with value <comment>%s</comment> was saved successfully!',
-            $key,
-            var_export($value, true)
-        ));
+        return $this->setConfig($setting, $value);
     }
 
-    private function setConfig($key, $value)
+    private function setConfig($setting, $value)
     {
         // handle config values
         $uniqueConfigValues = [
@@ -66,25 +60,30 @@ EOT
         ];
 
         foreach ($uniqueConfigValues as $name => $callbacks) {
-            if ($key === $name) {
+            if ($setting === $name) {
                 list($validator, $normalizer) = $callbacks;
 
                 if (true !== $validation = $validator($value)) {
                     throw new \RuntimeException(sprintf(
-                        '"%s" is an invalid value'.($validation ? ' ('.$validation.')' : ''),
+                        '"%s" is an invalid value' . ($validation ? ' (' . $validation . ')' : ''),
                         $value
                     ));
                 }
 
-                $this->configSource->addConfigSetting($key, $normalizer($value));
+                $this->configSource->addConfigSetting($setting, $normalizer($value));
+
+                $this->writeOk(sprintf(
+                    'Successfully changed value of <info>`%s`</info> to <comment>`%s`</comment>!',
+                    $setting,
+                    $value
+                ));
 
                 return 0;
             }
         }
 
-        throw new \InvalidArgumentException(sprintf(
-            'Setting "%s" does not exist or is not supported by this command',
-            $key
-        ));
+        $this->writeError(sprintf('There is no setting with that name in the configuration: `%s`', $setting));
+
+        return 1;
     }
 }

@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\FilesUploadPayload;
 use CL\Slack\Payload\FilesUploadPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -55,27 +52,25 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return FilesUploadPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new FilesUploadPayload();
 
-        if ($input->getOption('path')) {
-            $content = file_get_contents($input->getOption('path'));
-        } elseif ($input->getOption('content')) {
-            $content = $input->getOption('content');
+        if ($this->input->getOption('path')) {
+            $content = file_get_contents($this->input->getOption('path'));
+        } elseif ($this->input->getOption('content')) {
+            $content = $this->input->getOption('content');
         } else {
             throw new \LogicException('Either the `--path` or the `--content` option must be used');
         }
 
         $payload->setContent($content);
-        $payload->setChannels($input->getOption('channels'));
-        $payload->setFilename($input->getOption('filename'));
-        $payload->setFileType($input->getOption('filetype'));
-        $payload->setTitle($input->getOption('title'));
+        $payload->setChannels($this->input->getOption('channels'));
+        $payload->setFilename($this->input->getOption('filename'));
+        $payload->setFileType($this->input->getOption('filetype'));
+        $payload->setTitle($this->input->getOption('title'));
 
         return $payload;
     }
@@ -84,17 +79,15 @@ EOT
      * {@inheritdoc}
      *
      * @param FilesUploadPayloadResponse $payloadResponse
-     * @param InputInterface             $input
-     * @param OutputInterface            $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
-            $this->writeOk($output, 'Successfully upload file to Slack:');
+            $this->writeOk('Successfully upload file to Slack:');
             $file = $payloadResponse->getFile();
-            $this->renderKeyValueTable($output, $file);
+            $this->renderKeyValueTable($file);
         } else {
-            $this->writeError($output, sprintf('Failed to upload file: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to upload file: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

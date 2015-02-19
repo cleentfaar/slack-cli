@@ -13,11 +13,8 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\FilesInfoPayload;
 use CL\Slack\Payload\FilesInfoPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -51,16 +48,14 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return FilesInfoPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new FilesInfoPayload();
-        $payload->setFileId($input->getArgument('file-id'));
-        $payload->setCount($input->getOption('count'));
-        $payload->setPage($input->getOption('page'));
+        $payload->setFileId($this->input->getArgument('file-id'));
+        $payload->setCount($this->input->getOption('count'));
+        $payload->setPage($this->input->getOption('page'));
 
         return $payload;
     }
@@ -69,16 +64,14 @@ EOT
      * {@inheritdoc}
      *
      * @param FilesInfoPayloadResponse $payloadResponse
-     * @param InputInterface           $input
-     * @param OutputInterface          $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
             $file = $payloadResponse->getFile();
-            $this->renderKeyValueTable($output, $file);
+            $this->renderKeyValueTable($file);
         } else {
-            $this->writeError($output, sprintf('Failed to fetch information about the file: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to fetch information about the file: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

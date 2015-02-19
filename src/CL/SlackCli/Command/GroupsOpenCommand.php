@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsOpenPayload;
 use CL\Slack\Payload\GroupsOpenPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -43,14 +40,12 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return GroupsOpenPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new GroupsOpenPayload();
-        $payload->setGroupId($input->getArgument('group-id'));
+        $payload->setGroupId($this->input->getArgument('group-id'));
 
         return $payload;
     }
@@ -60,16 +55,16 @@ EOT
      *
      * @param GroupsOpenPayloadResponse $payloadResponse
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
             if ($payloadResponse->isAlreadyOpen()) {
-                $output->writeln('<comment>Couldn\'t open group: the group has already been opened</comment>');
+                $this->output->writeln('<comment>Couldn\'t open group: the group has already been opened</comment>');
             } else {
-                $this->writeOk($output, 'Successfully opened group!');
+                $this->writeOk('Successfully opened group!');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to open group: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to open group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

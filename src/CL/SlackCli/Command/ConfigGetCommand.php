@@ -28,10 +28,10 @@ class ConfigGetCommand extends AbstractCommand
         parent::configure();
 
         $this->setName('config:get');
-        $this->setDescription('Retrieves the value that is set for the given key from the global configuration');
-        $this->addArgument('key', InputArgument::REQUIRED, 'The key to use');
+        $this->setDescription('Retrieves the value that is set for the given setting from the configuration');
+        $this->addArgument('setting', InputArgument::REQUIRED, 'The key to use');
         $this->setHelp(<<<EOT
-The <info>config:get</info> command retrieves the value that is set for the given key from the global configuration.
+The <info>config:get</info> command retrieves the value that is set for the given setting from the configuration.
 
 To list all stored keys and values, use the <info>config.list</info> command.
 EOT
@@ -43,21 +43,20 @@ EOT
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $key = $input->getArgument('key');
+        $key = $this->input->getArgument('setting');
 
         if (!$this->config->has($key)) {
-            $this->writeError($output, sprintf('There is no key with that name in the configuration: %s', $key));
+            $this->writeError(sprintf('There is no setting with that name in the configuration: `%s`', $key));
 
             return 1;
         }
 
         $value = $this->config->get($key);
 
-        $output->writeln(sprintf(
-            'Value for <info>%s</info>: <comment>%s</comment>',
+        $this->output->writeln(sprintf(
+            'Value of <info>`%s`</info> is <comment>%s</comment>',
             $key,
-            var_export($value, true),
-            gettype($value)
+            is_null($value) ? 'NULL' : '`' . var_export($value, true) . '`'
         ));
     }
 }

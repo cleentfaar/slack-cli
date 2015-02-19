@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsListPayload;
 use CL\Slack\Payload\GroupsListPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -44,14 +41,12 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return GroupsListPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new GroupsListPayload();
-        $payload->setExcludeArchived($input->getOption('exclude-archived'));
+        $payload->setExcludeArchived($this->input->getOption('exclude-archived'));
 
         return $payload;
     }
@@ -60,14 +55,12 @@ EOT
      * {@inheritdoc}
      *
      * @param GroupsListPayloadResponse $payloadResponse
-     * @param InputInterface            $input
-     * @param OutputInterface           $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
             $groups = $payloadResponse->getGroups();
-            $output->writeln(sprintf('Received <comment>%d</comment> groups...', count($groups)));
+            $this->output->writeln(sprintf('Received <comment>%d</comment> groups...', count($groups)));
             if (!empty($groups)) {
                 $rows = [];
                 foreach ($payloadResponse->getGroups() as $group) {
@@ -77,13 +70,13 @@ EOT
 
                     $rows[] = $row;
                 }
-                $this->renderTable($output, $rows, null);
-                $this->writeOk($output, 'Finished listing groups');
+                $this->renderTable($rows, null);
+                $this->writeOk('Finished listing groups');
             } else {
-                $this->writeComment($output, 'No groups to list');
+                $this->writeComment('No groups to list');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to list groups. %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to list groups. %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

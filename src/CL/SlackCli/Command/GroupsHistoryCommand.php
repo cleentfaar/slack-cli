@@ -14,11 +14,8 @@ namespace CL\SlackCli\Command;
 use CL\Slack\Model\SimpleMessage;
 use CL\Slack\Payload\GroupsHistoryPayload;
 use CL\Slack\Payload\GroupsHistoryPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -76,17 +73,15 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return GroupsHistoryPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new GroupsHistoryPayload();
-        $payload->setGroupId($input->getArgument('group-id'));
-        $payload->setLatest($input->getOption('latest'));
-        $payload->setOldest($input->getOption('oldest'));
-        $payload->setCount($input->getOption('count'));
+        $payload->setGroupId($this->input->getArgument('group-id'));
+        $payload->setLatest($this->input->getOption('latest'));
+        $payload->setOldest($this->input->getOption('oldest'));
+        $payload->setCount($this->input->getOption('count'));
 
         return $payload;
     }
@@ -95,10 +90,8 @@ EOT
      * {@inheritdoc}
      *
      * @param GroupsHistoryPayloadResponse $payloadResponse
-     * @param InputInterface               $input
-     * @param OutputInterface              $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
             $messages = array_map(function (SimpleMessage $message) {
@@ -108,16 +101,16 @@ EOT
             $firstMessage = reset($messages);
             $headers      = array_keys($firstMessage);
 
-            $this->writeOk($output, 'Successfully retrieved history');
-            $this->renderTable($output, $messages, $headers);
+            $this->writeOk('Successfully retrieved history');
+            $this->renderTable($messages, $headers);
             if ($payloadResponse->getLatest() !== null) {
-                $output->writeln(sprintf('Latest: <comment>%s</comment>', $payloadResponse->getLatest()));
+                $this->output->writeln(sprintf('Latest: <comment>%s</comment>', $payloadResponse->getLatest()));
             }
             if ($payloadResponse->getHasMore() !== null) {
-                $output->writeln(sprintf('Has more: <comment>%s</comment>', $payloadResponse->getHasMore() ? 'yes' : 'no'));
+                $this->output->writeln(sprintf('Has more: <comment>%s</comment>', $payloadResponse->getHasMore() ? 'yes' : 'no'));
             }
         } else {
-            $this->writeError($output, sprintf('Failed to retrieve history: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to retrieve history: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

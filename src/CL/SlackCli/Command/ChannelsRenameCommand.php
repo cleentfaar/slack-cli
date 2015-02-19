@@ -13,9 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsRenamePayload;
 use CL\Slack\Payload\ChannelsRenamePayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -47,35 +45,33 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return ChannelsRenamePayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new ChannelsRenamePayload();
-        $payload->setChannelId($input->getArgument('channel-id'));
-        $payload->setName($input->getArgument('name'));
+        $payload->setChannelId($this->input->getArgument('channel-id'));
+        $payload->setName($this->input->getArgument('name'));
+
+        return $payload;
     }
 
     /**
      * {@inheritdoc}
      *
      * @param ChannelsRenamePayloadResponse $payloadResponse
-     * @param InputInterface                $input
-     * @param OutputInterface               $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
-            $this->writeOk($output, 'Successfully renamed channel!');
-            if ($output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
-                $output->writeln('Renamed channel:');
+            $this->writeOk('Successfully renamed channel!');
+            if ($this->output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
+                $this->output->writeln('Renamed channel:');
                 $data = $this->serializeObjectToArray($payloadResponse->getChannel());
-                $this->renderKeyValueTable($output, $data);
+                $this->renderKeyValueTable($data);
             }
         } else {
-            $this->writeError($output, sprintf('Failed to leave channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to rename channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

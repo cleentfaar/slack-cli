@@ -59,7 +59,7 @@ Detailed example, (using normal verbosity `-v`):
 $ slack.phar chat:post-message general 'This is a test' -v
 ✔ Successfully sent message to Slack!
 Channel ID: C01234567
-Timestamp: 1234567890
+Timestamp: 12345678.12345678
 ```
 
 Debugging request/response example (using verbose verbosity `-vv`):
@@ -79,7 +79,7 @@ Debug: received payload response...
 +---------+-------------------+
 ✔ Successfully sent message to Slack!
 Channel ID: C01234567
-Timestamp: 1234567890.123456
+Timestamp: 12345678.12345678
 ```
 
 ## Testing authentication (`auth.test`)

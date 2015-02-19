@@ -7,6 +7,12 @@ use CL\SlackCli\Command\AuthTestCommand;
 
 class AuthTestCommandTest extends AbstractApiCommandTest
 {
+    public function testExecute()
+    {
+        $this->assertExecutionSucceedsWith([], 'Successfully authenticated by the Slack API');
+        $this->assertExecutionFailsWith([], 'Failed to be authenticated by the Slack API');
+    }
+
     /**
      * @return AbstractCommand
      */
@@ -23,9 +29,19 @@ class AuthTestCommandTest extends AbstractApiCommandTest
         return 'auth:test';
     }
 
-    public function testExecute()
+    /**
+     * @return array
+     */
+    protected function getExpectedArguments()
     {
-        $this->assertExecutionSucceedsWith([], 'Successfully authenticated by the Slack API');
-        $this->assertExecutionFailsWith([], 'Failed to be authenticated by the Slack API');
+        return [];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getExpectedOptions()
+    {
+        return [];
     }
 }

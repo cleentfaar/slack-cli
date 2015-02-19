@@ -13,11 +13,8 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\OauthAccessPayload;
 use CL\Slack\Payload\OauthAccessPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -48,17 +45,15 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return OauthAccessPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new OauthAccessPayload();
-        $payload->setClientId($input->getArgument('client-id'));
-        $payload->setClientSecret($input->getArgument('client-secret'));
-        $payload->setCode($input->getArgument('code'));
-        $payload->setRedirectUri($input->getOption('redirect-uri'));
+        $payload->setClientId($this->input->getArgument('client-id'));
+        $payload->setClientSecret($this->input->getArgument('client-secret'));
+        $payload->setCode($this->input->getArgument('code'));
+        $payload->setRedirectUri($this->input->getOption('redirect-uri'));
 
         return $payload;
     }
@@ -67,17 +62,15 @@ EOT
      * {@inheritdoc}
      *
      * @param OauthAccessPayloadResponse $payloadResponse
-     * @param InputInterface             $input
-     * @param OutputInterface            $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
-            $this->writeOk($output, 'Successfully authenticated through oauth!');
-            $output->writeln('Access token: <comment>%s</comment>', $payloadResponse->getAccessToken());
-            $output->writeln('Scope: <comment>%s</comment>', $payloadResponse->getScope());
+            $this->writeOk('Successfully authenticated through oauth!');
+            $this->output->writeln('Access token: <comment>%s</comment>', $payloadResponse->getAccessToken());
+            $this->output->writeln('Scope: <comment>%s</comment>', $payloadResponse->getScope());
         } else {
-            $this->writeError($output, sprintf('Failed to be authenticated through oauth. %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to be authenticated through oauth. %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

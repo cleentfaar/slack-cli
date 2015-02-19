@@ -13,11 +13,8 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\SearchFilesPayload;
 use CL\Slack\Payload\SearchFilesPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -56,19 +53,17 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return SearchFilesPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new SearchFilesPayload();
-        $payload->setQuery($input->getArgument('query'));
-        $payload->setSort($input->getOption('sort'));
-        $payload->setSortDir($input->getOption('sort-dir'));
-        $payload->setPage($input->getOption('page'));
-        $payload->setCount($input->getOption('count'));
-        $payload->setHighlight($input->getOption('highlight'));
+        $payload->setQuery($this->input->getArgument('query'));
+        $payload->setSort($this->input->getOption('sort'));
+        $payload->setSortDir($this->input->getOption('sort-dir'));
+        $payload->setPage($this->input->getOption('page'));
+        $payload->setCount($this->input->getOption('count'));
+        $payload->setHighlight($this->input->getOption('highlight'));
 
         return $payload;
     }
@@ -77,29 +72,27 @@ EOT
      * {@inheritdoc}
      *
      * @param SearchFilesPayloadResponse $payloadResponse
-     * @param InputInterface             $input
-     * @param OutputInterface            $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
             $total = 0;
-            if ($fileSearchResult = $payloadResponse->getFileSearchResult()) {
+            if ($fileSearchResult = $payloadResponse->getResult()) {
                 $total += $fileSearchResult->getTotal();
             }
 
-            $this->writeComment($output, sprintf('Got %d results...', $total));
+            $this->writeComment(sprintf('Got %d results...', $total));
 
             if ($total > 0) {
-                $this->writeComment($output, 'Listing files...');
+                $this->writeComment('Listing files...');
                 if ($fileSearchResult->getTotal() > 1) {
-                    $this->renderTable($output, $fileSearchResult->getMatches());
+                    $this->renderTable($fileSearchResult->getMatches());
                 } else {
-                    $this->writeComment($output, 'No files matched the query');
+                    $this->writeComment('No files matched the query');
                 }
             }
         } else {
-            $this->writeError($output, sprintf('Failed to search. %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to search. %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

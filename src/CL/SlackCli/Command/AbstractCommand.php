@@ -48,6 +48,16 @@ abstract class AbstractCommand extends Command
     protected $configPath;
 
     /**
+     * @var InputInterface
+     */
+    protected $input;
+
+    /**
+     * @var OutputInterface
+     */
+    protected $output;
+
+    /**
      * {@inheritdoc}
      *
      * @return Application
@@ -76,10 +86,12 @@ abstract class AbstractCommand extends Command
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
+        $this->input  = $input;
+        $this->output = $output;
         $this->config = ConfigFactory::createConfig();
 
         // Get the global config.json, or if the user passed in a file to use
-        $configFile = $input->getOption('configuration-path') ?: ($this->config->get('home').'/config.json');
+        $configFile = $this->input->getOption('configuration-path') ?: ($this->config->get('home') . '/config.json');
 
         $this->configPath   = $configFile;
         $this->configFile   = new JsonFile($configFile);
@@ -98,58 +110,74 @@ abstract class AbstractCommand extends Command
     }
 
     /**
-     * @param OutputInterface $output
-     * @param string          $message
+     * @param string $message
      */
-    protected function writeOk(OutputInterface $output, $message)
+    protected function writeOk($message)
     {
-        $output->writeln(sprintf('<fg=green>✔</fg=green> %s', $message));
+        $this->output->writeln(sprintf('<fg=green>✔</fg=green> %s', $message));
     }
 
     /**
-     * @param OutputInterface $output
-     * @param string          $message
+     * @param string $message
      */
-    protected function writeComment(OutputInterface $output, $message)
+    protected function writeComment($message)
     {
-        $output->writeln(sprintf('<comment>%s</comment>', $message));
+        $this->output->writeln(sprintf('<comment>%s</comment>', $message));
     }
 
     /**
-     * @param OutputInterface $output
-     * @param string          $message
+     * @param string $message
      */
-    protected function writeError(OutputInterface $output, $message)
+    protected function writeError($message)
     {
-        $output->writeln(sprintf('<fg=red>✘</fg=red> %s', $message));
+        $this->output->writeln(sprintf('<fg=red>✘</fg=red> %s', $message));
     }
 
     /**
-     * @param OutputInterface $output
-     *
      * @return Table
      */
-    protected function createTable(OutputInterface $output)
+    protected function createTable()
     {
-        $table = new Table($output);
+        $table = new Table($this->output);
 
         return $table;
     }
 
     /**
-     * @param OutputInterface $output
-     * @param array           $keysValues
+     * @param array $keysValues
      *
      * @return Table
      */
-    protected function createKeyValueTable(OutputInterface $output, array $keysValues)
+    protected function createKeyValueTable(array $keysValues)
     {
-        $table = $this->createTable($output);
+        $table = $this->createTable();
         $table->setHeaders(['Key', 'Value']);
         foreach ($keysValues as $key => $value) {
             $table->addRow([$key, $value]);
         }
 
         return $table;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isTest()
+    {
+        $env = $this->input->getOption('env');
+
+        if ($env === 'test-success' || $env === 'test-failure') {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isTestSuccess()
+    {
+        return $this->input->getOption('env') === 'test-success';
     }
 }

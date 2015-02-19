@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsInfoPayload;
 use CL\Slack\Payload\ChannelsInfoPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -43,14 +40,12 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return ChannelsInfoPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new ChannelsInfoPayload();
-        $payload->setChannelId($input->getArgument('channel-id'));
+        $payload->setChannelId($this->input->getArgument('channel-id'));
 
         return $payload;
     }
@@ -59,17 +54,15 @@ EOT
      * {@inheritdoc}
      *
      * @param ChannelsInfoPayloadResponse $payloadResponse
-     * @param InputInterface              $input
-     * @param OutputInterface             $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
             $data = $this->serializeObjectToArray($payloadResponse->getChannel());
-            $this->renderKeyValueTable($output, $data);
-            $this->writeOk($output, 'Successfully retrieved information about the channel!');
+            $this->renderKeyValueTable($data);
+            $this->writeOk('Successfully retrieved information about the channel!');
         } else {
-            $this->writeError($output, sprintf('Failed to retrieve information about the channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to retrieve information about the channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

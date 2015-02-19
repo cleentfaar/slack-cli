@@ -13,9 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\UsersListPayload;
 use CL\Slack\Payload\UsersListPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -41,11 +38,9 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return UsersListPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new UsersListPayload();
 
@@ -56,22 +51,20 @@ EOT
      * {@inheritdoc}
      *
      * @param UsersListPayloadResponse $payloadResponse
-     * @param InputInterface           $input
-     * @param OutputInterface          $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
             $users = $payloadResponse->getUsers();
-            $output->writeln(sprintf('Received <comment>%d</comment> users...', count($users)));
+            $this->output->writeln(sprintf('Received <comment>%d</comment> users...', count($users)));
             if (!empty($users)) {
-                $this->renderTable($output, $users, null);
-                $this->writeOk($output, 'Successfully listed users');
+                $this->renderTable($users, null);
+                $this->writeOk('Successfully listed users');
             } else {
-                $this->writeError($output, 'No users seem to be assigned to your team... this is strange...');
+                $this->writeError('No users seem to be assigned to your team... this is strange...');
             }
         } else {
-            $this->writeError($output, sprintf('Failed to list users: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to list users: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

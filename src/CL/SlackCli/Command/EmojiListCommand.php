@@ -13,9 +13,6 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\EmojiListPayload;
 use CL\Slack\Payload\EmojiListPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -46,11 +43,9 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return EmojiListPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new EmojiListPayload();
 
@@ -61,19 +56,17 @@ EOT
      * {@inheritdoc}
      *
      * @param EmojiListPayloadResponse $payloadResponse
-     * @param InputInterface           $input
-     * @param OutputInterface          $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
             $emojis = $payloadResponse->getEmojis();
-            $output->writeln(sprintf('Got <comment>%d</comment> emojis...', count($emojis)));
+            $this->output->writeln(sprintf('Got <comment>%d</comment> emojis...', count($emojis)));
             if (!empty($emojis)) {
-                $this->renderKeyValueTable($output, $emojis, ['Name', 'URL']);
+                $this->renderKeyValueTable($emojis, ['Name', 'URL']);
             }
         } else {
-            $this->writeError($output, sprintf('Failed to fetch emojis: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to fetch emojis: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

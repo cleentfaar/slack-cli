@@ -13,9 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsJoinPayload;
 use CL\Slack\Payload\ChannelsJoinPayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -47,14 +45,12 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return ChannelsJoinPayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new ChannelsJoinPayload();
-        $payload->setChannel($input->getArgument('channel'));
+        $payload->setChannel($this->input->getArgument('channel'));
 
         return $payload;
     }
@@ -63,24 +59,22 @@ EOT
      * {@inheritdoc}
      *
      * @param ChannelsJoinPayloadResponse $payloadResponse
-     * @param InputInterface              $input
-     * @param OutputInterface             $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
-            $this->writeOk($output, 'Successfully joined channel!');
-            if ($output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
+            if ($this->output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
                 if ($payloadResponse->isAlreadyInChannel()) {
-                    $output->writeln('Already in channel:');
+                    $this->writeError('You are already in this channel:');
                 } else {
-                    $output->writeln('Joined channel:');
+                    $this->writeOk('Successfully joined channel:');
                 }
+
                 $data = $this->serializeObjectToArray($payloadResponse->getChannel());
-                $this->renderKeyValueTable($output, $data);
+                $this->renderKeyValueTable($data);
             }
         } else {
-            $this->writeError($output, sprintf('Failed to join channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to join channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

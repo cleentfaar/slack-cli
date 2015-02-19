@@ -22,11 +22,11 @@ class ConfigEditCommand extends AbstractCommand
         $this->setDescription('Edit config options');
 
         $this->setHelp(<<<EOT
-The <info>config:edit</info> allows you to edit the Slack CLI settings using a pre-configured editor.
+The <info>config:edit</info> command allows you to edit the Slack CLI settings using a pre-configured editor.
 
-To choose your editor you can set the "EDITOR" env variable.
+To choose your editor you can set the "SLACK_CONFIG_EDITOR" environment variable.
 
-To get a list of configuration values in the file:
+To get a list of configuration values in the file, use the `config:list` command:
 
     <comment>slack.phar config:list</comment>
 EOT
@@ -38,14 +38,13 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Open file in editor
-        $editor = escapeshellcmd(getenv('EDITOR'));
+        $editor = escapeshellcmd(getenv('SLACK_CONFIG_EDITOR'));
         if (!$editor) {
             if (defined('PHP_WINDOWS_VERSION_BUILD')) {
                 $editor = 'notepad';
             } else {
                 foreach (['vim', 'vi', 'nano', 'pico', 'ed'] as $candidate) {
-                    if (exec('which '.$candidate)) {
+                    if (exec('which ' . $candidate)) {
                         $editor = $candidate;
                         break;
                     }
@@ -53,7 +52,14 @@ EOT
             }
         }
 
-        $file = $this->configFile->getPath();
-        system($editor.' '.$file.(defined('PHP_WINDOWS_VERSION_BUILD') ? '' : ' > `tty`'));
+        $file    = $this->configFile->getPath();
+        $to      = defined('PHP_WINDOWS_VERSION_BUILD') ? '' : ' > `tty`';
+        $command = sprintf('%s %s%s', $editor, $file, $to);
+
+        $this->output->writeln(sprintf('Editing `%s` using `%s`...', $file, $editor));
+
+        if (!$this->isTest()) {
+            system($command);
+        }
     }
 }

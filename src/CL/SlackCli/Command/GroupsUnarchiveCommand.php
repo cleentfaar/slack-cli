@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\GroupsUnarchivePayload;
 use CL\Slack\Payload\GroupsUnarchivePayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -44,14 +41,12 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return GroupsUnarchivePayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new GroupsUnarchivePayload();
-        $payload->setGroupId($input->getArgument('group-id'));
+        $payload->setGroupId($this->input->getArgument('group-id'));
 
         return $payload;
     }
@@ -60,15 +55,13 @@ EOT
      * {@inheritdoc}
      *
      * @param GroupsUnarchivePayloadResponse $payloadResponse
-     * @param InputInterface                 $input
-     * @param OutputInterface                $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
-            $this->writeOk($output, 'Successfully un-archived group!');
+            $this->writeOk('Successfully un-archived group!');
         } else {
-            $this->writeError($output, sprintf('Failed to un-archive group: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to un-archive group: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }

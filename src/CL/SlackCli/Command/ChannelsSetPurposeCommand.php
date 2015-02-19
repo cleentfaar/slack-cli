@@ -13,10 +13,7 @@ namespace CL\SlackCli\Command;
 
 use CL\Slack\Payload\ChannelsSetPurposePayload;
 use CL\Slack\Payload\ChannelsSetPurposePayloadResponse;
-use CL\Slack\Payload\PayloadResponseInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Cas Leentfaar <info@casleentfaar.com>
@@ -45,15 +42,13 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return ChannelsSetPurposePayload
      */
-    protected function createPayload(InputInterface $input)
+    protected function createPayload()
     {
         $payload = new ChannelsSetPurposePayload();
-        $payload->setChannelId($input->getArgument('channel-id'));
-        $payload->setPurpose($input->getArgument('purpose'));
+        $payload->setChannelId($this->input->getArgument('channel-id'));
+        $payload->setPurpose($this->input->getArgument('purpose'));
 
         return $payload;
     }
@@ -62,15 +57,13 @@ EOT
      * {@inheritdoc}
      *
      * @param ChannelsSetPurposePayloadResponse $payloadResponse
-     * @param InputInterface                    $input
-     * @param OutputInterface                   $output
      */
-    protected function handleResponse(PayloadResponseInterface $payloadResponse, InputInterface $input, OutputInterface $output)
+    protected function handleResponse($payloadResponse)
     {
         if ($payloadResponse->isOk()) {
-            $this->writeOk($output, sprintf('Successfully changed purpose of channel to: "%s"', $payloadResponse->getPurpose()));
+            $this->writeOk(sprintf('Successfully changed purpose of channel to: "%s"', $payloadResponse->getPurpose()));
         } else {
-            $this->writeError($output, sprintf('Failed to change purpose of channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
+            $this->writeError(sprintf('Failed to change purpose of channel: %s', lcfirst($payloadResponse->getErrorExplanation())));
         }
     }
 }
