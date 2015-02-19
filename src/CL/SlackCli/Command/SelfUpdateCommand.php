@@ -21,6 +21,7 @@ class SelfUpdateCommand extends AbstractCommand
 
         $this->setName('self:update');
         $this->setDescription('Updates slack.phar to the latest version');
+        $this->setAliases(['self.update']);
     }
 
     /**
