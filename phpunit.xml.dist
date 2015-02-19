@@ -9,7 +9,7 @@
 
     <filter>
         <whitelist>
-            <directory>./CL/SlackCli</directory>
+            <directory>./src/CL/SlackCli</directory>
             <exclude>
                 <directory>./bin</directory>
                 <directory>./vendor</directory>
