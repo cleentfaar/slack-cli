@@ -12,9 +12,7 @@ tools:
   external_code_coverage:
     timeout: 600
   php_analyzer: true
-  php_code_sniffer:
-    config:
-      ruleset: config/ruleset.xml
+  php_code_sniffer: true
   php_cs_fixer: true
   php_loc: true
   php_mess_detector: true
