@@ -38,6 +38,9 @@
 <p>Command-line application for interacting with the <a href="https://github.com/cleentfaar/slack">Slack API library</a>. 
 Provides CLI commands for all of the API methods currently available using a single <code>phar</code> executable.</p>
 
+<p><strong>UPDATE:</strong> The <code>self:update</code> command did not work properly up to <code>0.14.2</code>, this has been fixed in later releases. 
+Please download the latest version or installer again to get this fixed!</p>
+
 <p><a href="https://travis-ci.org/cleentfaar/slack-cli"><img src="https://img.shields.io/travis/cleentfaar/slack-cli/master.svg?style=flat-square" alt="Build Status"></a>
 <a href="https://scrutinizer-ci.com/g/cleentfaar/slack-cli/code-structure"><img src="https://img.shields.io/scrutinizer/coverage/g/cleentfaar/slack-cli.svg?style=flat-square" alt="Coverage Status"></a>
 <a href="https://scrutinizer-ci.com/g/cleentfaar/slack-cli"><img src="https://img.shields.io/scrutinizer/g/cleentfaar/slack-cli.svg?style=flat-square" alt="Quality Score"></a>
@@ -49,11 +52,11 @@ Provides CLI commands for all of the API methods currently available using a sin
 
 <p>Sending a message to a Slack channel</p>
 
-<div class="highlight highlight-sh"><pre>$ slack.phar chat.postMessage general <span class="pl-s1"><span class="pl-pds">"</span>Hello world!<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-sh"><pre>$ slack.phar chat:post-message general <span class="pl-s1"><span class="pl-pds">"</span>Hello world!<span class="pl-pds">"</span></span></pre></div>
 
 <p>Update the application</p>
 
-<div class="highlight highlight-sh"><pre>slack.phar self.update</pre></div>
+<div class="highlight highlight-sh"><pre>slack.phar self:update</pre></div>
 
 <p>Check out the documentation below for more examples and instructions on how to install the <code>.phar</code> file.</p>
 
