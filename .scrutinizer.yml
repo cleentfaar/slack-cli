@@ -4,6 +4,7 @@ before_commands:
 
 filter:
   paths: [src/*]
+  excluded_paths: [src/CL/SlackCli/Tests]
 
 tools:
   php_mess_detector:
