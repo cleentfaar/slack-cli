@@ -8,7 +8,7 @@
   ],
   "finder": [
     {
-      "name": ["*.php"],
+      "name": ["*.php", "*.yml"],
       "exclude": [
         "Tests",
         "tests"
