@@ -6,17 +6,4 @@
             <directory suffix="Test.php">./src/CL/SlackCli/Tests/</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>./src/CL/SlackCli</directory>
-            <exclude>
-                <directory>./bin</directory>
-                <directory>./vendor</directory>
-                <directory>./src/CL/SlackCli/Resources</directory>
-                <directory>./src/CL/SlackCli/Test</directory>
-                <directory>./src/CL/SlackCli/Tests</directory>
-            </exclude>
-        </whitelist>
-    </filter>
 </phpunit>

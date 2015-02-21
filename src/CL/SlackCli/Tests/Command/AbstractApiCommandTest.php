@@ -9,25 +9,26 @@ abstract class AbstractApiCommandTest extends AbstractCommandTest
      */
     protected function getDefaultOptions()
     {
-        return [
+        return array_merge(parent::getDefaultOptions(), [
             'token',
-            'configuration-path',
-        ];
+        ]);
     }
 
     protected function getDefaultSuccessfulInput()
     {
         return array_merge(parent::getDefaultSuccessfulInput(), [
-            '--token' => 'testing-token',
-            '--env'   => 'test-success',
+            '--token'   => 'testing-token',
+            '--env'     => 'test-success',
+            '--verbose' => 3,
         ]);
     }
 
     protected function getDefaultFailureInput()
     {
         return array_merge(parent::getDefaultFailureInput(), [
-            '--token' => 'testing-token',
-            '--env'   => 'test-failure',
+            '--token'   => 'testing-token',
+            '--env'     => 'test-failure',
+            '--verbose' => 3,
         ]);
     }
 }
