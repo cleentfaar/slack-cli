@@ -3,7 +3,8 @@
 Command-line application for interacting with the [Slack API library](https://github.com/cleentfaar/slack). 
 Provides CLI commands for all of the API methods currently available using a single `phar` executable.
 
-**UPDATE:** The `self:update` command did not work properly, this has been fixed now. Please download the latest version or installer again to get this fixed!
+**UPDATE:** The `self:update` command did not work properly up to `0.14.2`, this has been fixed in later releases. 
+Please download the latest version or installer again to get this fixed!
 
 [![Build Status](https://img.shields.io/travis/cleentfaar/slack-cli/master.svg?style=flat-square)](https://travis-ci.org/cleentfaar/slack-cli)
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/cleentfaar/slack-cli.svg?style=flat-square)](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/code-structure)
