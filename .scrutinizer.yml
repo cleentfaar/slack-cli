@@ -35,7 +35,8 @@ tools:
       controversial_rules: ~
   php_cs_fixer:
     config:
-      level: all
+      level: symfony
+      fixers: [-concat_without_spaces]
   php_analyzer:
     config:
       suspicious_code:

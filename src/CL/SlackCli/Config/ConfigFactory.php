@@ -54,22 +54,11 @@ class ConfigFactory
     public static function createConfig()
     {
         // determine home and cache dirs
-        $home = self::getHomeDir();
-
-        // Protect directory against web access. Since HOME could be
-        // the www-data's user home and be web-accessible it is a
-        // potential security risk
-        if (!file_exists($home . '/.htaccess')) {
-            if (!is_dir($home)) {
-                @mkdir($home, 0777, true);
-            }
-            @file_put_contents($home . '/.htaccess', 'Deny from all');
-        }
-
+        $home   = self::getHomeDir();
         $config = new Config();
 
         // add dirs to the config
-        $config->merge(array('config' => array('home' => $home)));
+        $config->merge(['config' => ['home' => $home]]);
 
         // load global config
         $file = new JsonFile($home . '/config.json');
