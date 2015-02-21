@@ -2,11 +2,11 @@ before_commands:
   - 'composer install --no-interaction'
 
 filter:
+  paths:
+    - src/*
   excluded_paths:
-    - bin/*
     - src/CL/SlackCli/Resources/*
     - src/CL/SlackCli/Tests/*
-    - vendor/*
 
 tools:
   external_code_coverage:
