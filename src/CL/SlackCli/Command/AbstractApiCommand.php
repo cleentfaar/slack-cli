@@ -248,13 +248,13 @@ abstract class AbstractApiCommand extends AbstractCommand
             $apiClient->addRequestListener(function (RequestEvent $event) use ($output, $self) {
                 $rawRequest = $event->getRawPayload();
                 $output->writeln('<comment>Debug: sending payload...</comment>');
-                $self->renderKeyValueTable($output, $rawRequest);
+                $self->renderKeyValueTable($rawRequest);
             });
 
             $apiClient->addResponseListener(function (ResponseEvent $event) use ($output, $self) {
                 $rawResponse = $event->getRawPayloadResponse();
                 $output->writeln('<comment>Debug: received payload response...</comment>');
-                $self->renderKeyValueTable($output, $rawResponse);
+                $self->renderKeyValueTable($rawResponse);
             });
         }
     }
