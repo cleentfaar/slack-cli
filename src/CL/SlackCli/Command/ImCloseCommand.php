@@ -41,8 +41,6 @@ EOT
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return ImClosePayload
      */
     protected function createPayload()
