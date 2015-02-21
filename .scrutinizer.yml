@@ -36,7 +36,8 @@ tools:
   php_cs_fixer:
     config:
       level: symfony
-      fixers: [-concat_without_spaces]
+      fixers: 
+        concat_without_spaces: false
   php_analyzer:
     config:
       suspicious_code:
