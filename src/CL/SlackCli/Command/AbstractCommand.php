@@ -86,13 +86,10 @@ abstract class AbstractCommand extends Command
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->input  = $input;
-        $this->output = $output;
-        $this->config = ConfigFactory::createConfig();
-
-        // Get the global config.json, or if the user passed in a file to use
-        $configFile = $this->input->getOption('configuration-path') ?: ($this->config->get('home') . '/config.json');
-
+        $configFile         = $input->getOption('configuration-path') ?: (ConfigFactory::getHomeDir() . '/config.json');
+        $this->input        = $input;
+        $this->output       = $output;
+        $this->config       = ConfigFactory::createConfig($configFile);
         $this->configPath   = $configFile;
         $this->configFile   = new JsonFile($configFile);
         $this->configSource = new JsonConfigSource($this->configFile);
@@ -141,7 +138,7 @@ abstract class AbstractCommand extends Command
     protected function createTable(array $headers = [])
     {
         $table = new Table($this->output);
-        
+
         if (!empty($headers)) {
             $table->setHeaders($headers);
         }

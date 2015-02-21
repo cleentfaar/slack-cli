@@ -49,19 +49,20 @@ class ConfigFactory
     }
 
     /**
+     * @param string $path
+     *
      * @return Config
      */
-    public static function createConfig()
+    public static function createConfig($path)
     {
-        // determine home and cache dirs
-        $home   = self::getHomeDir();
         $config = new Config();
 
         // load global config
-        $file = new JsonFile($home . '/config.json');
+        $file = new JsonFile($path);
         if ($file->exists()) {
             $config->merge($file->read());
         }
+        
         $config->setConfigSource(new JsonConfigSource($file));
 
         return $config;
