@@ -143,7 +143,7 @@ abstract class AbstractCommandTest extends \PHPUnit_Framework_TestCase
      */
     protected function getConfigurationPath()
     {
-        return __DIR__ . '/../slack.json';
+        return __DIR__ . '/../config.json';
     }
 
     /**

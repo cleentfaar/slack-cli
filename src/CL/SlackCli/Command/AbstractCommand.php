@@ -134,11 +134,17 @@ abstract class AbstractCommand extends Command
     }
 
     /**
+     * @param array $headers
+     *
      * @return Table
      */
-    protected function createTable()
+    protected function createTable(array $headers = [])
     {
         $table = new Table($this->output);
+        
+        if (!empty($headers)) {
+            $table->setHeaders($headers);
+        }
 
         return $table;
     }
@@ -150,8 +156,7 @@ abstract class AbstractCommand extends Command
      */
     protected function createKeyValueTable(array $keysValues)
     {
-        $table = $this->createTable();
-        $table->setHeaders(['Key', 'Value']);
+        $table = $this->createTable(['Key', 'Value']);
         foreach ($keysValues as $key => $value) {
             $table->addRow([$key, $value]);
         }

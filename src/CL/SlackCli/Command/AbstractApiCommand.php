@@ -87,16 +87,6 @@ abstract class AbstractApiCommand extends AbstractCommand
      */
     private function sendPayload(PayloadInterface $payload)
     {
-        if ($this->isTest()) {
-            $apiClient = new MockApiClient();
-
-            if ($this->isTestSuccess()) {
-                return $apiClient->sendWithSuccess($payload);
-            }
-
-            return $apiClient->sendWithFailure($payload);
-        }
-
         if ($this->input->getOption('token')) {
             $token = $this->input->getOption('token');
         } else {
@@ -110,11 +100,18 @@ abstract class AbstractApiCommand extends AbstractCommand
                 'by running `slack.phar config.set default_token your-token-here`'
             );
         }
-
+        
+        if ($this->isTest()) {
+            $apiClient = new MockApiClient();
+            
+            return $apiClient->send($payload, $token, $this->isTestSuccess());
+        }
+         
         $apiClient = new ApiClient($token);
+        
         $this->configureListeners($apiClient);
-
-        return $apiClient->send($payload);
+        
+        return $apiClient->send($payload, $token);
     }
 
     /**

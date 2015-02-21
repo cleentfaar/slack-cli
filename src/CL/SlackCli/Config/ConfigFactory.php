@@ -57,9 +57,6 @@ class ConfigFactory
         $home   = self::getHomeDir();
         $config = new Config();
 
-        // add dirs to the config
-        $config->merge(['config' => ['home' => $home]]);
-
         // load global config
         $file = new JsonFile($home . '/config.json');
         if ($file->exists()) {

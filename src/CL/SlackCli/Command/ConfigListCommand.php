@@ -39,19 +39,29 @@ EOT
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->listConfiguration($this->config->all(), $this->config->raw(), $output);
+        $rows = $this->extractConfiguration($this->config->all(), $this->config->raw(), $output);
+        
+        $this->createKeyValueTable($rows)->render();
     }
 
     /**
-     * Display the contents of the file in a pretty formatted way
+     * Extracts the contents of the configuration file recursively
      *
      * @param array           $contents
      * @param array           $rawContents
      * @param OutputInterface $output
      * @param string|null     $k
+     * @param array           $currentRows
+     *
+     * @return array
      */
-    private function listConfiguration(array $contents, array $rawContents, OutputInterface $output, $k = null)
-    {
+    private function extractConfiguration(
+        array $contents,
+        array $rawContents,
+        OutputInterface $output,
+        $k = null,
+        &$currentRows = []
+    ) {
         $origK = $k;
         foreach ($contents as $key => $value) {
             if ($k === null && !in_array($key, array('config'))) {
@@ -62,7 +72,7 @@ EOT
 
             if (is_array($value) && (!is_numeric(key($value)))) {
                 $k .= preg_replace('{^config\.}', '', $key . '.');
-                $this->listConfiguration($value, $rawVal, $output, $k);
+                $this->extractConfiguration($value, $rawVal, $output, $k, $currentRows);
 
                 if (substr_count($k, '.') > 1) {
                     $k = str_split($k, strrpos($k, '.', -2));
@@ -87,10 +97,12 @@ EOT
             }
 
             if (is_string($rawVal) && $rawVal != $value) {
-                $this->output->writeln('[<comment>' . $k . $key . '</comment>] <info>' . $rawVal . ' (' . $value . ')</info>');
+                $currentRows[$k . $key] = $rawVal . ' (' . $value . ')';
             } else {
-                $this->output->writeln('[<comment>' . $k . $key . '</comment>] <info>' . $value . '</info>');
+                $currentRows[$k . $key] = $value;
             }
         }
+
+        return $currentRows;
     }
 }
