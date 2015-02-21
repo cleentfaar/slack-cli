@@ -88,5 +88,11 @@
         "sha1": "514f09e1797fdf648b254200ab236ec6350b4075",
         "url": "http://cleentfaar.github.io/slack-cli/downloads/slack-0.15.4.phar",
         "version": "0.15.4"
+    },
+    {
+        "name": "slack.phar",
+        "sha1": "31f8b72cbfa452ccef0ad80c9c2a408244adc63d",
+        "url": "http://cleentfaar.github.io/slack-cli/downloads/slack-0.15.5.phar",
+        "version": "0.15.5"
     }
 ]
