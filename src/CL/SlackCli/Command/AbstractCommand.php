@@ -28,26 +28,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class AbstractCommand extends Command
 {
     /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * @var JsonFile
-     */
-    protected $configFile;
-
-    /**
-     * @var JsonConfigSource
-     */
-    protected $configSource;
-
-    /**
-     * @var string
-     */
-    protected $configPath;
-
-    /**
      * @var InputInterface
      */
     protected $input;
@@ -56,6 +36,21 @@ abstract class AbstractCommand extends Command
      * @var OutputInterface
      */
     protected $output;
+    
+    /**
+     * @var Config
+     */
+    private $config;
+
+    /**
+     * @var JsonConfigSource
+     */
+    private $configSource;
+
+    /**
+     * @var string
+     */
+    private $configPath;
 
     /**
      * {@inheritdoc}
@@ -95,8 +90,8 @@ abstract class AbstractCommand extends Command
     protected function getConfigPath()
     {
         $this->getConfig();
-        
-        return $this->configPath;    
+
+        return $this->configPath;
     }
 
     /**
@@ -105,38 +100,38 @@ abstract class AbstractCommand extends Command
     protected function getConfigSource()
     {
         $this->getConfig();
-        
+
         return $this->configSource;
     }
 
     /**
      * @return Config
-     * 
+     *
      * @throws \Exception
      */
     protected function getConfig()
     {
         if (!isset($this->config)) {
-            $configFile         = $this->input->getOption('configuration-path') ?: (ConfigFactory::getHomeDir() . '/config.json');
-            $this->config       = ConfigFactory::createConfig($configFile);
-            $this->configFile   = new JsonFile($configFile);
-            $this->configPath   = $this->configFile->getPath();
-            $this->configSource = new JsonConfigSource($this->configFile);
+            $configFilePath     = $this->input->getOption('configuration-path') ?: (ConfigFactory::getHomeDir() . '/config.json');
+            $this->config       = ConfigFactory::createConfig($configFilePath);
+            $configFile         = new JsonFile($configFilePath);
+            $this->configPath   = $configFile->getPath();
+            $this->configSource = new JsonConfigSource($configFile);
 
             // initialize the global file if it's not there
-            if (!$this->configFile->exists()) {
-                $path = $this->configFile->getPath();
+            if (!$configFile->exists()) {
+                $path = $configFile->getPath();
                 $dir  = dirname($path);
                 if (!is_dir($dir)) {
                     mkdir($dir, 0777, true);
                 }
 
-                touch($this->configFile->getPath());
-                $this->configFile->write(['config' => new \ArrayObject()]);
-                @chmod($this->configFile->getPath(), 0600);
+                touch($configFile->getPath());
+                $configFile->write(['config' => new \ArrayObject()]);
+                @chmod($configFile->getPath(), 0600);
             }
 
-            if (!$this->configFile->exists()) {
+            if (!$configFile->exists()) {
                 throw new \RuntimeException('No config.json found in the current directory');
             }
         }
