@@ -90,7 +90,7 @@ abstract class AbstractApiCommand extends AbstractCommand
         if ($this->input->getOption('token')) {
             $token = $this->input->getOption('token');
         } else {
-            $token = $this->config->get('default_token');
+            $token = $this->getConfig()->get('default_token');
         }
 
         if (empty($token)) {

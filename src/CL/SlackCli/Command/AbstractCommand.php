@@ -76,8 +76,7 @@ abstract class AbstractCommand extends Command
             'configuration-path',
             null,
             InputOption::VALUE_REQUIRED,
-            'Configuration file to use during this command, defaults to the global configuration path',
-            $this->configPath
+            'Configuration file to use during this command, defaults to %YOUR_HOME_DIR%/slack-cli/config.json'
         );
     }
 
@@ -86,24 +85,63 @@ abstract class AbstractCommand extends Command
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $configFile         = $input->getOption('configuration-path') ?: (ConfigFactory::getHomeDir() . '/config.json');
-        $this->input        = $input;
-        $this->output       = $output;
-        $this->config       = ConfigFactory::createConfig($configFile);
-        $this->configPath   = $configFile;
-        $this->configFile   = new JsonFile($configFile);
-        $this->configSource = new JsonConfigSource($this->configFile);
+        $this->input  = $input;
+        $this->output = $output;
+    }
 
-        // initialize the global file if it's not there
-        if (!$this->configFile->exists()) {
-            touch($this->configFile->getPath());
-            $this->configFile->write(['config' => new \ArrayObject()]);
-            @chmod($this->configFile->getPath(), 0600);
+    /**
+     * @return string
+     */
+    protected function getConfigPath()
+    {
+        $this->getConfig();
+        
+        return $this->configPath;    
+    }
+
+    /**
+     * @return JsonConfigSource
+     */
+    protected function getConfigSource()
+    {
+        $this->getConfig();
+        
+        return $this->configSource;
+    }
+
+    /**
+     * @return Config
+     * 
+     * @throws \Exception
+     */
+    protected function getConfig()
+    {
+        if (!isset($this->config)) {
+            $configFile         = $this->input->getOption('configuration-path') ?: (ConfigFactory::getHomeDir() . '/config.json');
+            $this->config       = ConfigFactory::createConfig($configFile);
+            $this->configFile   = new JsonFile($configFile);
+            $this->configPath   = $this->configFile->getPath();
+            $this->configSource = new JsonConfigSource($this->configFile);
+
+            // initialize the global file if it's not there
+            if (!$this->configFile->exists()) {
+                $path = $this->configFile->getPath();
+                $dir  = dirname($path);
+                if (!is_dir($dir)) {
+                    mkdir($dir, 0777, true);
+                }
+
+                touch($this->configFile->getPath());
+                $this->configFile->write(['config' => new \ArrayObject()]);
+                @chmod($this->configFile->getPath(), 0600);
+            }
+
+            if (!$this->configFile->exists()) {
+                throw new \RuntimeException('No config.json found in the current directory');
+            }
         }
 
-        if (!$this->configFile->exists()) {
-            throw new \RuntimeException('No config.json found in the current directory');
-        }
+        return $this->config;
     }
 
     /**

@@ -45,10 +45,10 @@ EOT
     {
         $setting = $this->input->getArgument('setting');
 
-        if (!$this->config->has($setting)) {
+        if (!$this->getConfig()->has($setting)) {
             $this->writeComment(sprintf('No changes made; there is no setting defined with the name `%s`', $setting));
         } else {
-            $this->configSource->removeConfigSetting($setting);
+            $this->getConfigSource()->removeConfigSetting($setting);
 
             $this->writeOk(sprintf('Setting with name <info>`%s`</info> has been removed from the configuration!', $setting));
         }

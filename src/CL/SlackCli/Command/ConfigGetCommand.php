@@ -45,13 +45,13 @@ EOT
     {
         $key = $this->input->getArgument('setting');
 
-        if (!$this->config->has($key)) {
+        if (!$this->getConfig()->has($key)) {
             $this->writeError(sprintf('There is no setting with that name in the configuration: `%s`', $key));
 
             return 1;
         }
 
-        $value = $this->config->get($key);
+        $value = $this->getConfig()->get($key);
 
         $this->output->writeln(sprintf(
             'Value of <info>`%s`</info> is <comment>%s</comment>',

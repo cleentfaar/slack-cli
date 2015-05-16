@@ -39,7 +39,7 @@ EOT
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $rows = $this->extractConfiguration($this->config->all(), $this->config->raw(), $output);
+        $rows = $this->extractConfiguration($this->getConfig()->all(), $this->getConfig()->raw(), $output);
         
         $this->createKeyValueTable($rows)->render();
     }

@@ -70,7 +70,7 @@ EOT
                     ));
                 }
 
-                $this->configSource->addConfigSetting($setting, $normalizer($value));
+                $this->getConfigSource()->addConfigSetting($setting, $normalizer($value));
 
                 $this->writeOk(sprintf(
                     'Successfully changed value of <info>`%s`</info> to <comment>`%s`</comment>!',
