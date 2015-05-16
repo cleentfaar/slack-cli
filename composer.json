@@ -37,6 +37,5 @@
   },
   "config": {
     "bin-dir": "bin"
-  },
-  "target-dir": "CL/SlackCli"
+  }
 }
