@@ -28,26 +28,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class AbstractCommand extends Command
 {
     /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * @var JsonFile
-     */
-    protected $configFile;
-
-    /**
-     * @var JsonConfigSource
-     */
-    protected $configSource;
-
-    /**
-     * @var string
-     */
-    protected $configPath;
-
-    /**
      * @var InputInterface
      */
     protected $input;
@@ -56,6 +36,26 @@ abstract class AbstractCommand extends Command
      * @var OutputInterface
      */
     protected $output;
+
+    /**
+     * @var Config
+     */
+    private $config;
+
+    /**
+     * @var JsonConfigSource
+     */
+    private $configSource;
+
+    /**
+     * @var string
+     */
+    private $configPath;
+
+    /**
+     * @var string
+     */
+    private $configPathFromInput;
 
     /**
      * {@inheritdoc}
@@ -76,8 +76,7 @@ abstract class AbstractCommand extends Command
             'configuration-path',
             null,
             InputOption::VALUE_REQUIRED,
-            'Configuration file to use during this command, defaults to the global configuration path',
-            $this->configPath
+            'Configuration file to use during this command, defaults to %YOUR_HOME_DIR%/slack-cli/config.json'
         );
     }
 
@@ -86,24 +85,64 @@ abstract class AbstractCommand extends Command
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $configFile         = $input->getOption('configuration-path') ?: (ConfigFactory::getHomeDir() . '/config.json');
-        $this->input        = $input;
-        $this->output       = $output;
-        $this->config       = ConfigFactory::createConfig($configFile);
-        $this->configPath   = $configFile;
-        $this->configFile   = new JsonFile($configFile);
-        $this->configSource = new JsonConfigSource($this->configFile);
+        $this->input               = $input;
+        $this->output              = $output;
+        $this->configPathFromInput = $this->input->getOption('configuration-path');
+    }
 
-        // initialize the global file if it's not there
-        if (!$this->configFile->exists()) {
-            touch($this->configFile->getPath());
-            $this->configFile->write(['config' => new \ArrayObject()]);
-            @chmod($this->configFile->getPath(), 0600);
+    /**
+     * @return string
+     */
+    protected function getConfigPath()
+    {
+        $this->getConfig();
+
+        return $this->configPath;
+    }
+
+    /**
+     * @return JsonConfigSource
+     */
+    protected function getConfigSource()
+    {
+        $this->getConfig();
+
+        return $this->configSource;
+    }
+
+    /**
+     * @return Config
+     *
+     * @throws \Exception
+     */
+    protected function getConfig()
+    {
+        if (!isset($this->config)) {
+            $configFilePath     = $this->configPathFromInput ?: (ConfigFactory::getHomeDir() . '/config.json');
+            $this->config       = ConfigFactory::createConfig($configFilePath);
+            $configFile         = new JsonFile($configFilePath);
+            $this->configPath   = $configFile->getPath();
+            $this->configSource = new JsonConfigSource($configFile);
+
+            // initialize the global file if it's not there
+            if (!$configFile->exists()) {
+                $path = $configFile->getPath();
+                $dir  = dirname($path);
+                if (!is_dir($dir)) {
+                    mkdir($dir, 0777, true);
+                }
+
+                touch($configFile->getPath());
+                $configFile->write(['config' => new \ArrayObject()]);
+                @chmod($configFile->getPath(), 0600);
+            }
+
+            if (!$configFile->exists()) {
+                throw new \RuntimeException('No config.json found in the current directory');
+            }
         }
 
-        if (!$this->configFile->exists()) {
-            throw new \RuntimeException('No config.json found in the current directory');
-        }
+        return $this->config;
     }
 
     /**

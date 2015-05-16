@@ -52,7 +52,7 @@ EOT
             }
         }
 
-        $file    = $this->configFile->getPath();
+        $file    = $this->getConfigPath();
         $to      = defined('PHP_WINDOWS_VERSION_BUILD') ? '' : ' > `tty`';
         $command = sprintf('%s %s%s', $editor, $file, $to);
 
