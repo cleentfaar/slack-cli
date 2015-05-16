@@ -36,7 +36,7 @@ abstract class AbstractCommand extends Command
      * @var OutputInterface
      */
     protected $output;
-    
+
     /**
      * @var Config
      */
@@ -51,6 +51,11 @@ abstract class AbstractCommand extends Command
      * @var string
      */
     private $configPath;
+
+    /**
+     * @var string
+     */
+    private $configPathFromInput;
 
     /**
      * {@inheritdoc}
@@ -80,8 +85,9 @@ abstract class AbstractCommand extends Command
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->input  = $input;
-        $this->output = $output;
+        $this->input               = $input;
+        $this->output              = $output;
+        $this->configPathFromInput = $this->input->getOption('configuration-path');
     }
 
     /**
@@ -112,7 +118,7 @@ abstract class AbstractCommand extends Command
     protected function getConfig()
     {
         if (!isset($this->config)) {
-            $configFilePath     = $this->input->getOption('configuration-path') ?: (ConfigFactory::getHomeDir() . '/config.json');
+            $configFilePath     = $this->configPathFromInput ?: (ConfigFactory::getHomeDir() . '/config.json');
             $this->config       = ConfigFactory::createConfig($configFilePath);
             $configFile         = new JsonFile($configFilePath);
             $this->configPath   = $configFile->getPath();
