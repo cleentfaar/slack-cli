@@ -3,9 +3,6 @@
 Command-line application for interacting with the [Slack API library](https://github.com/cleentfaar/slack). 
 Provides CLI commands for all of the API methods currently available using a single `phar` executable.
 
-**UPDATE:** The `self:update` command did not work properly up to `0.14.2`, this has been fixed in later releases. 
-Please download the latest version or installer again to get this fixed!
-
 [![Build Status](https://img.shields.io/travis/cleentfaar/slack-cli/master.svg?style=flat-square)](https://travis-ci.org/cleentfaar/slack-cli)
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/cleentfaar/slack-cli.svg?style=flat-square)](https://scrutinizer-ci.com/g/cleentfaar/slack-cli/code-structure)
 [![Quality Score](https://img.shields.io/scrutinizer/g/cleentfaar/slack-cli.svg?style=flat-square)](https://scrutinizer-ci.com/g/cleentfaar/slack-cli)
@@ -15,7 +12,7 @@ Please download the latest version or installer again to get this fixed!
 
 ### Quick look
 
-Sending a message to a Slack channel
+Sending a message to a Slack channel (in this case '#general')
 ```sh
 $ slack.phar chat:post-message general "Hello world!"
 ```
@@ -48,7 +45,7 @@ or in the cloned repository below.
 1. Run `git clone https://github.com/cleentfaar/slack-cli.git`
 2. Run Composer to get the dependencies: `cd slack-cli && composer install`
 
-You can now run Slack CLI by executing the `./slack` script: `php /path/to/slack-cli/slack`
+You can now run Slack CLI by executing the `./slack` script: `php ./slack`
 
 
 #### Global installation (manual)
