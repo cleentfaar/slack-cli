@@ -50,7 +50,7 @@ EOT
     protected function createPayload()
     {
         $payload = new ChannelsJoinPayload();
-        $payload->setChannel($this->input->getArgument('channel'));
+        $payload->setName($this->input->getArgument('channel'));
 
         return $payload;
     }
