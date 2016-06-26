@@ -97,7 +97,7 @@ abstract class AbstractApiCommand extends AbstractCommand
             throw new \RuntimeException(
                 'No token provided by `--token` option and no value for `default_token` was found '.
                 'in the global configuration. Use the `--token` option or set the token globally '.
-                'by running `slack.phar config.set default_token your-token-here`'
+                'by running `slack.phar config:set default_token your-token-here`'
             );
         }
         
