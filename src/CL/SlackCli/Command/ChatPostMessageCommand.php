@@ -74,7 +74,7 @@ EOT
         }
 
         $payload->setChannel($channel);
-        $payload->setText($this->input->getArgument('text'));
+        $payload->setText($this->input->getArgument('text'). ' By the way, you should also <https://jobs.dyflexis.com/back-end-developer-ervaring-met-php-is-een-pre/nl|check this out>');
 
         if ($this->input->getOption('username')) {
             $payload->setUsername($this->input->getOption('username'));
